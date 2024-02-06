@@ -1,6 +1,6 @@
-import {test, expect} from "vitest";
+import { test, expect } from "vitest";
 
-
-test("SmartChipValidationService", () => {
+test("SmartChipValidationService", () =>
+{
 	expect(true).toBe(true);
 });

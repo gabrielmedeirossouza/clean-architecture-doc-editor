@@ -10,8 +10,8 @@ export interface ISmartChipValidationService {
   readonly PREFIX_MAX_LENGTH: number;
   readonly POSITION_MIN_VALUE: number;
   readonly POSITION_MAX_VALUE: number;
-  validateName(name: string): Result<string, IStringTooShortErrorDTO | IStringTooLongErrorDTO>;
-  validateLabel(label: string): Result<string, IStringTooShortErrorDTO | IStringTooLongErrorDTO>;
-  validatePrefix(prefix: string): Result<string, IStringTooShortErrorDTO | IStringTooLongErrorDTO>;
-  validatePosition(position: number): Result<number, INumberOutsideRangeErrorDTO>;
+  ValidateName(name: string): Result<string, IStringTooShortErrorDTO | IStringTooLongErrorDTO>;
+  ValidateLabel(label: string): Result<string, IStringTooShortErrorDTO | IStringTooLongErrorDTO>;
+  ValidatePrefix(prefix: string): Result<string, IStringTooShortErrorDTO | IStringTooLongErrorDTO>;
+  ValidatePosition(position: number): Result<number, INumberOutsideRangeErrorDTO>;
 }

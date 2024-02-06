@@ -1,45 +1,51 @@
 type Ok<T> = {
 	ok: true,
-	okValue: T
+	value: T
 };
 
 type Fail<K> = {
 	ok: false,
-	failValue: K
+	error: K
 };
 
 export type Result<T, K> = Ok<T> | Fail<K>;
 
 export const Result = {
-	ok<T>(okValue: T): Result<T, never> {
+	Ok<T>(okValue: T): Result<T, never>
+	{
 		return {
 			ok: true,
-			okValue
+			value: okValue
 		};
 	},
-	fail<K>(failValue: K): Result<never, K> {
+	Fail<K>(failValue: K): Result<never, K>
+	{
 		return {
 			ok: false,
-			failValue
+			error: failValue
 		};
 	},
-	compose() {
-		function addFailChecker<R extends Result<any, any>>(result: R, callback?: (result: R) => void) {
+	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+	Compose()
+	{
+		// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+		function AddFailChecker<R extends Result<any, any>>(result: R, callback?: (result: R) => void)
+		{
 			callback?.(result);
-			
+
 			let someFailed = false;
 			if (!result.ok) someFailed = true;
-	
+
 			return {
-				addFailChecker,
-				check: () => ({
+				AddFailChecker,
+				Check: (): { someFailed: boolean } => ({
 					someFailed,
 				})
 			};
 		}
 
 		return {
-			addFailChecker,
+			AddFailChecker,
 		};
 	}
 };

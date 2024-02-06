@@ -1,13 +1,13 @@
 import { IFieldDTO, IMessageDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO, INumberZeroErrorDTO, INumberNegativeErrorDTO, INumberTooLargeErrorDTO, INumberTooSmallErrorDTO, INumberOutsideRangeErrorDTO } from ".";
 
 export interface IBaseDTO {
-	isFieldDTO(): this is IFieldDTO;
-	isMessageDTO(): this is IMessageDTO;
-	isStringTooLongDTO(): this is IStringTooLongErrorDTO;
-	isStringTooShortDTO(): this is IStringTooShortErrorDTO;
-	isNumberZeroDTO(): this is INumberZeroErrorDTO;
-	isNumberNegativeDTO(): this is INumberNegativeErrorDTO;
-	isNumberTooSmallDTO(): this is INumberTooSmallErrorDTO;
-	isNumberTooLargeDTO(): this is INumberTooLargeErrorDTO;
-	isNumberOutsideRangeDTO(): this is INumberOutsideRangeErrorDTO;
+	IsFieldDTO(): this is IFieldDTO;
+	IsMessageDTO(): this is IMessageDTO;
+	IsStringTooLongDTO(): this is IStringTooLongErrorDTO;
+	IsStringTooShortDTO(): this is IStringTooShortErrorDTO;
+	IsNumberZeroDTO(): this is INumberZeroErrorDTO;
+	IsNumberNegativeDTO(): this is INumberNegativeErrorDTO;
+	IsNumberTooSmallDTO(): this is INumberTooSmallErrorDTO;
+	IsNumberTooLargeDTO(): this is INumberTooLargeErrorDTO;
+	IsNumberOutsideRangeDTO(): this is INumberOutsideRangeErrorDTO;
 }

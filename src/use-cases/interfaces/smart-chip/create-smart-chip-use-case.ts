@@ -10,14 +10,14 @@ export interface ICreateSmartChipUseCaseRequestModel {
 }
 
 export interface ICreateSmartChipUseCaseInputPort {
-  create(requestModel: ICreateSmartChipUseCaseRequestModel): void;
+  Create(requestModel: ICreateSmartChipUseCaseRequestModel): void;
 }
 
 export interface ICreateSmartChipUseCaseOutputPort {
-  response(responseModel: ICreateSmartChipUseCaseResponseModel): void;
-  nameResponse(responseModel: ICreateSmartChipUseCaseNameResponseModel): void;
-  labelResponse(responseModel: ICreateSmartChipUseCaseLabelResponseModel): void;
-  prefixResponse(responseModel: ICreateSmartChipUseCasePrefixResponseModel): void;
+  Response(responseModel: ICreateSmartChipUseCaseResponseModel): void;
+  NameResponse(responseModel: ICreateSmartChipUseCaseNameResponseModel): void;
+  LabelResponse(responseModel: ICreateSmartChipUseCaseLabelResponseModel): void;
+  PrefixResponse(responseModel: ICreateSmartChipUseCasePrefixResponseModel): void;
   PositionResponse(responseModel: ICreateSmartChipUseCasePositionResponseModel): void;
 }
 

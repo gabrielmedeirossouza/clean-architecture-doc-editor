@@ -4,80 +4,94 @@ import { ICreateSmartChipUseCaseNameResponseModel, ICreateSmartChipUseCaseLabelR
 import { PresentMessageDTO, PresentStringTooLongErrorDTO, PresentStringTooShortErrorDTO } from "../dtos";
 import { PresentNumberOutsideRangeErrorDTO } from "../dtos/present-number-outside-range-error-dto";
 
-export class CreateSmartChipPresenter implements ICreateSmartChipUseCaseOutputPort {
+export class CreateSmartChipPresenter implements ICreateSmartChipUseCaseOutputPort
+{
 	constructor(
 		private readonly _outputPort: ICreateSmartChipPresenterOutputPort
-	) { }
+	)
+	{ }
 
-	public response({ response }: ICreateSmartChipUseCaseResponseModel): void {
-		if (response.ok) return this._outputPort.response?.notify(Result.ok(response.okValue));
+	public Response({ response }: ICreateSmartChipUseCaseResponseModel): void
+	{
+		if (response.ok) return this._outputPort.response?.Notify(Result.Ok(response.value));
 
-		this._outputPort.response?.notify(
-			Result.fail(new PresentMessageDTO("Smart Chip não pode ser criado."))
+		this._outputPort.response?.Notify(
+			Result.Fail(new PresentMessageDTO("Smart Chip não pode ser criado."))
 		);
 	}
 
-	public nameResponse({ response }: ICreateSmartChipUseCaseNameResponseModel): void {
-		if (response.ok) return this._outputPort.idResponse?.notify(Result.ok(response.okValue));
+	public NameResponse({ response }: ICreateSmartChipUseCaseNameResponseModel): void
+	{
+		if (response.ok) return this._outputPort.idResponse?.Notify(Result.Ok(response.value));
 
-		if (response.failValue.isStringTooShortDTO()) {
-			const { field, value, minLength } = response.failValue;
-			this._outputPort.idResponse?.notify(
-				Result.fail(new PresentStringTooShortErrorDTO(field, `O Campo nome deve ter pelo menos ${minLength} caracteres.`, value, minLength))
+		if (response.error.IsStringTooShortDTO())
+		{
+			const { field, value, minLength } = response.error;
+			this._outputPort.idResponse?.Notify(
+				Result.Fail(new PresentStringTooShortErrorDTO(field, `O Campo nome deve ter pelo menos ${minLength} caracteres.`, value, minLength))
 			);
 		}
-		
-		if (response.failValue.isStringTooLongDTO()) {
-			const { field, value, maxLength } = response.failValue;
-			this._outputPort.idResponse?.notify(
-				Result.fail(new PresentStringTooLongErrorDTO(field, `O Campo nome deve ter no máximo ${maxLength} caracteres.`, value, maxLength))
-			);
-		}
-	}
 
-	public labelResponse({ response }: ICreateSmartChipUseCaseLabelResponseModel): void {
-		if (response.ok) return this._outputPort.nameResponse?.notify(Result.ok(response.okValue));
-
-		if (response.failValue.isStringTooShortDTO()) {
-			const { field, value, minLength } = response.failValue;
-			this._outputPort.nameResponse?.notify(
-				Result.fail(new PresentStringTooShortErrorDTO(field, `O Campo etiqueta deve ter pelo menos ${minLength} caracteres.`, value, minLength))
-			);
-		}
-		
-		if (response.failValue.isStringTooLongDTO()) {
-			const { field, value, maxLength } = response.failValue;
-			this._outputPort.nameResponse?.notify(
-				Result.fail(new PresentStringTooLongErrorDTO(field, `O Campo etiqueta deve ter no máximo ${maxLength} caracteres.`, value, maxLength))
+		if (response.error.IsStringTooLongDTO())
+		{
+			const { field, value, maxLength } = response.error;
+			this._outputPort.idResponse?.Notify(
+				Result.Fail(new PresentStringTooLongErrorDTO(field, `O Campo nome deve ter no máximo ${maxLength} caracteres.`, value, maxLength))
 			);
 		}
 	}
 
-	public prefixResponse({ response }: ICreateSmartChipUseCasePrefixResponseModel): void {
-		if (response.ok) return this._outputPort.prefixResponse?.notify(Result.ok(response.okValue));
+	public LabelResponse({ response }: ICreateSmartChipUseCaseLabelResponseModel): void
+	{
+		if (response.ok) return this._outputPort.nameResponse?.Notify(Result.Ok(response.value));
 
-		if (response.failValue.isStringTooShortDTO()) {
-			const { field, value, minLength } = response.failValue;
-			this._outputPort.prefixResponse?.notify(
-				Result.fail(new PresentStringTooShortErrorDTO(field, `O Campo prefixo deve ter pelo menos ${minLength} caracteres.`, value, minLength))
+		if (response.error.IsStringTooShortDTO())
+		{
+			const { field, value, minLength } = response.error;
+			this._outputPort.nameResponse?.Notify(
+				Result.Fail(new PresentStringTooShortErrorDTO(field, `O Campo etiqueta deve ter pelo menos ${minLength} caracteres.`, value, minLength))
 			);
 		}
-		
-		if (response.failValue.isStringTooLongDTO()) {
-			const { field, value, maxLength } = response.failValue;
-			this._outputPort.prefixResponse?.notify(
-				Result.fail(new PresentStringTooLongErrorDTO(field, `O Campo prefixo deve ter no máximo ${maxLength} caracteres.`, value, maxLength))
+
+		if (response.error.IsStringTooLongDTO())
+		{
+			const { field, value, maxLength } = response.error;
+			this._outputPort.nameResponse?.Notify(
+				Result.Fail(new PresentStringTooLongErrorDTO(field, `O Campo etiqueta deve ter no máximo ${maxLength} caracteres.`, value, maxLength))
 			);
 		}
 	}
 
-	public PositionResponse({ response }: ICreateSmartChipUseCasePositionResponseModel): void {
-		if (response.ok) return this._outputPort.valueResponse?.notify(Result.ok(response.okValue));
+	public PrefixResponse({ response }: ICreateSmartChipUseCasePrefixResponseModel): void
+	{
+		if (response.ok) return this._outputPort.prefixResponse?.Notify(Result.Ok(response.value));
 
-		if (response.failValue.isNumberOutsideRangeDTO()) {
-			const { field, value, minValue, maxValue } = response.failValue;
-			this._outputPort.valueResponse?.notify(
-				Result.fail(new PresentNumberOutsideRangeErrorDTO(field, `O Campo posição deve ser entre ${minValue} e ${maxValue}.`, value, minValue, maxValue))
+		if (response.error.IsStringTooShortDTO())
+		{
+			const { field, value, minLength } = response.error;
+			this._outputPort.prefixResponse?.Notify(
+				Result.Fail(new PresentStringTooShortErrorDTO(field, `O Campo prefixo deve ter pelo menos ${minLength} caracteres.`, value, minLength))
+			);
+		}
+
+		if (response.error.IsStringTooLongDTO())
+		{
+			const { field, value, maxLength } = response.error;
+			this._outputPort.prefixResponse?.Notify(
+				Result.Fail(new PresentStringTooLongErrorDTO(field, `O Campo prefixo deve ter no máximo ${maxLength} caracteres.`, value, maxLength))
+			);
+		}
+	}
+
+	public PositionResponse({ response }: ICreateSmartChipUseCasePositionResponseModel): void
+	{
+		if (response.ok) return this._outputPort.valueResponse?.Notify(Result.Ok(response.value));
+
+		if (response.error.IsNumberOutsideRangeDTO())
+		{
+			const { field, value, minValue, maxValue } = response.error;
+			this._outputPort.valueResponse?.Notify(
+				Result.Fail(new PresentNumberOutsideRangeErrorDTO(field, `O Campo posição deve ser entre ${minValue} e ${maxValue}.`, value, minValue, maxValue))
 			);
 		}
 	}
