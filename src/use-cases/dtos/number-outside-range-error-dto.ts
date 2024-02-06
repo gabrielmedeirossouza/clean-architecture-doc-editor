@@ -9,7 +9,7 @@ export class NumberOutsideRangeErrorDTO implements INumberOutsideRangeErrorDTO {
         public readonly minValue: number,
         public readonly maxValue: number,
 	) {
-		this.message = `NumberOutsideRange: the number must be between ${minValue} and ${maxValue}. Received: ${value}`;
+		this.message = `NumberOutsideRangeErrorDTO: The number must be between ${minValue} and ${maxValue}. Received: ${value}.`;
 	}
 
 	public isFieldDTO(): this is IFieldDTO {
@@ -39,7 +39,7 @@ export class NumberOutsideRangeErrorDTO implements INumberOutsideRangeErrorDTO {
 	public isNumberTooLargeDTO(): this is INumberTooLargeErrorDTO {
 		return false;
 	}
-	
+
 	public isNumberTooSmallDTO(): this is INumberTooSmallErrorDTO {
 		return false;
 	}

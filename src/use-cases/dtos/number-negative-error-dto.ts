@@ -1,7 +1,7 @@
 import { IFieldDTO, IMessageDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO, INumberZeroErrorDTO, INumberNegativeErrorDTO, INumberTooLargeErrorDTO, INumberTooSmallErrorDTO, INumberOutsideRangeErrorDTO } from "../interfaces/dtos";
 
 export class NumberNegativeErrorDTO implements INumberNegativeErrorDTO {
-	public readonly message = "NumberNegative: the number cannot be negative";
+	public readonly message = "NumberNegativeErrorDTO: The number cannot be negative.";
 
 	constructor(
         public readonly field: string,
@@ -35,7 +35,7 @@ export class NumberNegativeErrorDTO implements INumberNegativeErrorDTO {
 	public isNumberTooLargeDTO(): this is INumberTooLargeErrorDTO {
 		return false;
 	}
-	
+
 	public isNumberTooSmallDTO(): this is INumberTooSmallErrorDTO {
 		return false;
 	}

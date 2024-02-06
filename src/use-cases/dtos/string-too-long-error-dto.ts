@@ -12,7 +12,7 @@ export class StringTooLongErrorDTO implements IStringTooLongErrorDTO {
 	) {
 		this.currentLength = value.length;
 		this.message =
-			`StringTooLong: field ${this.field} is too long. Max length ${this.maxLength}. Current length: ${this.currentLength}. Provided value: ${this.value}`;
+			`StringTooLongErrorDTO: The string must have at most ${maxLength} characters. String ${value} has ${this.currentLength} characters.`;
 	}
 
 	public isFieldDTO(): this is IFieldDTO {
@@ -42,7 +42,7 @@ export class StringTooLongErrorDTO implements IStringTooLongErrorDTO {
 	public isNumberTooLargeDTO(): this is INumberTooLargeErrorDTO {
 		return false;
 	}
-	
+
 	public isNumberTooSmallDTO(): this is INumberTooSmallErrorDTO {
 		return false;
 	}

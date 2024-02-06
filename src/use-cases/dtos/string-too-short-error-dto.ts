@@ -11,7 +11,7 @@ export class StringTooShortErrorDTO implements IStringTooShortErrorDTO {
 	) {
 		this.currentLength = value.length;
 		this.message =
-			`StringTooShort: field ${this.field} is too short. Min length ${this.minLength}. Current length: ${this.currentLength}. Provided value: ${this.value}`;
+			`StringTooShortErrorDTO: The string must have at least ${minLength} characters. String ${value} has ${this.currentLength} characters.`;
 	}
 
 	public isFieldDTO(): this is IFieldDTO {
@@ -41,7 +41,7 @@ export class StringTooShortErrorDTO implements IStringTooShortErrorDTO {
 	public isNumberTooLargeDTO(): this is INumberTooLargeErrorDTO {
 		return false;
 	}
-	
+
 	public isNumberTooSmallDTO(): this is INumberTooSmallErrorDTO {
 		return false;
 	}

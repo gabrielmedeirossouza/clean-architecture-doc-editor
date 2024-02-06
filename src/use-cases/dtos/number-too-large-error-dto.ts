@@ -8,7 +8,7 @@ export class NumberTooLargeErrorDTO implements INumberTooLargeErrorDTO {
         public readonly value: number,
         public readonly maxValue: number,
 	) {
-		this.message = `NumberTooLarge: the number cannot be greater than ${maxValue}. Received: ${value}`;
+		this.message = `NumberTooLargeErrorDTO: The number cannot be greater than ${maxValue}. Received: ${value}.`;
 	}
 
 	public isFieldDTO(): this is IFieldDTO {
@@ -38,7 +38,7 @@ export class NumberTooLargeErrorDTO implements INumberTooLargeErrorDTO {
 	public isNumberTooLargeDTO(): this is INumberTooLargeErrorDTO {
 		return true;
 	}
-	
+
 	public isNumberTooSmallDTO(): this is INumberTooSmallErrorDTO {
 		return false;
 	}

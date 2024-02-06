@@ -8,7 +8,7 @@ export class NumberTooSmallErrorDTO implements INumberTooSmallErrorDTO {
         public readonly value: number,
         public readonly minValue: number,
 	) {
-		this.message = `NumberTooSmall: the number cannot be less than ${minValue}. Received: ${value}`;
+		this.message = `NumberTooSmallErrorDTO: The number cannot be less than ${minValue}. Received: ${value}.`;
 	}
 
 	public isFieldDTO(): this is IFieldDTO {
@@ -38,7 +38,7 @@ export class NumberTooSmallErrorDTO implements INumberTooSmallErrorDTO {
 	public isNumberTooLargeDTO(): this is INumberTooLargeErrorDTO {
 		return false;
 	}
-	
+
 	public isNumberTooSmallDTO(): this is INumberTooSmallErrorDTO {
 		return true;
 	}

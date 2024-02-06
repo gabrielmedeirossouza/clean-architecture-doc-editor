@@ -2,68 +2,6 @@ import { Box, Divider, Heading, VStack } from "@chakra-ui/react";
 import React from "react";
 import { ContextMenuComponent } from "../../components/context-menu";
 
-interface ISmartChip {
-	id: string;
-	name: string;
-	prefix: string;
-	value: number;
-	children: ISmartChip[];
-}
-
-const CHIPS: ISmartChip[] = [
-	{
-		id: "page",
-		name: "Página",
-		prefix: "PG",
-		value: 1,
-		children: [
-			{
-				id: "modal",
-				name: "Modal",
-				prefix: "MD",
-				value: 1,
-				children: []
-			},
-			{
-				id: "modal",
-				name: "Modal",
-				prefix: "MD",
-				value: 2,
-				children: [
-					{
-						id: "in-place",
-						name: "In Place",
-						prefix: "IP",
-						value: 1,
-						children: []
-					},
-				]
-			},
-		]
-	},
-	{
-		id: "modal",
-		name: "Modal",
-		prefix: "MD",
-		value: 1,
-		children: []
-	},
-	{
-		id: "in-place",
-		name: "In Place",
-		prefix: "IP",
-		value: 1,
-		children: []
-	},
-	{
-		id: "data",
-		name: "Dado",
-		prefix: "DT",
-		value: 1,
-		children: []
-	}
-] as const;
-
 function Editor() {
 	const [isContextMenuOpen, setIsContextMenuOpen] = React.useState(false);
 	const editorRef = React.useRef<HTMLDivElement>(null);

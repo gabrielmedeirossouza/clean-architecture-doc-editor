@@ -1,7 +1,7 @@
 import { IFieldDTO, IMessageDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO, INumberZeroErrorDTO, INumberNegativeErrorDTO, INumberTooLargeErrorDTO, INumberTooSmallErrorDTO, INumberOutsideRangeErrorDTO } from "../interfaces/dtos";
 
 export class NumberZeroErrorDTO implements INumberZeroErrorDTO {
-	public readonly message = "NumberZero: the number cannot be zero";
+	public readonly message = "NumberZeroErrorDTO: The number cannot be zero.";
 
 	constructor(
         public readonly field: string,
@@ -34,7 +34,7 @@ export class NumberZeroErrorDTO implements INumberZeroErrorDTO {
 	public isNumberTooLargeDTO(): this is INumberTooLargeErrorDTO {
 		return false;
 	}
-	
+
 	public isNumberTooSmallDTO(): this is INumberTooSmallErrorDTO {
 		return false;
 	}
