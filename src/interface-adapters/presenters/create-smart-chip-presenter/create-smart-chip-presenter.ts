@@ -7,13 +7,16 @@ import { PresentNumberOutsideRangeErrorDTO } from "../dtos/present-number-outsid
 export class CreateSmartChipPresenter implements ICreateSmartChipUseCaseOutputPort
 {
 	constructor(
-		private readonly _outputPort: ICreateSmartChipPresenterOutputPort
+        private readonly _outputPort: ICreateSmartChipPresenterOutputPort
 	)
 	{ }
 
 	public Response({ response }: ICreateSmartChipUseCaseResponseModel): void
 	{
-		if (response.ok) return this._outputPort.response?.Notify(Result.Ok(response.value));
+		if (response.ok)
+		{
+			return this._outputPort.response?.Notify(Result.Ok(response.value));
+		}
 
 		this._outputPort.response?.Notify(
 			Result.Fail(new PresentMessageDTO("Smart Chip não pode ser criado."))
@@ -22,7 +25,10 @@ export class CreateSmartChipPresenter implements ICreateSmartChipUseCaseOutputPo
 
 	public NameResponse({ response }: ICreateSmartChipUseCaseNameResponseModel): void
 	{
-		if (response.ok) return this._outputPort.idResponse?.Notify(Result.Ok(response.value));
+		if (response.ok)
+		{
+			return this._outputPort.idResponse?.Notify(Result.Ok(response.value));
+		}
 
 		if (response.error.IsStringTooShortDTO())
 		{
@@ -43,7 +49,10 @@ export class CreateSmartChipPresenter implements ICreateSmartChipUseCaseOutputPo
 
 	public LabelResponse({ response }: ICreateSmartChipUseCaseLabelResponseModel): void
 	{
-		if (response.ok) return this._outputPort.nameResponse?.Notify(Result.Ok(response.value));
+		if (response.ok)
+		{
+			return this._outputPort.nameResponse?.Notify(Result.Ok(response.value));
+		}
 
 		if (response.error.IsStringTooShortDTO())
 		{
@@ -64,7 +73,10 @@ export class CreateSmartChipPresenter implements ICreateSmartChipUseCaseOutputPo
 
 	public PrefixResponse({ response }: ICreateSmartChipUseCasePrefixResponseModel): void
 	{
-		if (response.ok) return this._outputPort.prefixResponse?.Notify(Result.Ok(response.value));
+		if (response.ok)
+		{
+			return this._outputPort.prefixResponse?.Notify(Result.Ok(response.value));
+		}
 
 		if (response.error.IsStringTooShortDTO())
 		{
@@ -85,7 +97,10 @@ export class CreateSmartChipPresenter implements ICreateSmartChipUseCaseOutputPo
 
 	public PositionResponse({ response }: ICreateSmartChipUseCasePositionResponseModel): void
 	{
-		if (response.ok) return this._outputPort.valueResponse?.Notify(Result.Ok(response.value));
+		if (response.ok)
+		{
+			return this._outputPort.valueResponse?.Notify(Result.Ok(response.value));
+		}
 
 		if (response.error.IsNumberOutsideRangeDTO())
 		{

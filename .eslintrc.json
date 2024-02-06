@@ -67,6 +67,7 @@
       "@typescript-eslint/no-use-before-define": "off",
       "@typescript-eslint/no-shadow": "off",
       "@typescript-eslint/no-redeclare": "off",
+      "curly": ["error", "all"],
       "unicorn/filename-case": [
         "error",
         {
@@ -127,6 +128,12 @@
           "selector": ["classProperty"],
           "format": ["camelCase"],
           "modifiers": ["protected"],
+          "prefix": ["_"]
+        },
+        {
+          "selector": "parameterProperty",
+          "modifiers": ["private"],
+          "format": ["camelCase"],
           "prefix": ["_"]
         }
       ]

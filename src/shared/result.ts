@@ -34,7 +34,10 @@ export const Result = {
 			callback?.(result);
 
 			let someFailed = false;
-			if (!result.ok) someFailed = true;
+			if (!result.ok)
+			{
+				someFailed = true;
+			}
 
 			return {
 				AddFailChecker,
