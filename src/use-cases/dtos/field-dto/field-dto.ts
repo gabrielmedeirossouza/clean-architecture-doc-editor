@@ -13,7 +13,7 @@ export class FieldDTO implements IFieldDTO
 	constructor({ field, logger }: IFieldDTOConstructorParameters)
 	{
 		this.field = field;
-		logger.Log(`FieldDTO: "${field}".`);
+		logger.LogInfo(`FieldDTO: "${field}".`);
 	}
 
 	public IsFieldDTO(): this is IFieldDTO

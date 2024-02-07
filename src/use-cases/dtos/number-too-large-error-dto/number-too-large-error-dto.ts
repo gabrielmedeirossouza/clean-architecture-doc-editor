@@ -24,7 +24,7 @@ export class NumberTooLargeErrorDTO implements INumberTooLargeErrorDTO
 		this.value = value;
 		this.maxValue = maxValue;
 		this.message = `NumberTooLargeErrorDTO: Field "${field}" with value "${value}" cannot be larger than "${maxValue}".`;
-		logger.Log(this.message);
+		logger.LogInfo(this.message);
 	}
 
 	public IsFieldDTO(): this is IFieldDTO

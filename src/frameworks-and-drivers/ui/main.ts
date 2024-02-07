@@ -1,5 +1,5 @@
 import { CreateSmartChipUseCase, SmartChipValidationService } from "@/use-cases/smart-chip";
-import { WebContextLogger } from "../infra";
+import { WebContextLogger } from "../infra/web-context-logger";
 import { CreateSmartChipPresenter } from "@/interface-adapters/presenters/create-smart-chip-presenter";
 
 const logger = new WebContextLogger({});
@@ -12,7 +12,7 @@ const createSmartChipUseCase = new CreateSmartChipUseCase({
 });
 
 createSmartChipUseCase.Create({
-	name: "rf-reference-name-too-long",
+	name: "reference-giga-mega-ultra",
 	label: "Referência",
 	prefix: "RF",
 	position: 1

@@ -13,7 +13,7 @@ export class MessageDTO implements IMessageDTO
 	constructor({ message, logger }: IMessageDTOConstructorParameters)
 	{
 		this.message = message;
-		logger.Log(message);
+		logger.LogInfo(message);
 	}
 
 	public IsFieldDTO(): this is IFieldDTO

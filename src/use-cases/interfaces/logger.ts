@@ -1,6 +1,4 @@
 export interface ILogger {
-    readonly enabled: boolean;
-    Log(message: string): void;
-    Enable(): void;
-    Disable(): void;
+    LogInfo(message: string): void;
+    LogError(message: string): void;
 }

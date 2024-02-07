@@ -28,7 +28,7 @@ export class StringTooLongErrorDTO implements IStringTooLongErrorDTO
 		this.currentLength = value.length;
 		this.message =
             `StringTooLongErrorDTO: Field "${field}" with value "${value}" has a length of "${this.currentLength}" which is longer than the maximum length of "${maxLength}".`;
-		logger.Log(this.message);
+		logger.LogInfo(this.message);
 	}
 
 	public IsFieldDTO(): this is IFieldDTO

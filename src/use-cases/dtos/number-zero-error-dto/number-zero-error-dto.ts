@@ -16,7 +16,7 @@ export class NumberZeroErrorDTO implements INumberZeroErrorDTO
 	{
 		this.field = field;
 		this.message = `NumberZeroErrorDTO: Field "${field}" with value "0" is not allowed.`;
-		logger.Log(this.message);
+		logger.LogInfo(this.message);
 	}
 
 	public IsFieldDTO(): this is IFieldDTO

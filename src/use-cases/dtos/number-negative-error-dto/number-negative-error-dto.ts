@@ -20,7 +20,7 @@ export class NumberNegativeErrorDTO implements INumberNegativeErrorDTO
 		this.field = field;
 		this.value = value;
 		this.message = `NumberNegativeErrorDTO: Field "${field}" with value "${value}" is negative.`;
-		logger.Log(this.message);
+		logger.LogInfo(this.message);
 	}
 
 	public IsFieldDTO(): this is IFieldDTO

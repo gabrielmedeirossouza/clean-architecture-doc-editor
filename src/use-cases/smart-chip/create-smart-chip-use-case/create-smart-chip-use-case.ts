@@ -42,7 +42,7 @@ export class CreateSmartChipUseCase implements ICreateSmartChipUseCaseInputPort
 		}
 
 		const smartSmartChip = new SmartChip(name, label, prefix, position, []);
-		this._logger.Log(`CreateSmartChipUseCase: SmartChip entity created successfully. Name: "${name}", Label: "${label}", Prefix: "${prefix}", Position: "${position}"`);
+		this._logger.LogInfo(`CreateSmartChipUseCase: SmartChip entity created successfully. Name: "${name}", Label: "${label}", Prefix: "${prefix}", Position: "${position}"`);
 
 		return this._outputPort.Response({ response: Result.Ok(smartSmartChip) });
 	}

@@ -1,38 +1,35 @@
 import { ILogger } from "@/use-cases/interfaces/logger";
 
 export interface IWebContextLoggerConstructorParameters {
-    enabled?: boolean;
+    logInfoEnabled?: boolean;
+    logErrorEnabled?: boolean;
 }
 
 export class WebContextLogger implements ILogger
 {
-	private _enabled: boolean;
+	private _logInfoEnabled: boolean;
 
-	constructor({ enabled = true }: IWebContextLoggerConstructorParameters)
+	private _logErrorEnabled: boolean;
+
+	constructor({ logInfoEnabled = true, logErrorEnabled = true }: IWebContextLoggerConstructorParameters)
 	{
-		this._enabled = enabled;
+		this._logInfoEnabled = logInfoEnabled;
+		this._logErrorEnabled = logErrorEnabled;
 	}
 
-	public get enabled(): boolean
+	public LogInfo(message: string): void
 	{
-		return this._enabled;
-	}
-
-	public Log(message: string): void
-	{
-		if (this._enabled)
+		if (this._logInfoEnabled)
 		{
 			console.log(message);
 		}
 	}
 
-	public Enable(): void
+	public LogError(message: string): void
 	{
-		this._enabled = true;
-	}
-
-	public Disable(): void
-	{
-		this._enabled = false;
+		if (this._logErrorEnabled)
+		{
+			console.error(message);
+		}
 	}
 }

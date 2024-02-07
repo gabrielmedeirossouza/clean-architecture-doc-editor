@@ -4,12 +4,9 @@ export class LoggerDummy implements ILogger
 {
 	public readonly enabled = false;
 
-	public Log(): void
+	public LogInfo(): void
 	{}
 
-	public Enable(): void
-	{}
-
-	public Disable(): void
+	public LogError(): void
 	{}
 }

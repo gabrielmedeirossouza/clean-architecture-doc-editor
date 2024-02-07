@@ -28,7 +28,7 @@ export class StringTooShortErrorDTO implements IStringTooShortErrorDTO
 		this.currentLength = value.length;
 		this.message =
             `StringTooShortErrorDTO: Field "${field}" with value "${value}" has a length of "${this.currentLength}" which is shorter than the minimum length of "${minLength}".`;
-		logger.Log(this.message);
+		logger.LogInfo(this.message);
 	}
 
 	public IsFieldDTO(): this is IFieldDTO

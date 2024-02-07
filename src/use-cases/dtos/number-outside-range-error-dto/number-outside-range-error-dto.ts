@@ -28,7 +28,7 @@ export class NumberOutsideRangeErrorDTO implements INumberOutsideRangeErrorDTO
 		this.minValue = minValue;
 		this.maxValue = maxValue;
 		this.message = `NumberOutsideRangeErrorDTO: Field "${field}" with value "${value}" is outside the range of "${minValue}" and "${maxValue}".`;
-		logger.Log(this.message);
+		logger.LogInfo(this.message);
 	}
 
 	public IsFieldDTO(): this is IFieldDTO

@@ -24,7 +24,7 @@ export class NumberTooSmallErrorDTO implements INumberTooSmallErrorDTO
 		this.value = value;
 		this.minValue = minValue;
 		this.message = `NumberTooSmallErrorDTO: Field "${field}" with value "${value}" cannot be smaller than "${minValue}".`;
-		logger.Log(this.message);
+		logger.LogInfo(this.message);
 	}
 
 	public IsFieldDTO(): this is IFieldDTO
