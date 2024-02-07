@@ -10,45 +10,48 @@ type Fail<K> = {
 
 export type Result<T, K> = Ok<T> | Fail<K>;
 
-export const Result = {
-	Ok<T>(okValue: T): Result<T, never>
+export const Result = class
+{
+	public static get compose(): Compose
+	{
+		return new Compose();
+	}
+
+	public static Ok<T>(value: T): Result<T, never>
 	{
 		return {
 			ok: true,
-			value: okValue
+			value
 		};
-	},
-	Fail<K>(failValue: K): Result<never, K>
+	}
+
+	public static Fail<K>(error: K): Result<never, K>
 	{
 		return {
 			ok: false,
-			error: failValue
-		};
-	},
-	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-	Compose()
-	{
-		// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-		function AddFailChecker<R extends Result<any, any>>(result: R, callback?: (result: R) => void)
-		{
-			callback?.(result);
-
-			let someFailed = false;
-			if (!result.ok)
-			{
-				someFailed = true;
-			}
-
-			return {
-				AddFailChecker,
-				Check: (): { someFailed: boolean } => ({
-					someFailed,
-				})
-			};
-		}
-
-		return {
-			AddFailChecker,
+			error
 		};
 	}
 };
+
+class Compose
+{
+	private _someFailed = false;
+
+	public get someFailed(): boolean
+	{
+		return this._someFailed;
+	}
+
+	public AddHandler<R extends Result<any, any>>(result: R, callback?: (result: R) => void): this
+	{
+		callback?.(result);
+
+		if (!result.ok)
+		{
+			this._someFailed = true;
+		}
+
+		return this;
+	}
+}

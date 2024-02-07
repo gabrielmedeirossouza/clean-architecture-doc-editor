@@ -14,12 +14,11 @@ export class CreateSmartChipUseCase implements ICreateSmartChipUseCaseInputPort
 
 	public Create({ name, label, prefix, position }: ICreateSmartChipUseCaseRequestModel): void
 	{
-		const compose = Result.Compose()
-			.AddFailChecker(this._smartChipValidationService.ValidateLabel(name), (response) => this._outputPort.NameResponse({ response }))
-			.AddFailChecker(this._smartChipValidationService.ValidateLabel(label), (response) => this._outputPort.LabelResponse({ response }))
-			.AddFailChecker(this._smartChipValidationService.ValidatePrefix(prefix), (response) => this._outputPort.PrefixResponse({ response }))
-			.AddFailChecker(this._smartChipValidationService.ValidatePosition(position), (response) => this._outputPort.PositionResponse({ response }))
-			.Check();
+		const compose = Result.compose
+			.AddHandler(this._smartChipValidationService.ValidateLabel(name), (response) => this._outputPort.NameResponse({ response }))
+			.AddHandler(this._smartChipValidationService.ValidateLabel(label), (response) => this._outputPort.LabelResponse({ response }))
+			.AddHandler(this._smartChipValidationService.ValidatePrefix(prefix), (response) => this._outputPort.PrefixResponse({ response }))
+			.AddHandler(this._smartChipValidationService.ValidatePosition(position), (response) => this._outputPort.PositionResponse({ response }));
 
 		if (compose.someFailed)
 		{
