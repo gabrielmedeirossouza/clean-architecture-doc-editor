@@ -1,3 +1,4 @@
+import { LoggerDummy } from "@/__test__/dummies";
 import { FieldDTO } from ".";
 
 test.each([
@@ -6,7 +7,7 @@ test.each([
 	{ field: "type" },
 ])(`${FieldDTO.name}($field)`, ({ field }) =>
 {
-	const fieldDTO = new FieldDTO(field);
+	const fieldDTO = new FieldDTO({ field, logger: new LoggerDummy });
 	expect(fieldDTO.field).toBe(field);
 	expect(fieldDTO.IsFieldDTO()).toBe(true);
 	expect(fieldDTO.IsMessageDTO()).toBe(false);

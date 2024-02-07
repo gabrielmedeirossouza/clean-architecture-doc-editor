@@ -1,16 +1,30 @@
 import { SmartChip } from "@/entities/smart-chip";
 import { Result } from "@/shared/result";
 import { MessageDTO } from "@/use-cases/dtos";
+import { ILogger } from "@/use-cases/interfaces/logger";
 import { ICreateSmartChipUseCaseInputPort, ICreateSmartChipUseCaseOutputPort, ICreateSmartChipUseCaseRequestModel } from "@/use-cases/interfaces/smart-chip/create-smart-chip-use-case";
 import { ISmartChipValidationService } from "@/use-cases/interfaces/smart-chip/smart-chip-validation-service";
 
+export interface ICreateSmartChipUseCaseConstructorParameters {
+    logger: ILogger;
+    smartChipValidationService: ISmartChipValidationService;
+    outputPort: ICreateSmartChipUseCaseOutputPort;
+}
+
 export class CreateSmartChipUseCase implements ICreateSmartChipUseCaseInputPort
 {
-	constructor(
-		private readonly _smartChipValidationService: ISmartChipValidationService,
-		private readonly _outputPort: ICreateSmartChipUseCaseOutputPort
-	)
-	{ }
+	private readonly _outputPort: ICreateSmartChipUseCaseOutputPort;
+
+	private readonly _smartChipValidationService: ISmartChipValidationService;
+
+	private readonly _logger: ILogger;
+
+	constructor({ outputPort, smartChipValidationService, logger }: ICreateSmartChipUseCaseConstructorParameters)
+	{
+		this._outputPort = outputPort;
+		this._smartChipValidationService = smartChipValidationService;
+		this._logger = logger;
+	}
 
 	public Create({ name, label, prefix, position }: ICreateSmartChipUseCaseRequestModel): void
 	{
@@ -23,11 +37,12 @@ export class CreateSmartChipUseCase implements ICreateSmartChipUseCaseInputPort
 		if (compose.someFailed)
 		{
 			return this._outputPort.Response({
-				response: Result.Fail(new MessageDTO("CreateSmartChipUseCase create error."))
+				response: Result.Fail(new MessageDTO({ message: "CreateSmartChipUseCase: Cannot create SmartChip entity, because one or more fields are invalid.", logger: this._logger }))
 			});
 		}
 
 		const smartSmartChip = new SmartChip(name, label, prefix, position, []);
+		this._logger.Log(`CreateSmartChipUseCase: SmartChip entity created successfully. Name: "${name}", Label: "${label}", Prefix: "${prefix}", Position: "${position}"`);
 
 		return this._outputPort.Response({ response: Result.Ok(smartSmartChip) });
 	}

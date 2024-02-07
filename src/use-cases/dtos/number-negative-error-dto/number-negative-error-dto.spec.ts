@@ -1,14 +1,15 @@
+import { LoggerDummy } from "@/__test__/dummies";
 import { NumberNegativeErrorDTO } from ".";
 
 test.each([
-	{ number: -1 },
-	{ number: -0.1 },
-])(`${NumberNegativeErrorDTO.name}($number)`, ({ number }) =>
+	{ field: "id", value: -1 },
+	{ field: "name", value: -2 },
+])(`${NumberNegativeErrorDTO.name}($field, $value)`, ({ field, value }) =>
 {
-	const numberNegativeErrorDTO = new NumberNegativeErrorDTO("number", number);
-	expect(numberNegativeErrorDTO.message).toBe("NumberNegativeErrorDTO: The number cannot be negative.");
-	expect(numberNegativeErrorDTO.field).toBe("number");
-	expect(numberNegativeErrorDTO.value).toBe(number);
+	const numberNegativeErrorDTO = new NumberNegativeErrorDTO({ field, value, logger: new LoggerDummy });
+	expect(numberNegativeErrorDTO.message).toBe(`NumberNegativeErrorDTO: Field "${field}" with value "${value}" is negative.`);
+	expect(numberNegativeErrorDTO.field).toBe(field);
+	expect(numberNegativeErrorDTO.value).toBe(value);
 	expect(numberNegativeErrorDTO.IsFieldDTO()).toBe(true);
 	expect(numberNegativeErrorDTO.IsMessageDTO()).toBe(true);
 	expect(numberNegativeErrorDTO.IsStringTooShortDTO()).toBe(false);

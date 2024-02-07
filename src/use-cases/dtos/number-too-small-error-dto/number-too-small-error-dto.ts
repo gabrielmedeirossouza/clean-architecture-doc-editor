@@ -1,16 +1,30 @@
+import { ILogger } from "@/use-cases/interfaces/logger";
 import { IFieldDTO, IMessageDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO, INumberZeroErrorDTO, INumberNegativeErrorDTO, INumberTooLargeErrorDTO, INumberTooSmallErrorDTO, INumberOutsideRangeErrorDTO } from "../../interfaces/dtos";
+
+export interface INumberTooSmallErrorDTOConstructorParameters {
+    field: string;
+    value: number;
+    minValue: number;
+    logger: ILogger;
+}
 
 export class NumberTooSmallErrorDTO implements INumberTooSmallErrorDTO
 {
+	public readonly field: string;
+
+	public readonly value: number;
+
+	public readonly minValue: number;
+
 	public readonly message: string;
 
-	constructor(
-        public readonly field: string,
-        public readonly value: number,
-        public readonly minValue: number,
-	)
+	constructor({ field, value, minValue, logger }: INumberTooSmallErrorDTOConstructorParameters)
 	{
-		this.message = `NumberTooSmallErrorDTO: The number cannot be less than ${minValue}. Received: ${value}.`;
+		this.field = field;
+		this.value = value;
+		this.minValue = minValue;
+		this.message = `NumberTooSmallErrorDTO: Field "${field}" with value "${value}" cannot be smaller than "${minValue}".`;
+		logger.Log(this.message);
 	}
 
 	public IsFieldDTO(): this is IFieldDTO

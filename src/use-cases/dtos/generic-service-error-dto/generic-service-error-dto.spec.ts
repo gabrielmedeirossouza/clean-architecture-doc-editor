@@ -1,8 +1,9 @@
+import { LoggerDummy } from "@/__test__/dummies";
 import { GenericServiceErrorDTO } from ".";
 
 test(`${GenericServiceErrorDTO.name}()`, () =>
 {
-	const genericServiceErrorDTO = new GenericServiceErrorDTO();
+	const genericServiceErrorDTO = new GenericServiceErrorDTO({ logger: new LoggerDummy });
 	expect(genericServiceErrorDTO.message).toBe("GenericServiceErrorDTO: Generic Service Error.");
 	expect(genericServiceErrorDTO.IsFieldDTO()).toBe(false);
 	expect(genericServiceErrorDTO.IsMessageDTO()).toBe(true);
