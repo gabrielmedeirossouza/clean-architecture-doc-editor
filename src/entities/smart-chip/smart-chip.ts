@@ -4,23 +4,22 @@ export class SmartChip implements ISmartChip
 {
 	private _prefix: string;
 
-	private _value: number;
+	private _position: number;
 
 	private _children: ISmartChip[];
 
 	private _requiredParent?: ISmartChip;
 
 	constructor(
-        public readonly id: string,
-        public readonly name: string,
+        public readonly label: string,
         prefix: string,
-        value: number,
+        position: number,
         children: ISmartChip[],
         requiredParent?: ISmartChip
 	)
 	{
 		this._prefix = prefix;
-		this._value = value;
+		this._position = position;
 		this._children = children;
 		this._requiredParent = requiredParent;
 	}
@@ -35,14 +34,14 @@ export class SmartChip implements ISmartChip
 		this._prefix = value;
 	}
 
-	public get value(): number
+	public get position(): number
 	{
-		return this._value;
+		return this._position;
 	}
 
-	public set value(value: number)
+	public set position(value: number)
 	{
-		this._value = value;
+		this._position = value;
 	}
 
 	public get children(): ISmartChip[]

@@ -1,8 +1,7 @@
 export interface ISmartChip {
-    id: string;
-    name: string;
+    label: string;
     prefix: string;
-    value: number;
+    position: number;
     children: ISmartChip[];
     requiredParent?: ISmartChip;
 }

@@ -12,7 +12,7 @@ const createSmartChipUseCase = new CreateSmartChipUseCase({
 });
 
 createSmartChipUseCase.Create({
-	name: "reference-giga-mega-ultra",
+	id: "reference-giga-mega-ultra",
 	label: "Referência",
 	prefix: "RF",
 	position: 1

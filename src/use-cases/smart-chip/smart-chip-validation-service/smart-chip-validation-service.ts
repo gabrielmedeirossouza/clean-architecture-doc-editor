@@ -10,10 +10,6 @@ export interface ISmartChipValidationServiceConstructorParameters {
 
 export class SmartChipValidationService implements ISmartChipValidationService
 {
-	public readonly NAME_MIN_LENGTH = 2;
-
-	public readonly NAME_MAX_LENGTH = 10;
-
 	public readonly LABEL_MIN_LENGTH = 2;
 
 	public readonly LABEL_MAX_LENGTH = 20;
@@ -31,21 +27,6 @@ export class SmartChipValidationService implements ISmartChipValidationService
 	constructor({ logger }: ISmartChipValidationServiceConstructorParameters)
 	{
 		this._logger = logger;
-	}
-
-	public ValidateName(name: string): Result<string, IStringTooShortErrorDTO | IStringTooLongErrorDTO>
-	{
-		if (name.length < this.NAME_MIN_LENGTH)
-		{
-			return Result.Fail(new StringTooShortErrorDTO({ field: "name", value: name, minLength: this.NAME_MIN_LENGTH, logger: this._logger }));
-		}
-
-		if (name.length > this.NAME_MAX_LENGTH)
-		{
-			return Result.Fail(new StringTooLongErrorDTO({ field: "name", value: name, maxLength: this.NAME_MAX_LENGTH, logger: this._logger }));
-		}
-
-		return Result.Ok(name);
 	}
 
 	public ValidateLabel(label: string): Result<string, IStringTooShortErrorDTO | IStringTooLongErrorDTO>
