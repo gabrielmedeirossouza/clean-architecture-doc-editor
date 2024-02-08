@@ -1,14 +1,14 @@
 import { NumberZeroErrorDTO } from ".";
 
 test.each([
-	{ field: "id" },
-	{ field: "name" },
-	{ field: "type" },
-])(`${NumberZeroErrorDTO.name}($field)`, ({ field }) =>
+	{ fieldName: "id" },
+	{ fieldName: "name" },
+	{ fieldName: "type" },
+])(`${NumberZeroErrorDTO.name}($field)`, ({ fieldName }) =>
 {
-	const numberZeroError = new NumberZeroErrorDTO({ field });
-	expect(numberZeroError.message).toBe(`NumberZeroErrorDTO: Field "${field}" with value "0" is not allowed.`);
-	expect(numberZeroError.field).toBe(field);
+	const numberZeroError = new NumberZeroErrorDTO({ fieldName });
+	expect(numberZeroError.message).toBe(`NumberZeroErrorDTO: Field "${fieldName}" with value "0" is not allowed.`);
+	expect(numberZeroError.fieldName).toBe(fieldName);
 	expect(numberZeroError.IsFieldDTO()).toBe(true);
 	expect(numberZeroError.IsMessageDTO()).toBe(true);
 	expect(numberZeroError.IsStringTooShortDTO()).toBe(false);

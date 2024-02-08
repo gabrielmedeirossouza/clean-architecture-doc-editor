@@ -1,23 +1,23 @@
 import { IFieldDTO, IMessageDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO, INumberZeroErrorDTO, INumberNegativeErrorDTO, INumberTooLargeErrorDTO, INumberTooSmallErrorDTO, INumberOutsideRangeErrorDTO } from "../../interfaces/dtos";
 
 export interface INumberNegativeErrorDTOConstructorParameters {
-    field: string;
+    fieldName: string;
     value: number;
 }
 
 export class NumberNegativeErrorDTO implements INumberNegativeErrorDTO
 {
-	public readonly field: string;
+	public readonly fieldName: string;
 
 	public readonly value: number;
 
 	public readonly message: string;
 
-	constructor({ field, value }: INumberNegativeErrorDTOConstructorParameters)
+	constructor({ fieldName, value }: INumberNegativeErrorDTOConstructorParameters)
 	{
-		this.field = field;
+		this.fieldName = fieldName;
 		this.value = value;
-		this.message = `NumberNegativeErrorDTO: Field "${field}" with value "${value}" is negative.`;
+		this.message = `NumberNegativeErrorDTO: Field "${fieldName}" with value "${value}" is negative.`;
 	}
 
 	public IsFieldDTO(): this is IFieldDTO

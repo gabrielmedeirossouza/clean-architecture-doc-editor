@@ -1,19 +1,19 @@
 import { IFieldDTO, IMessageDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO, INumberZeroErrorDTO, INumberNegativeErrorDTO, INumberTooLargeErrorDTO, INumberTooSmallErrorDTO, INumberOutsideRangeErrorDTO } from "../../interfaces/dtos";
 
 export interface INumberZeroErrorDTOConstructorParameters {
-    field: string;
+    fieldName: string;
 }
 
 export class NumberZeroErrorDTO implements INumberZeroErrorDTO
 {
-	public readonly field: string;
+	public readonly fieldName: string;
 
 	public readonly message: string;
 
-	constructor({ field }: INumberZeroErrorDTOConstructorParameters)
+	constructor({ fieldName }: INumberZeroErrorDTOConstructorParameters)
 	{
-		this.field = field;
-		this.message = `NumberZeroErrorDTO: Field "${field}" with value "0" is not allowed.`;
+		this.fieldName = fieldName;
+		this.message = `NumberZeroErrorDTO: Field "${fieldName}" with value "0" is not allowed.`;
 	}
 
 	public IsFieldDTO(): this is IFieldDTO

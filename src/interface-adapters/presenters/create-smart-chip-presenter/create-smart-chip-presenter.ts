@@ -1,8 +1,8 @@
 import { Result } from "../../../shared/result";
 import { ICreateSmartChipPresenterOutputPort } from "../../interfaces/presenters/create-smart-chip-presenter";
 import { ICreateSmartChipUseCaseLabelResponseModel, ICreateSmartChipUseCasePrefixResponseModel, ICreateSmartChipUseCaseResponseModel, ICreateSmartChipUseCasePositionResponseModel, ICreateSmartChipUseCaseOutputPort } from "../../../use-cases/interfaces/smart-chip/create-smart-chip-use-case";
-import { PresentMessageDTO, PresentStringTooLongErrorDTO, PresentStringTooShortErrorDTO } from "../dtos";
-import { PresentNumberOutsideRangeErrorDTO } from "../dtos/present-number-outside-range-error-dto";
+import { PresenterMessageDTO, PresenterStringTooLongErrorDTO, PresenterStringTooShortErrorDTO } from "../dtos";
+import { PresenterNumberOutsideRangeErrorDTO } from "../dtos/presenter-number-outside-range-error-dto";
 
 export class CreateSmartChipPresenter implements ICreateSmartChipUseCaseOutputPort
 {
@@ -24,7 +24,7 @@ export class CreateSmartChipPresenter implements ICreateSmartChipUseCaseOutputPo
 		}
 
 		this._outputPort.response?.Notify(
-			Result.Fail(new PresentMessageDTO("Smart Chip não pode ser criado."))
+			Result.Fail(new PresenterMessageDTO("Smart Chip não pode ser criado."))
 		);
 	}
 
@@ -37,17 +37,17 @@ export class CreateSmartChipPresenter implements ICreateSmartChipUseCaseOutputPo
 
 		if (response.error.IsStringTooShortDTO())
 		{
-			const { field, value, minLength } = response.error;
+			const { fieldName: field, value, minLength } = response.error;
 			this._outputPort.labelResponse?.Notify(
-				Result.Fail(new PresentStringTooShortErrorDTO(field, `O Campo etiqueta deve ter pelo menos ${minLength} caracteres.`, value, minLength))
+				Result.Fail(new PresenterStringTooShortErrorDTO(field, `O Campo etiqueta deve ter pelo menos ${minLength} caracteres.`, value, minLength))
 			);
 		}
 
 		if (response.error.IsStringTooLongDTO())
 		{
-			const { field, value, maxLength } = response.error;
+			const { fieldName: field, value, maxLength } = response.error;
 			this._outputPort.labelResponse?.Notify(
-				Result.Fail(new PresentStringTooLongErrorDTO(field, `O Campo etiqueta deve ter no máximo ${maxLength} caracteres.`, value, maxLength))
+				Result.Fail(new PresenterStringTooLongErrorDTO(field, `O Campo etiqueta deve ter no máximo ${maxLength} caracteres.`, value, maxLength))
 			);
 		}
 	}
@@ -61,17 +61,17 @@ export class CreateSmartChipPresenter implements ICreateSmartChipUseCaseOutputPo
 
 		if (response.error.IsStringTooShortDTO())
 		{
-			const { field, value, minLength } = response.error;
+			const { fieldName: field, value, minLength } = response.error;
 			this._outputPort.prefixResponse?.Notify(
-				Result.Fail(new PresentStringTooShortErrorDTO(field, `O Campo prefixo deve ter pelo menos ${minLength} caracteres.`, value, minLength))
+				Result.Fail(new PresenterStringTooShortErrorDTO(field, `O Campo prefixo deve ter pelo menos ${minLength} caracteres.`, value, minLength))
 			);
 		}
 
 		if (response.error.IsStringTooLongDTO())
 		{
-			const { field, value, maxLength } = response.error;
+			const { fieldName: field, value, maxLength } = response.error;
 			this._outputPort.prefixResponse?.Notify(
-				Result.Fail(new PresentStringTooLongErrorDTO(field, `O Campo prefixo deve ter no máximo ${maxLength} caracteres.`, value, maxLength))
+				Result.Fail(new PresenterStringTooLongErrorDTO(field, `O Campo prefixo deve ter no máximo ${maxLength} caracteres.`, value, maxLength))
 			);
 		}
 	}
@@ -85,9 +85,9 @@ export class CreateSmartChipPresenter implements ICreateSmartChipUseCaseOutputPo
 
 		if (response.error.IsNumberOutsideRangeDTO())
 		{
-			const { field, value, minValue, maxValue } = response.error;
+			const { fieldName: field, value, minValue, maxValue } = response.error;
 			this._outputPort.positionResponse?.Notify(
-				Result.Fail(new PresentNumberOutsideRangeErrorDTO(field, `O Campo posição deve ser entre ${minValue} e ${maxValue}.`, value, minValue, maxValue))
+				Result.Fail(new PresenterNumberOutsideRangeErrorDTO(field, `O Campo posição deve ser entre ${minValue} e ${maxValue}.`, value, minValue, maxValue))
 			);
 		}
 	}

@@ -1,7 +1,7 @@
 import { IFieldDTO, IMessageDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO, INumberZeroErrorDTO, INumberNegativeErrorDTO, INumberTooLargeErrorDTO, INumberTooSmallErrorDTO, INumberOutsideRangeErrorDTO } from "../../interfaces/dtos";
 
 export interface IStringTooLongErrorDTOConstructorParameters {
-    field: string;
+    fieldName: string;
     value: string;
     maxLength: number;
 }
@@ -10,7 +10,7 @@ export class StringTooLongErrorDTO implements IStringTooLongErrorDTO
 {
 	public readonly currentLength: number;
 
-	public readonly field: string;
+	public readonly fieldName: string;
 
 	public readonly value: string;
 
@@ -18,14 +18,14 @@ export class StringTooLongErrorDTO implements IStringTooLongErrorDTO
 
 	public readonly message: string;
 
-	constructor({ field, value, maxLength }: IStringTooLongErrorDTOConstructorParameters)
+	constructor({ fieldName, value, maxLength }: IStringTooLongErrorDTOConstructorParameters)
 	{
-		this.field = field;
+		this.fieldName = fieldName;
 		this.value = value;
 		this.maxLength = maxLength;
 		this.currentLength = value.length;
 		this.message =
-            `StringTooLongErrorDTO: Field "${field}" with value "${value}" has a length of "${this.currentLength}" which is longer than the maximum length of "${maxLength}".`;
+            `StringTooLongErrorDTO: Field "${fieldName}" with value "${value}" has a length of "${this.currentLength}" which is longer than the maximum length of "${maxLength}".`;
 	}
 
 	public IsFieldDTO(): this is IFieldDTO

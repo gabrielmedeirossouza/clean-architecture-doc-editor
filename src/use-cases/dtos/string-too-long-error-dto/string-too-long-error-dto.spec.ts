@@ -1,14 +1,14 @@
 import { StringTooLongErrorDTO } from ".";
 
 test.each([
-	{ field: "id", value: "test", maxLength: 2 },
-	{ field: "name", value: "test", maxLength: 2 },
-	{ field: "type", value: "test", maxLength: 2 },
-])(`${StringTooLongErrorDTO.name}($field, $value, $maxLength)`, ({ field, value, maxLength }) =>
+	{ fieldName: "id", value: "test", maxLength: 2 },
+	{ fieldName: "name", value: "test", maxLength: 2 },
+	{ fieldName: "type", value: "test", maxLength: 2 },
+])(`${StringTooLongErrorDTO.name}($field, $value, $maxLength)`, ({ fieldName, value, maxLength }) =>
 {
-	const stringTooLongError = new StringTooLongErrorDTO({ field, value, maxLength });
-	expect(stringTooLongError.message).toBe(`StringTooLongErrorDTO: Field "${field}" with value "${value}" has a length of "${value.length}" which is longer than the maximum length of "${maxLength}".`);
-	expect(stringTooLongError.field).toBe(field);
+	const stringTooLongError = new StringTooLongErrorDTO({ fieldName, value, maxLength });
+	expect(stringTooLongError.message).toBe(`StringTooLongErrorDTO: Field "${fieldName}" with value "${value}" has a length of "${value.length}" which is longer than the maximum length of "${maxLength}".`);
+	expect(stringTooLongError.fieldName).toBe(fieldName);
 	expect(stringTooLongError.value).toBe(value);
 	expect(stringTooLongError.maxLength).toBe(maxLength);
 	expect(stringTooLongError.IsFieldDTO()).toBe(true);

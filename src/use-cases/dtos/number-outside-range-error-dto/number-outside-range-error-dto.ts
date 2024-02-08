@@ -1,7 +1,7 @@
 import { IFieldDTO, IMessageDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO, INumberZeroErrorDTO, INumberNegativeErrorDTO, INumberTooLargeErrorDTO, INumberTooSmallErrorDTO, INumberOutsideRangeErrorDTO } from "../../interfaces/dtos";
 
 export interface INumberOutsideRangeErrorDTOConstructorParameters {
-    field: string;
+    fieldName: string;
     value: number;
     minValue: number;
     maxValue: number;
@@ -9,7 +9,7 @@ export interface INumberOutsideRangeErrorDTOConstructorParameters {
 
 export class NumberOutsideRangeErrorDTO implements INumberOutsideRangeErrorDTO
 {
-	public readonly field: string;
+	public readonly fieldName: string;
 
 	public readonly value: number;
 
@@ -19,13 +19,13 @@ export class NumberOutsideRangeErrorDTO implements INumberOutsideRangeErrorDTO
 
 	public readonly message: string;
 
-	constructor({ field, value, minValue, maxValue }: INumberOutsideRangeErrorDTOConstructorParameters)
+	constructor({ fieldName, value, minValue, maxValue }: INumberOutsideRangeErrorDTOConstructorParameters)
 	{
-		this.field = field;
+		this.fieldName = fieldName;
 		this.value = value;
 		this.minValue = minValue;
 		this.maxValue = maxValue;
-		this.message = `NumberOutsideRangeErrorDTO: Field "${field}" with value "${value}" is outside the range of "${minValue}" and "${maxValue}".`;
+		this.message = `NumberOutsideRangeErrorDTO: Field "${fieldName}" with value "${value}" is outside the range of "${minValue}" and "${maxValue}".`;
 	}
 
 	public IsFieldDTO(): this is IFieldDTO

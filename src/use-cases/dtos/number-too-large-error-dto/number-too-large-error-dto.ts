@@ -1,14 +1,14 @@
 import { IFieldDTO, IMessageDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO, INumberZeroErrorDTO, INumberNegativeErrorDTO, INumberTooLargeErrorDTO, INumberTooSmallErrorDTO, INumberOutsideRangeErrorDTO } from "../../interfaces/dtos";
 
 export interface INumberTooLargeErrorDTOConstructorParameters {
-    field: string;
+    fieldName: string;
     value: number;
     maxValue: number;
 }
 
 export class NumberTooLargeErrorDTO implements INumberTooLargeErrorDTO
 {
-	public readonly field: string;
+	public readonly fieldName: string;
 
 	public readonly value: number;
 
@@ -16,12 +16,12 @@ export class NumberTooLargeErrorDTO implements INumberTooLargeErrorDTO
 
 	public readonly message: string;
 
-	constructor({ field, value, maxValue }: INumberTooLargeErrorDTOConstructorParameters)
+	constructor({ fieldName, value, maxValue }: INumberTooLargeErrorDTOConstructorParameters)
 	{
-		this.field = field;
+		this.fieldName = fieldName;
 		this.value = value;
 		this.maxValue = maxValue;
-		this.message = `NumberTooLargeErrorDTO: Field "${field}" with value "${value}" cannot be larger than "${maxValue}".`;
+		this.message = `NumberTooLargeErrorDTO: Field "${fieldName}" with value "${value}" cannot be larger than "${maxValue}".`;
 	}
 
 	public IsFieldDTO(): this is IFieldDTO

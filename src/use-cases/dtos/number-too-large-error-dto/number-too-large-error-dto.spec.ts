@@ -1,15 +1,15 @@
 import { NumberTooLargeErrorDTO } from ".";
 
 test.each([
-	{ field: "id", value: 15, maxValue: 10 },
-	{ field: "name", value: 20, maxValue: 10 },
-	{ field: "type", value: -10, maxValue: 10 },
-	{ field: "id", value: 5, maxValue: 20 },
-])(`${NumberTooLargeErrorDTO.name}($field, $value, $maxValue)`, ({ field, value, maxValue }) =>
+	{ fieldName: "id", value: 15, maxValue: 10 },
+	{ fieldName: "name", value: 20, maxValue: 10 },
+	{ fieldName: "type", value: -10, maxValue: 10 },
+	{ fieldName: "id", value: 5, maxValue: 20 },
+])(`${NumberTooLargeErrorDTO.name}($field, $value, $maxValue)`, ({ fieldName, value, maxValue }) =>
 {
-	const numberTooLargeError = new NumberTooLargeErrorDTO({ field, value, maxValue });
-	expect(numberTooLargeError.message).toBe(`NumberTooLargeErrorDTO: Field "${field}" with value "${value}" cannot be larger than "${maxValue}".`);
-	expect(numberTooLargeError.field).toBe(field);
+	const numberTooLargeError = new NumberTooLargeErrorDTO({ fieldName, value, maxValue });
+	expect(numberTooLargeError.message).toBe(`NumberTooLargeErrorDTO: Field "${fieldName}" with value "${value}" cannot be larger than "${maxValue}".`);
+	expect(numberTooLargeError.fieldName).toBe(fieldName);
 	expect(numberTooLargeError.value).toBe(value);
 	expect(numberTooLargeError.maxValue).toBe(maxValue);
 	expect(numberTooLargeError.IsFieldDTO()).toBe(true);

@@ -1,13 +1,13 @@
 import { FieldDTO } from ".";
 
 test.each([
-	{ field: "id" },
-	{ field: "name" },
-	{ field: "type" },
-])(`${FieldDTO.name}($field)`, ({ field }) =>
+	{ fieldName: "id" },
+	{ fieldName: "name" },
+	{ fieldName: "type" },
+])(`${FieldDTO.name}($field)`, ({ fieldName }) =>
 {
-	const fieldDTO = new FieldDTO({ field,  });
-	expect(fieldDTO.field).toBe(field);
+	const fieldDTO = new FieldDTO({ fieldName,  });
+	expect(fieldDTO.fieldName).toBe(fieldName);
 	expect(fieldDTO.IsFieldDTO()).toBe(true);
 	expect(fieldDTO.IsMessageDTO()).toBe(false);
 	expect(fieldDTO.IsStringTooShortDTO()).toBe(false);

@@ -1,13 +1,13 @@
-import { IPresentFieldDTO, IPresentMessageDTO, IPresentNumberNegativeErrorDTO, IPresentNumberOutsideRangeErrorDTO, IPresentNumberTooLargeErrorDTO, IPresentNumberTooSmallErrorDTO, IPresentNumberZeroErrorDTO, IPresentStringTooLongErrorDTO, IPresentStringTooShortErrorDTO } from ".";
+import { IPresenterFieldDTO, IPresenterMessageDTO, IPresenterNumberNegativeErrorDTO, IPresenterNumberOutsideRangeErrorDTO, IPresenterNumberTooLargeErrorDTO, IPresenterNumberTooSmallErrorDTO, IPresenterNumberZeroErrorDTO, IPresenterStringTooLongErrorDTO, IPresenterStringTooShortErrorDTO } from ".";
 
 export interface IBaseDTO {
-  IsPresentFieldDTO(): this is IPresentFieldDTO;
-  IsPresentMessageDTO(): this is IPresentMessageDTO;
-  IsPresentStringTooShortErrorDTO(): this is IPresentStringTooShortErrorDTO;
-  IsPresentStringTooLongErrorDTO(): this is IPresentStringTooLongErrorDTO;
-  IsPresentNumberZeroErrorDTO(): this is IPresentNumberZeroErrorDTO;
-  IsPresentNumberNegativeErrorDTO(): this is IPresentNumberNegativeErrorDTO;
-  IsPresentNumberTooLargeErrorDTO(): this is IPresentNumberTooLargeErrorDTO;
-  IsPresentNumberTooSmallErrorDTO(): this is IPresentNumberTooSmallErrorDTO;
-  IsPresentNumberOutsideRangeErrorDTO(): this is IPresentNumberOutsideRangeErrorDTO;
+  IsPresentFieldDTO(): this is IPresenterFieldDTO;
+  IsPresentMessageDTO(): this is IPresenterMessageDTO;
+  IsPresentStringTooShortErrorDTO(): this is IPresenterStringTooShortErrorDTO;
+  IsPresentStringTooLongErrorDTO(): this is IPresenterStringTooLongErrorDTO;
+  IsPresentNumberZeroErrorDTO(): this is IPresenterNumberZeroErrorDTO;
+  IsPresentNumberNegativeErrorDTO(): this is IPresenterNumberNegativeErrorDTO;
+  IsPresentNumberTooLargeErrorDTO(): this is IPresenterNumberTooLargeErrorDTO;
+  IsPresentNumberTooSmallErrorDTO(): this is IPresenterNumberTooSmallErrorDTO;
+  IsPresentNumberOutsideRangeErrorDTO(): this is IPresenterNumberOutsideRangeErrorDTO;
 }

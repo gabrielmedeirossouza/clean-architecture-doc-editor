@@ -1,16 +1,16 @@
 import { IFieldDTO, IMessageDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO, INumberZeroErrorDTO, INumberNegativeErrorDTO, INumberTooLargeErrorDTO, INumberTooSmallErrorDTO, INumberOutsideRangeErrorDTO } from "../../interfaces/dtos";
 
 export interface IFieldDTOConstructorParameters {
-    field: string;
+    fieldName: string;
 }
 
 export class FieldDTO implements IFieldDTO
 {
-	public readonly field: string;
+	public readonly fieldName: string;
 
-	constructor({ field }: IFieldDTOConstructorParameters)
+	constructor({ fieldName }: IFieldDTOConstructorParameters)
 	{
-		this.field = field;
+		this.fieldName = fieldName;
 	}
 
 	public IsFieldDTO(): this is IFieldDTO

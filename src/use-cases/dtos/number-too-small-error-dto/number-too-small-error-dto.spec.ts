@@ -1,15 +1,15 @@
 import { NumberTooSmallErrorDTO } from ".";
 
 test.each([
-	{ field: "id", value: 15, minValue: 0 },
-	{ field: "name", value: 20, minValue: 0 },
-	{ field: "type", value: -10, minValue: 0 },
-	{ field: "id", value: 5, minValue: 10 },
-])(`${NumberTooSmallErrorDTO.name}($field, $value, $minValue)`, ({ field, value, minValue }) =>
+	{ fieldName: "id", value: 15, minValue: 0 },
+	{ fieldName: "name", value: 20, minValue: 0 },
+	{ fieldName: "type", value: -10, minValue: 0 },
+	{ fieldName: "id", value: 5, minValue: 10 },
+])(`${NumberTooSmallErrorDTO.name}($field, $value, $minValue)`, ({ fieldName, value, minValue }) =>
 {
-	const numberTooSmallError = new NumberTooSmallErrorDTO({ field, value, minValue });
-	expect(numberTooSmallError.message).toBe(`NumberTooSmallErrorDTO: Field "${field}" with value "${value}" cannot be smaller than "${minValue}".`);
-	expect(numberTooSmallError.field).toBe(field);
+	const numberTooSmallError = new NumberTooSmallErrorDTO({ fieldName, value, minValue });
+	expect(numberTooSmallError.message).toBe(`NumberTooSmallErrorDTO: Field "${fieldName}" with value "${value}" cannot be smaller than "${minValue}".`);
+	expect(numberTooSmallError.fieldName).toBe(fieldName);
 	expect(numberTooSmallError.value).toBe(value);
 	expect(numberTooSmallError.minValue).toBe(minValue);
 	expect(numberTooSmallError.IsFieldDTO()).toBe(true);

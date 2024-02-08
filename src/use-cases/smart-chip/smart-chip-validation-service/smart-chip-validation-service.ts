@@ -21,12 +21,12 @@ export class SmartChipValidationService implements ISmartChipValidationService
 	{
 		if (label.length < this.LABEL_MIN_LENGTH)
 		{
-			return Result.Fail(new StringTooShortErrorDTO({ field: "label", value: label, minLength: this.LABEL_MIN_LENGTH }));
+			return Result.Fail(new StringTooShortErrorDTO({ fieldName: "label", value: label, minLength: this.LABEL_MIN_LENGTH }));
 		}
 
 		if (label.length > this.LABEL_MAX_LENGTH)
 		{
-			return Result.Fail(new StringTooLongErrorDTO({ field: "label", value: label, maxLength: this.LABEL_MAX_LENGTH }));
+			return Result.Fail(new StringTooLongErrorDTO({ fieldName: "label", value: label, maxLength: this.LABEL_MAX_LENGTH }));
 		}
 
 		return Result.Ok(label);
@@ -36,12 +36,12 @@ export class SmartChipValidationService implements ISmartChipValidationService
 	{
 		if (prefix.length < this.PREFIX_MIN_LENGTH)
 		{
-			return Result.Fail(new StringTooShortErrorDTO({ field: "prefix", value: prefix, minLength: this.PREFIX_MIN_LENGTH }));
+			return Result.Fail(new StringTooShortErrorDTO({ fieldName: "prefix", value: prefix, minLength: this.PREFIX_MIN_LENGTH }));
 		}
 
 		if (prefix.length > this.PREFIX_MAX_LENGTH)
 		{
-			return Result.Fail(new StringTooLongErrorDTO({ field: "prefix", value: prefix, maxLength: this.PREFIX_MAX_LENGTH }));
+			return Result.Fail(new StringTooLongErrorDTO({ fieldName: "prefix", value: prefix, maxLength: this.PREFIX_MAX_LENGTH }));
 		}
 
 		return Result.Ok(prefix);
@@ -51,7 +51,7 @@ export class SmartChipValidationService implements ISmartChipValidationService
 	{
 		if (position < this.POSITION_MIN_VALUE || position > this.POSITION_MAX_VALUE)
 		{
-			return Result.Fail(new NumberOutsideRangeErrorDTO({ field: "position", value: position, minValue: this.POSITION_MIN_VALUE, maxValue: this.POSITION_MAX_VALUE }));
+			return Result.Fail(new NumberOutsideRangeErrorDTO({ fieldName: "position", value: position, minValue: this.POSITION_MIN_VALUE, maxValue: this.POSITION_MAX_VALUE }));
 		}
 
 		return Result.Ok(position);
