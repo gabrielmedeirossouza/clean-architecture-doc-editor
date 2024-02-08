@@ -1,12 +1,7 @@
 import { Result } from "@/shared/result";
 import { NumberOutsideRangeErrorDTO, StringTooLongErrorDTO, StringTooShortErrorDTO } from "@/use-cases/dtos";
 import { IStringTooShortErrorDTO, IStringTooLongErrorDTO, INumberOutsideRangeErrorDTO } from "@/use-cases/interfaces/dtos";
-import { ILogger } from "@/use-cases/interfaces/logger";
 import { ISmartChipValidationService } from "@/use-cases/interfaces/smart-chip";
-
-export interface ISmartChipValidationServiceConstructorParameters {
-    logger: ILogger;
-}
 
 export class SmartChipValidationService implements ISmartChipValidationService
 {
@@ -22,23 +17,16 @@ export class SmartChipValidationService implements ISmartChipValidationService
 
 	public readonly POSITION_MAX_VALUE = 1000;
 
-	private readonly _logger: ILogger;
-
-	constructor({ logger }: ISmartChipValidationServiceConstructorParameters)
-	{
-		this._logger = logger;
-	}
-
 	public ValidateLabel(label: string): Result<string, IStringTooShortErrorDTO | IStringTooLongErrorDTO>
 	{
 		if (label.length < this.LABEL_MIN_LENGTH)
 		{
-			return Result.Fail(new StringTooShortErrorDTO({ field: "label", value: label, minLength: this.LABEL_MIN_LENGTH, logger: this._logger }));
+			return Result.Fail(new StringTooShortErrorDTO({ field: "label", value: label, minLength: this.LABEL_MIN_LENGTH }));
 		}
 
 		if (label.length > this.LABEL_MAX_LENGTH)
 		{
-			return Result.Fail(new StringTooLongErrorDTO({ field: "label", value: label, maxLength: this.LABEL_MAX_LENGTH, logger: this._logger }));
+			return Result.Fail(new StringTooLongErrorDTO({ field: "label", value: label, maxLength: this.LABEL_MAX_LENGTH }));
 		}
 
 		return Result.Ok(label);
@@ -48,12 +36,12 @@ export class SmartChipValidationService implements ISmartChipValidationService
 	{
 		if (prefix.length < this.PREFIX_MIN_LENGTH)
 		{
-			return Result.Fail(new StringTooShortErrorDTO({ field: "prefix", value: prefix, minLength: this.PREFIX_MIN_LENGTH, logger: this._logger }));
+			return Result.Fail(new StringTooShortErrorDTO({ field: "prefix", value: prefix, minLength: this.PREFIX_MIN_LENGTH }));
 		}
 
 		if (prefix.length > this.PREFIX_MAX_LENGTH)
 		{
-			return Result.Fail(new StringTooLongErrorDTO({ field: "prefix", value: prefix, maxLength: this.PREFIX_MAX_LENGTH, logger: this._logger }));
+			return Result.Fail(new StringTooLongErrorDTO({ field: "prefix", value: prefix, maxLength: this.PREFIX_MAX_LENGTH }));
 		}
 
 		return Result.Ok(prefix);
@@ -63,7 +51,7 @@ export class SmartChipValidationService implements ISmartChipValidationService
 	{
 		if (position < this.POSITION_MIN_VALUE || position > this.POSITION_MAX_VALUE)
 		{
-			return Result.Fail(new NumberOutsideRangeErrorDTO({ field: "position", value: position, minValue: this.POSITION_MIN_VALUE, maxValue: this.POSITION_MAX_VALUE, logger: this._logger }));
+			return Result.Fail(new NumberOutsideRangeErrorDTO({ field: "position", value: position, minValue: this.POSITION_MIN_VALUE, maxValue: this.POSITION_MAX_VALUE }));
 		}
 
 		return Result.Ok(position);

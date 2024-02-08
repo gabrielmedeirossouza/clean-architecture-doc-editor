@@ -1,4 +1,3 @@
-import { LoggerDummy } from "@/__test__/dummies";
 import { NumberTooLargeErrorDTO } from ".";
 
 test.each([
@@ -8,7 +7,7 @@ test.each([
 	{ field: "id", value: 5, maxValue: 20 },
 ])(`${NumberTooLargeErrorDTO.name}($field, $value, $maxValue)`, ({ field, value, maxValue }) =>
 {
-	const numberTooLargeError = new NumberTooLargeErrorDTO({ field, value, maxValue, logger: new LoggerDummy });
+	const numberTooLargeError = new NumberTooLargeErrorDTO({ field, value, maxValue });
 	expect(numberTooLargeError.message).toBe(`NumberTooLargeErrorDTO: Field "${field}" with value "${value}" cannot be larger than "${maxValue}".`);
 	expect(numberTooLargeError.field).toBe(field);
 	expect(numberTooLargeError.value).toBe(value);

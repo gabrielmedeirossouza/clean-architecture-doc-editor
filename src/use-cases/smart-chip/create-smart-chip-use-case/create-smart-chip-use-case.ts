@@ -41,25 +41,25 @@ export class CreateSmartChipUseCase implements ICreateSmartChipUseCaseInputPort
 		if (compose.someFailed)
 		{
 			return this._outputPort.Response({
-				response: Result.Fail(new MessageDTO({ message: "CreateSmartChipUseCase: Cannot create SmartChip entity, because one or more fields are invalid.", logger: this._logger }))
+				response: Result.Fail(new MessageDTO({ message: "CreateSmartChipUseCase: Cannot create SmartChip entity, because one or more fields are invalid." }))
 			});
 		}
 
 		const smartChip = new SmartChip(label, prefix, position, []);
-		const createSmartChipRepositoryResult = await this._smartChipRepository.Create(smartChip);
+		const createResult = await this._smartChipRepository.Create(smartChip);
 
-		if (!createSmartChipRepositoryResult.ok)
+		if (!createResult.ok)
 		{
 			return this._outputPort.Response({
-				response: Result.Fail(new MessageDTO({ message: "CreateSmartChipUseCase: Cannot create SmartChip entity, because the repository failed to create it.", logger: this._logger }))
+				response: Result.Fail(new MessageDTO({ message: "CreateSmartChipUseCase: Cannot create SmartChip entity, because the repository failed to create it." }))
 			});
 		}
 
-		const id = createSmartChipRepositoryResult.value;
+		const id = createResult.value;
 		const persistedSmartChip = new PersistedEntity(id, smartChip);
 
 		this._logger.LogInfo(
-			`CreateSmartChipUseCase: SmartChip entity created successfully. Id: "${id}", Label: "${label}", Prefix: "${prefix}", Position: "${position}"`
+			`CreateSmartChipUseCase: SmartChip entity created successfully. ID: "${id}", Label: "${label}", Prefix: "${prefix}", Position: "${position}"`
 		);
 
 		return this._outputPort.Response({ response: Result.Ok(persistedSmartChip) });

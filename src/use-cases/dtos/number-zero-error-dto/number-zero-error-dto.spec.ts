@@ -1,4 +1,3 @@
-import { LoggerDummy } from "@/__test__/dummies";
 import { NumberZeroErrorDTO } from ".";
 
 test.each([
@@ -7,7 +6,7 @@ test.each([
 	{ field: "type" },
 ])(`${NumberZeroErrorDTO.name}($field)`, ({ field }) =>
 {
-	const numberZeroError = new NumberZeroErrorDTO({ field, logger: new LoggerDummy });
+	const numberZeroError = new NumberZeroErrorDTO({ field });
 	expect(numberZeroError.message).toBe(`NumberZeroErrorDTO: Field "${field}" with value "0" is not allowed.`);
 	expect(numberZeroError.field).toBe(field);
 	expect(numberZeroError.IsFieldDTO()).toBe(true);

@@ -1,11 +1,9 @@
-import { ILogger } from "@/use-cases/interfaces/logger";
 import { IFieldDTO, IMessageDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO, INumberZeroErrorDTO, INumberNegativeErrorDTO, INumberTooLargeErrorDTO, INumberTooSmallErrorDTO, INumberOutsideRangeErrorDTO } from "../../interfaces/dtos";
 
 export interface IStringTooLongErrorDTOConstructorParameters {
     field: string;
     value: string;
     maxLength: number;
-    logger: ILogger;
 }
 
 export class StringTooLongErrorDTO implements IStringTooLongErrorDTO
@@ -20,7 +18,7 @@ export class StringTooLongErrorDTO implements IStringTooLongErrorDTO
 
 	public readonly message: string;
 
-	constructor({ field, value, maxLength, logger }: IStringTooLongErrorDTOConstructorParameters)
+	constructor({ field, value, maxLength }: IStringTooLongErrorDTOConstructorParameters)
 	{
 		this.field = field;
 		this.value = value;
@@ -28,7 +26,6 @@ export class StringTooLongErrorDTO implements IStringTooLongErrorDTO
 		this.currentLength = value.length;
 		this.message =
             `StringTooLongErrorDTO: Field "${field}" with value "${value}" has a length of "${this.currentLength}" which is longer than the maximum length of "${maxLength}".`;
-		logger.LogInfo(this.message);
 	}
 
 	public IsFieldDTO(): this is IFieldDTO

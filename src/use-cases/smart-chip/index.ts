@@ -1,2 +1,5 @@
 export * from "./create-smart-chip-use-case";
 export * from "./smart-chip-validation-service";
+export * from './edit-smart-chip-use-case';
+export * from './remove-smart-chip-use-case';
+export * from './get-smart-chip-use-case';

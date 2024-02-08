@@ -15,7 +15,12 @@ export class CreateSmartChipPresenter implements ICreateSmartChipUseCaseOutputPo
 	{
 		if (response.ok)
 		{
-			return this._outputPort.response?.Notify(Result.Ok(response.value));
+			return this._outputPort.response?.Notify(Result.Ok({
+				id: response.value.id,
+				label: response.value.entity.label,
+				prefix: response.value.entity.prefix,
+				position: response.value.entity.position
+			}));
 		}
 
 		this._outputPort.response?.Notify(

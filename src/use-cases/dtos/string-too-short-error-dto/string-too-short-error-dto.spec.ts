@@ -1,4 +1,3 @@
-import { LoggerDummy } from "@/__test__/dummies";
 import { StringTooShortErrorDTO } from ".";
 
 test.each([
@@ -7,7 +6,7 @@ test.each([
 	{ field: "type", value: "tested", minLength: 20 },
 ])(`${StringTooShortErrorDTO.name}($field, $value, $minLength)`, ({ field, value, minLength }) =>
 {
-	const stringTooShortError = new StringTooShortErrorDTO({ field, value, minLength, logger: new LoggerDummy });
+	const stringTooShortError = new StringTooShortErrorDTO({ field, value, minLength });
 	expect(stringTooShortError.message).toBe(`StringTooShortErrorDTO: Field "${field}" with value "${value}" has a length of "${value.length}" which is shorter than the minimum length of "${minLength}".`);
 	expect(stringTooShortError.field).toBe(field);
 	expect(stringTooShortError.value).toBe(value);

@@ -1,10 +1,8 @@
-import { ILogger } from "@/use-cases/interfaces/logger";
 import { IFieldDTO, IMessageDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO, INumberZeroErrorDTO, INumberNegativeErrorDTO, INumberTooLargeErrorDTO, INumberTooSmallErrorDTO, INumberOutsideRangeErrorDTO } from "../../interfaces/dtos";
 
 export interface INumberNegativeErrorDTOConstructorParameters {
     field: string;
     value: number;
-    logger: ILogger;
 }
 
 export class NumberNegativeErrorDTO implements INumberNegativeErrorDTO
@@ -15,12 +13,11 @@ export class NumberNegativeErrorDTO implements INumberNegativeErrorDTO
 
 	public readonly message: string;
 
-	constructor({ field, value, logger }: INumberNegativeErrorDTOConstructorParameters)
+	constructor({ field, value }: INumberNegativeErrorDTOConstructorParameters)
 	{
 		this.field = field;
 		this.value = value;
 		this.message = `NumberNegativeErrorDTO: Field "${field}" with value "${value}" is negative.`;
-		logger.LogInfo(this.message);
 	}
 
 	public IsFieldDTO(): this is IFieldDTO

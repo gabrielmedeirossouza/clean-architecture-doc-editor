@@ -1,9 +1,9 @@
-import { ISmartChip } from "@/entities/interfaces";
+import { IPersistedEntity, ISmartChip } from "@/entities/interfaces";
 import { Result } from "@/shared/result";
 import { IMessageDTO, INumberOutsideRangeErrorDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO } from "../dtos";
 
 export interface IEditSmartChipUseCaseInputPort {
-    Edit(requestModel: IEditSmartChipUseCaseRequestModel): void;
+    Edit(requestModel: IEditSmartChipUseCaseRequestModel): Promise<void>;
 }
 
 export interface IEditSmartChipUseCaseOutputPort {
@@ -21,7 +21,7 @@ export interface IEditSmartChipUseCaseRequestModel {
 }
 
 export interface IEditSmartChipUseCaseResponseModel {
-    response: Result<ISmartChip, IMessageDTO>;
+    response: Result<IPersistedEntity<ISmartChip>, IMessageDTO>;
 }
 
 export interface IEditSmartChipUseCaseLabelResponseModel {

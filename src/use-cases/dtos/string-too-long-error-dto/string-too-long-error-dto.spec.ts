@@ -1,4 +1,3 @@
-import { LoggerDummy } from "@/__test__/dummies";
 import { StringTooLongErrorDTO } from ".";
 
 test.each([
@@ -7,7 +6,7 @@ test.each([
 	{ field: "type", value: "test", maxLength: 2 },
 ])(`${StringTooLongErrorDTO.name}($field, $value, $maxLength)`, ({ field, value, maxLength }) =>
 {
-	const stringTooLongError = new StringTooLongErrorDTO({ field, value, maxLength, logger: new LoggerDummy });
+	const stringTooLongError = new StringTooLongErrorDTO({ field, value, maxLength });
 	expect(stringTooLongError.message).toBe(`StringTooLongErrorDTO: Field "${field}" with value "${value}" has a length of "${value.length}" which is longer than the maximum length of "${maxLength}".`);
 	expect(stringTooLongError.field).toBe(field);
 	expect(stringTooLongError.value).toBe(value);

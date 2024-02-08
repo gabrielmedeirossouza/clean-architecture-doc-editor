@@ -1,4 +1,3 @@
-import { LoggerDummy } from "@/__test__/dummies";
 import { NumberTooSmallErrorDTO } from ".";
 
 test.each([
@@ -8,7 +7,7 @@ test.each([
 	{ field: "id", value: 5, minValue: 10 },
 ])(`${NumberTooSmallErrorDTO.name}($field, $value, $minValue)`, ({ field, value, minValue }) =>
 {
-	const numberTooSmallError = new NumberTooSmallErrorDTO({ field, value, minValue, logger: new LoggerDummy });
+	const numberTooSmallError = new NumberTooSmallErrorDTO({ field, value, minValue });
 	expect(numberTooSmallError.message).toBe(`NumberTooSmallErrorDTO: Field "${field}" with value "${value}" cannot be smaller than "${minValue}".`);
 	expect(numberTooSmallError.field).toBe(field);
 	expect(numberTooSmallError.value).toBe(value);

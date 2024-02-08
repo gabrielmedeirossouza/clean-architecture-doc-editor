@@ -61,6 +61,7 @@
       "comma-spacing": "error",
       "unicorn/prevent-abbreviations": "off",
       "unicorn/numeric-separators-style": "off",
+      "unicorn/no-useless-undefined": "off",
       "@typescript-eslint/no-namespace": "off",
       "@typescript-eslint/no-useless-constructor": "off",
       "@typescript-eslint/no-empty-function": "off",

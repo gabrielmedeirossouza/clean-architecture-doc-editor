@@ -1,19 +1,16 @@
-import { ILogger } from "@/use-cases/interfaces/logger";
 import { IFieldDTO, IMessageDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO, INumberZeroErrorDTO, INumberNegativeErrorDTO, INumberTooLargeErrorDTO, INumberTooSmallErrorDTO, INumberOutsideRangeErrorDTO } from "../../interfaces/dtos";
 
 export interface IFieldDTOConstructorParameters {
     field: string;
-    logger: ILogger;
 }
 
 export class FieldDTO implements IFieldDTO
 {
 	public readonly field: string;
 
-	constructor({ field, logger }: IFieldDTOConstructorParameters)
+	constructor({ field }: IFieldDTOConstructorParameters)
 	{
 		this.field = field;
-		logger.LogInfo(`FieldDTO: "${field}".`);
 	}
 
 	public IsFieldDTO(): this is IFieldDTO

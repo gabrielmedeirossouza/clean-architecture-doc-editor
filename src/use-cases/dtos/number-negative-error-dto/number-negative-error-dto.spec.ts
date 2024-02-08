@@ -1,4 +1,3 @@
-import { LoggerDummy } from "@/__test__/dummies";
 import { NumberNegativeErrorDTO } from ".";
 
 test.each([
@@ -6,7 +5,7 @@ test.each([
 	{ field: "name", value: -2 },
 ])(`${NumberNegativeErrorDTO.name}($field, $value)`, ({ field, value }) =>
 {
-	const numberNegativeErrorDTO = new NumberNegativeErrorDTO({ field, value, logger: new LoggerDummy });
+	const numberNegativeErrorDTO = new NumberNegativeErrorDTO({ field, value });
 	expect(numberNegativeErrorDTO.message).toBe(`NumberNegativeErrorDTO: Field "${field}" with value "${value}" is negative.`);
 	expect(numberNegativeErrorDTO.field).toBe(field);
 	expect(numberNegativeErrorDTO.value).toBe(value);

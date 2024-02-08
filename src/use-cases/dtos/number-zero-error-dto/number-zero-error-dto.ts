@@ -1,9 +1,7 @@
-import { ILogger } from "@/use-cases/interfaces/logger";
 import { IFieldDTO, IMessageDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO, INumberZeroErrorDTO, INumberNegativeErrorDTO, INumberTooLargeErrorDTO, INumberTooSmallErrorDTO, INumberOutsideRangeErrorDTO } from "../../interfaces/dtos";
 
 export interface INumberZeroErrorDTOConstructorParameters {
     field: string;
-    logger: ILogger;
 }
 
 export class NumberZeroErrorDTO implements INumberZeroErrorDTO
@@ -12,11 +10,10 @@ export class NumberZeroErrorDTO implements INumberZeroErrorDTO
 
 	public readonly message: string;
 
-	constructor({ field, logger }: INumberZeroErrorDTOConstructorParameters)
+	constructor({ field }: INumberZeroErrorDTOConstructorParameters)
 	{
 		this.field = field;
 		this.message = `NumberZeroErrorDTO: Field "${field}" with value "0" is not allowed.`;
-		logger.LogInfo(this.message);
 	}
 
 	public IsFieldDTO(): this is IFieldDTO

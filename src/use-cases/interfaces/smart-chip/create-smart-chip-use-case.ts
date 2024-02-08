@@ -3,7 +3,7 @@ import { Result } from "@/shared/result";
 import { IMessageDTO, INumberOutsideRangeErrorDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO } from "../dtos";
 
 export interface ICreateSmartChipUseCaseInputPort {
-    Create(requestModel: ICreateSmartChipUseCaseRequestModel): void;
+    Create(requestModel: ICreateSmartChipUseCaseRequestModel): Promise<void>;
 }
 
 export interface ICreateSmartChipUseCaseOutputPort {

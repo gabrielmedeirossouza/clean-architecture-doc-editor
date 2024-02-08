@@ -1,4 +1,3 @@
-import { LoggerDummy } from "@/__test__/dummies";
 import { NumberOutsideRangeErrorDTO } from ".";
 
 test.each([
@@ -8,7 +7,7 @@ test.each([
 	{ field: "id", value: 5, minValue: 10, maxValue: 20 },
 ])(`${NumberOutsideRangeErrorDTO.name}($field, $value, $minValue, $maxValue)`, ({ field, value, minValue, maxValue }) =>
 {
-	const numberOutsideRangeError = new NumberOutsideRangeErrorDTO({ field, value, minValue, maxValue, logger: new LoggerDummy });
+	const numberOutsideRangeError = new NumberOutsideRangeErrorDTO({ field, value, minValue, maxValue });
 	expect(numberOutsideRangeError.message).toBe(`NumberOutsideRangeErrorDTO: Field "${field}" with value "${value}" is outside the range of "${minValue}" and "${maxValue}".`);
 	expect(numberOutsideRangeError.field).toBe(field);
 	expect(numberOutsideRangeError.value).toBe(value);
