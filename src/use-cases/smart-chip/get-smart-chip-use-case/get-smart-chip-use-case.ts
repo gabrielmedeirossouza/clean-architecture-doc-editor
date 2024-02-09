@@ -31,7 +31,7 @@ export class GetSmartChipUseCase implements IGetSmartChipUseCaseInputPort
 		{
 			this._logger.LogInfo(`GetSmartChipUseCase: Cannot get SmartChip entity, because it was not found. Id: "${id}"`);
 
-			return this._outputPort.Response({
+			return this._outputPort.GetSmartChipByIdResponse({
 				response: Result.Fail(new CannotFindDTO({
 					searchCriteria: "id",
 					searchValue: id,
@@ -43,7 +43,7 @@ export class GetSmartChipUseCase implements IGetSmartChipUseCaseInputPort
 
 		this._logger.LogInfo(`GetSmartChipUseCase: GetSmartChipById SmartChip with id ${id} found.`);
 
-		return this._outputPort.Response({
+		return this._outputPort.GetSmartChipByIdResponse({
 			response: Result.Ok(persistedSmartChipResult.value)
 		});
 	}

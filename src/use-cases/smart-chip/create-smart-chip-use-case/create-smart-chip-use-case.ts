@@ -42,7 +42,7 @@ export class CreateSmartChipUseCase implements ICreateSmartChipUseCaseInputPort
 		{
 			this._logger.LogInfo("CreateSmartChipUseCase: Cannot create SmartChip entity, because one or more fields are invalid.");
 
-			return this._outputPort.Response({
+			return this._outputPort.CreateResponse({
 				response: Result.Fail(new MessageDTO({ message: "CreateSmartChipUseCase: Cannot create SmartChip entity, because one or more fields are invalid." }))
 			});
 		}
@@ -55,6 +55,6 @@ export class CreateSmartChipUseCase implements ICreateSmartChipUseCaseInputPort
 			`CreateSmartChipUseCase: SmartChip entity created successfully. ID: "${id}", Label: "${label}", Prefix: "${prefix}", Position: "${position}"`
 		);
 
-		return this._outputPort.Response({ response: Result.Ok(persistedSmartChip) });
+		return this._outputPort.CreateResponse({ response: Result.Ok(persistedSmartChip) });
 	}
 }

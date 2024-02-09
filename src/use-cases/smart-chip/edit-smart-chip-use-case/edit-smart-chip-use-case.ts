@@ -57,7 +57,7 @@ export class EditSmartChipUseCase implements IEditSmartChipUseCaseInputPort
 		{
 			this._logger.LogInfo(`EditSmartChipUseCase: Cannot edit SmartChip entity, because it was not found. Id: "${id}"`);
 
-			return this._outputPort.Response({
+			return this._outputPort.EditResponse({
 				response: Result.Fail(new CannotFindDTO({
 					searchCriteria: 'id',
 					searchValue: id,
@@ -75,7 +75,7 @@ export class EditSmartChipUseCase implements IEditSmartChipUseCaseInputPort
 		const editSmartChipRepositoryResult = await this._smartChipRepository.Edit(persistedSmartChip);
 		if (!editSmartChipRepositoryResult.ok)
 		{
-			return this._outputPort.Response({
+			return this._outputPort.EditResponse({
 				response: Result.Fail(new CannotFindDTO({
 					searchCriteria: 'id',
 					searchValue: id,
@@ -89,6 +89,6 @@ export class EditSmartChipUseCase implements IEditSmartChipUseCaseInputPort
 			`EditSmartChipUseCase: SmartChip entity edited successfully. ID: "${id}", Label: "${label}", Prefix: "${prefix}", Position: "${position}"`
 		);
 
-		return this._outputPort.Response({ response: Result.Ok(persistedSmartChip) });
+		return this._outputPort.EditResponse({ response: Result.Ok(persistedSmartChip) });
 	}
 }

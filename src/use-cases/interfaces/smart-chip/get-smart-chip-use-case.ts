@@ -7,7 +7,7 @@ export interface IGetSmartChipUseCaseInputPort {
 }
 
 export interface IGetSmartChipUseCaseOutputPort {
-    Response(responseModel: IGetSmartChipUseCaseResponseModel): void;
+    GetSmartChipByIdResponse(responseModel: IGetSmartChipUseCaseResponseModel): void;
 }
 
 export interface IGetSmartChipUseCaseRequestModel {

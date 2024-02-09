@@ -7,7 +7,7 @@ export interface ICreateSmartChipUseCaseInputPort {
 }
 
 export interface ICreateSmartChipUseCaseOutputPort {
-    Response(responseModel: ICreateSmartChipUseCaseResponseModel): void;
+    CreateResponse(responseModel: ICreateSmartChipUseCaseResponseModel): void;
     LabelResponse(responseModel: ICreateSmartChipUseCaseLabelResponseModel): void;
     PrefixResponse(responseModel: ICreateSmartChipUseCasePrefixResponseModel): void;
     PositionResponse(responseModel: ICreateSmartChipUseCasePositionResponseModel): void;

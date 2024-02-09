@@ -83,7 +83,7 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository
 		return Result.Ok(smartChip);
 	}
 
-	public async GetSmartChips(): Promise<IPersistedEntity<ISmartChip>[]>
+	public async GetSmartChipList(): Promise<IPersistedEntity<ISmartChip>[]>
 	{
 		return this._smartChips;
 	}

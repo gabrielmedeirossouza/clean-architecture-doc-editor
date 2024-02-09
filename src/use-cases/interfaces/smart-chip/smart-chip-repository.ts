@@ -7,7 +7,7 @@ export interface ISmartChipRepository {
     Edit(smartChip: IPersistedEntity<ISmartChip>): Promise<Result<string, IRepositoryCannotFindDTO>>;
     Remove(id: string): Promise<Result<string, IRepositoryCannotFindDTO>>;
     GetSmartChipById(id: string): Promise<Result<IPersistedEntity<ISmartChip>, IRepositoryCannotFindDTO>>;
-    GetSmartChips(): Promise<IPersistedEntity<ISmartChip>[]>;
+    GetSmartChipList(): Promise<IPersistedEntity<ISmartChip>[]>;
     FindByLabel(label: string): Promise<Result<IPersistedEntity<ISmartChip>, IRepositoryCannotFindDTO>>;
     FindByPrefix(prefix: string): Promise<Result<IPersistedEntity<ISmartChip>, IRepositoryCannotFindDTO>>;
     FindByPosition(position: number): Promise<Result<IPersistedEntity<ISmartChip>, IRepositoryCannotFindDTO>>;

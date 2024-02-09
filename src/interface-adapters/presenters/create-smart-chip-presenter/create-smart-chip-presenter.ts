@@ -1,5 +1,5 @@
 import { Result } from "../../../shared/result";
-import { ICreateSmartChipPresenterOutputPort } from "../../interfaces/presenters/create-smart-chip-presenter";
+import { ICreateSmartChipPresenterOutputPort } from "../../interfaces/presenters/smart-chip-presenter/create-smart-chip-presenter";
 import { ICreateSmartChipUseCaseLabelResponseModel, ICreateSmartChipUseCasePrefixResponseModel, ICreateSmartChipUseCaseResponseModel, ICreateSmartChipUseCasePositionResponseModel, ICreateSmartChipUseCaseOutputPort } from "../../../use-cases/interfaces/smart-chip/create-smart-chip-use-case";
 import { PresenterMessageDTO, PresenterStringTooLongErrorDTO, PresenterStringTooShortErrorDTO } from "../dtos";
 import { PresenterNumberOutsideRangeErrorDTO } from "../dtos/presenter-number-outside-range-error-dto";
@@ -11,11 +11,11 @@ export class CreateSmartChipPresenter implements ICreateSmartChipUseCaseOutputPo
 	)
 	{ }
 
-	public Response({ response }: ICreateSmartChipUseCaseResponseModel): void
+	public CreateResponse({ response }: ICreateSmartChipUseCaseResponseModel): void
 	{
 		if (response.ok)
 		{
-			return this._outputPort.response?.Notify(Result.Ok({
+			return this._outputPort.createResponse?.Notify(Result.Ok({
 				id: response.value.id,
 				label: response.value.entity.label,
 				prefix: response.value.entity.prefix,
@@ -23,7 +23,7 @@ export class CreateSmartChipPresenter implements ICreateSmartChipUseCaseOutputPo
 			}));
 		}
 
-		this._outputPort.response?.Notify(
+		this._outputPort.createResponse?.Notify(
 			Result.Fail(new PresenterMessageDTO("Smart Chip não pode ser criado."))
 		);
 	}

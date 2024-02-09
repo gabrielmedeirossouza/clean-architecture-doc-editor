@@ -31,7 +31,7 @@ export class RemoveSmartChipUseCase implements IRemoveSmartChipUseCaseInputPort
 		{
 			this._logger.LogInfo(`RemoveSmartChipUseCase: Cannot remove SmartChip entity, because it was not found. Id: ${id}`);
 
-			return this._outputPort.Response({
+			return this._outputPort.RemoveResponse({
 				response: Result.Fail(new CannotFindDTO({
 					searchCriteria: "id",
 					searchValue: id,
@@ -43,7 +43,7 @@ export class RemoveSmartChipUseCase implements IRemoveSmartChipUseCaseInputPort
 
 		this._logger.LogInfo(`RemoveSmartChipUseCase: SmartChip entity removed successfully. ID: ${id}`);
 
-		this._outputPort.Response({
+		this._outputPort.RemoveResponse({
 			response: Result.Ok(id)
 		});
 	}

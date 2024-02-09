@@ -6,7 +6,7 @@ export interface IRemoveSmartChipUseCaseInputPort {
 }
 
 export interface IRemoveSmartChipUseCaseOutputPort {
-    Response(responseModel: IRemoveSmartChipUseCaseResponseModel): void;
+    RemoveResponse(responseModel: IRemoveSmartChipUseCaseResponseModel): void;
 }
 
 export interface IRemoveSmartChipUseCaseRequestModel {

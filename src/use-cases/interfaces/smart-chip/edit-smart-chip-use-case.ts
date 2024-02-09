@@ -7,7 +7,7 @@ export interface IEditSmartChipUseCaseInputPort {
 }
 
 export interface IEditSmartChipUseCaseOutputPort {
-    Response(responseModel: IEditSmartChipUseCaseResponseModel): void;
+    EditResponse(responseModel: IEditSmartChipUseCaseResponseModel): void;
     LabelResponse(responseModel: IEditSmartChipUseCaseLabelResponseModel): void;
     PrefixResponse(responseModel: IEditSmartChipUseCasePrefixResponseModel): void;
     PositionResponse(responseModel: IEditSmartChipUseCasePositionResponseModel): void;

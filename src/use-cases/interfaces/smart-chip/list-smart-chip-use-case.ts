@@ -7,7 +7,7 @@ export interface IListSmartChipUseCaseInputPort {
 }
 
 export interface IListSmartChipUseCaseOutputPort {
-    Response(responseModel: IListSmartChipUseCaseResponseModel): void;
+    ListResponse(responseModel: IListSmartChipUseCaseResponseModel): void;
 }
 
 export interface IListSmartChipUseCaseRequestModel {
