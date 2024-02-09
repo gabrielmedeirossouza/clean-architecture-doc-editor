@@ -1,13 +1,14 @@
 import { Result } from "@/shared/result";
 import { IPersistedEntity, ISmartChip } from "@/entities/interfaces";
+import { IRepositoryCannotFindDTO } from "../repository-dtos";
 
 export interface ISmartChipRepository {
-    Create(smartChip: ISmartChip): Promise<Result<string, void>>;
-    Edit(smartChip: IPersistedEntity<ISmartChip>): Promise<Result<string, void>>;
-    Remove(id: string): Promise<Result<string, void>>;
-    GetSmartChipById(id: string): Promise<Result<IPersistedEntity<ISmartChip>, void>>;
-    GetSmartChips(): Promise<Result<IPersistedEntity<ISmartChip>[], void>>;
-    FindByLabel(label: string): Promise<Result<IPersistedEntity<ISmartChip>, void>>;
-    FindByPrefix(prefix: string): Promise<Result<IPersistedEntity<ISmartChip>, void>>;
-    FindByPosition(position: number): Promise<Result<IPersistedEntity<ISmartChip>, void>>;
+    Create(smartChip: ISmartChip): Promise<string>;
+    Edit(smartChip: IPersistedEntity<ISmartChip>): Promise<Result<string, IRepositoryCannotFindDTO>>;
+    Remove(id: string): Promise<Result<string, IRepositoryCannotFindDTO>>;
+    GetSmartChipById(id: string): Promise<Result<IPersistedEntity<ISmartChip>, IRepositoryCannotFindDTO>>;
+    GetSmartChips(): Promise<IPersistedEntity<ISmartChip>[]>;
+    FindByLabel(label: string): Promise<Result<IPersistedEntity<ISmartChip>, IRepositoryCannotFindDTO>>;
+    FindByPrefix(prefix: string): Promise<Result<IPersistedEntity<ISmartChip>, IRepositoryCannotFindDTO>>;
+    FindByPosition(position: number): Promise<Result<IPersistedEntity<ISmartChip>, IRepositoryCannotFindDTO>>;
 }

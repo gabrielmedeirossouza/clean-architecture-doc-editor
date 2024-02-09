@@ -1,4 +1,4 @@
-import { IRepositoryCannotFindDTO, IRepositoryEntityNotFoundErrorDTO } from "@/use-cases/interfaces/repository-dtos";
+import { IRepositoryCannotFindDTO } from "@/use-cases/interfaces/repository-dtos";
 
 export interface IRepositoryCannotFindDTOConstructorParameters {
     searchCriteria: string;
@@ -23,11 +23,6 @@ export class RepositoryCannotFindDTO implements IRepositoryCannotFindDTO
 		this.searchValue = searchValue;
 		this.entityName = entityName;
 		this.message = message;
-	}
-
-	public IsRepositoryEntityNotFoundErrorDTO(): this is IRepositoryEntityNotFoundErrorDTO
-	{
-		return false;
 	}
 
 	public IsRepositoryCannotFindDTO(): this is IRepositoryCannotFindDTO

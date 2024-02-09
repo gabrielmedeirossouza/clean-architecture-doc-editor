@@ -46,16 +46,7 @@ export class CreateSmartChipUseCase implements ICreateSmartChipUseCaseInputPort
 		}
 
 		const smartChip = new SmartChip(label, prefix, position, []);
-		const createResult = await this._smartChipRepository.Create(smartChip);
-
-		if (!createResult.ok)
-		{
-			return this._outputPort.Response({
-				response: Result.Fail(new MessageDTO({ message: "CreateSmartChipUseCase: Cannot create SmartChip entity, because the repository failed to create it." }))
-			});
-		}
-
-		const id = createResult.value;
+		const id = await this._smartChipRepository.Create(smartChip);
 		const persistedSmartChip = new PersistedEntity(id, smartChip);
 
 		this._logger.LogInfo(
