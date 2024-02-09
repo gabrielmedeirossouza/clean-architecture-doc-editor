@@ -3,6 +3,6 @@ import { IRepositoryCannotFindDTO } from './repository-cannot-find-dto';
 
 export interface IBaseDTO {
     readonly message: string;
-    isRepositoryEntityNotFoundErrorDTO(): this is IRepositoryEntityNotFoundErrorDTO;
-    isRepositoryCannotFindDTO(): this is IRepositoryCannotFindDTO;
+    IsRepositoryEntityNotFoundErrorDTO(): this is IRepositoryEntityNotFoundErrorDTO;
+    IsRepositoryCannotFindDTO(): this is IRepositoryCannotFindDTO;
 }

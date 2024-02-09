@@ -1,7 +1,7 @@
 import { IPersistedEntity, ISmartChip } from "@/entities/interfaces";
 import { Result } from "@/shared/result";
 import { ISmartChipRepository } from "@/use-cases/interfaces/smart-chip";
-import { IIdGenerator } from "../interfaces/id-generator";
+import { IIdGenerator } from "../../interfaces/id-generator";
 import { PersistedEntity } from "@/entities/smart-chip";
 
 export interface ISmartChipInMemoryRepositoryConstructorParameters {
