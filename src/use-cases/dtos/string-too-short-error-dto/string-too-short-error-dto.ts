@@ -1,6 +1,6 @@
 import { IFieldDTO, IMessageDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO, INumberZeroErrorDTO, INumberNegativeErrorDTO, INumberTooLargeErrorDTO, INumberTooSmallErrorDTO, INumberOutsideRangeErrorDTO, ICannotFindDTO } from "../../interfaces/dtos";
 
-export interface IStringTooShortErrorDTOConstructorParameters {
+interface IStringTooShortErrorDTOConstructorParameters {
     fieldName: string;
     value: string;
     minLength: number;
@@ -8,8 +8,6 @@ export interface IStringTooShortErrorDTOConstructorParameters {
 
 export class StringTooShortErrorDTO implements IStringTooShortErrorDTO
 {
-	public readonly currentLength: number;
-
 	public readonly fieldName: string;
 
 	public readonly value: string;
@@ -23,9 +21,8 @@ export class StringTooShortErrorDTO implements IStringTooShortErrorDTO
 		this.fieldName = fieldName;
 		this.value = value;
 		this.minLength = minLength;
-		this.currentLength = value.length;
 		this.message =
-            `StringTooShortErrorDTO: Field "${fieldName}" with value "${value}" has a length of "${this.currentLength}" which is shorter than the minimum length of "${minLength}".`;
+            `StringTooShortErrorDTO: Field "${fieldName}" with value "${value}" has a length of "${value.length}" which is shorter than the minimum length of "${minLength}".`;
 	}
 
 	public IsFieldDTO(): this is IFieldDTO

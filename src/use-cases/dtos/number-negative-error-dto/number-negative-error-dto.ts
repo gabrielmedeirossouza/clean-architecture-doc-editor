@@ -1,6 +1,6 @@
 import { IFieldDTO, IMessageDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO, INumberZeroErrorDTO, INumberNegativeErrorDTO, INumberTooLargeErrorDTO, INumberTooSmallErrorDTO, INumberOutsideRangeErrorDTO, ICannotFindDTO } from "../../interfaces/dtos";
 
-export interface INumberNegativeErrorDTOConstructorParameters {
+interface INumberNegativeErrorDTOConstructorParameters {
     fieldName: string;
     value: number;
 }

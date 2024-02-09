@@ -1,6 +1,6 @@
 import { IFieldDTO, IMessageDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO, INumberZeroErrorDTO, INumberNegativeErrorDTO, INumberTooLargeErrorDTO, INumberTooSmallErrorDTO, INumberOutsideRangeErrorDTO, ICannotFindDTO } from "../../interfaces/dtos";
 
-export interface ICannotFindDTOConstructorParameters {
+interface ICannotFindDTOConstructorParameters {
     message: string;
     searchCriteria: string;
     searchValue: string;

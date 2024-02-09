@@ -6,3 +6,4 @@ export * from "./presenter-string-too-long-error-dto";
 export * from "./presenter-number-zero-error-dto";
 export * from "./presenter-number-negative-error-dto";
 export * from "./presenter-number-too-large-error-dto";
+export * from './presenter-number-outside-range-error-dto';

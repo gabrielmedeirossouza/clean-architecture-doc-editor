@@ -1,14 +1,29 @@
 import { IPresenterFieldDTO, IPresenterMessageDTO, IPresenterNumberNegativeErrorDTO, IPresenterNumberOutsideRangeErrorDTO, IPresenterNumberTooLargeErrorDTO, IPresenterNumberTooSmallErrorDTO, IPresenterNumberZeroErrorDTO, IPresenterStringTooLongErrorDTO, IPresenterStringTooShortErrorDTO } from "../../interfaces/presenters/dtos";
 
+interface IPresenterNumberTooSmallErrorDTOConstructorParameters {
+    fieldName: string;
+    message: string;
+    value: number;
+    minValue: number;
+}
+
 export class PresenterNumberTooSmallErrorDTO implements IPresenterNumberTooSmallErrorDTO
 {
-	constructor(
-    public readonly fieldName: string,
-    public readonly message: string,
-    public readonly value: number,
-    public readonly minValue: number,
-	)
-	{}
+	public readonly fieldName: string;
+
+	public readonly message: string;
+
+	public readonly value: number;
+
+	public readonly minValue: number;
+
+	constructor({ fieldName, message, value, minValue }: IPresenterNumberTooSmallErrorDTOConstructorParameters)
+	{
+		this.fieldName = fieldName;
+		this.message = message;
+		this.value = value;
+		this.minValue = minValue;
+	}
 
 	public IsPresentFieldDTO(): this is IPresenterFieldDTO
 	{
