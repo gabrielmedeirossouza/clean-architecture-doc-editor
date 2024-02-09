@@ -1,5 +1,5 @@
 import { Result } from "@/shared/result";
-import { MessageDTO } from "@/use-cases/dtos";
+import { CannotFindDTO } from "@/use-cases/dtos";
 import { ILogger } from "@/use-cases/interfaces/logger";
 import { IGetSmartChipUseCaseInputPort, IGetSmartChipUseCaseOutputPort, IGetSmartChipUseCaseRequestModel, ISmartChipRepository } from "@/use-cases/interfaces/smart-chip";
 
@@ -29,8 +29,15 @@ export class GetSmartChipUseCase implements IGetSmartChipUseCaseInputPort
 		const persistedSmartChipResult = await this._smartChipRepository.GetSmartChipById(id);
 		if (!persistedSmartChipResult.ok)
 		{
+			this._logger.LogInfo(`GetSmartChipUseCase: Cannot get SmartChip entity, because it was not found. Id: "${id}"`);
+
 			return this._outputPort.Response({
-				response: Result.Fail(new MessageDTO({ message: `GetSmartChipUseCase: GetSmartChipById SmartChip with id ${id} not found.` }))
+				response: Result.Fail(new CannotFindDTO({
+					searchCriteria: "id",
+					searchValue: id,
+					entityName: "SmartChip",
+					message: "GetSmartChipUseCase: Cannot get SmartChip entity, because it was not found."
+				}))
 			});
 		}
 

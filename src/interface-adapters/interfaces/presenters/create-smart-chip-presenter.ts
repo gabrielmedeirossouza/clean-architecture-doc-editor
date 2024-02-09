@@ -1,6 +1,5 @@
-import { Result } from "../../../shared/result";
+import { Observable, Result } from "@/shared";
 import { IPresenterMessageDTO, IPresenterNumberOutsideRangeErrorDTO, IPresenterStringTooLongErrorDTO, IPresenterStringTooShortErrorDTO } from "./dtos";
-import { IObservable } from "../observable";
 
 interface ICreateSmartChipPresenterViewModel {
   readonly id: string;
@@ -10,8 +9,8 @@ interface ICreateSmartChipPresenterViewModel {
 }
 
 export interface ICreateSmartChipPresenterOutputPort {
-  response?: IObservable<Result<ICreateSmartChipPresenterViewModel, IPresenterMessageDTO>>;
-  labelResponse?: IObservable<Result<string, IPresenterStringTooShortErrorDTO | IPresenterStringTooLongErrorDTO>>;
-  prefixResponse?: IObservable<Result<string, IPresenterStringTooShortErrorDTO | IPresenterStringTooLongErrorDTO>>;
-  positionResponse?: IObservable<Result<number, IPresenterNumberOutsideRangeErrorDTO>>;
+  response?: Observable<Result<ICreateSmartChipPresenterViewModel, IPresenterMessageDTO>>;
+  labelResponse?: Observable<Result<string, IPresenterStringTooShortErrorDTO | IPresenterStringTooLongErrorDTO>>;
+  prefixResponse?: Observable<Result<string, IPresenterStringTooShortErrorDTO | IPresenterStringTooLongErrorDTO>>;
+  positionResponse?: Observable<Result<number, IPresenterNumberOutsideRangeErrorDTO>>;
 }

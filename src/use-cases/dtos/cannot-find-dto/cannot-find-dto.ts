@@ -1,36 +1,33 @@
 import { IFieldDTO, IMessageDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO, INumberZeroErrorDTO, INumberNegativeErrorDTO, INumberTooLargeErrorDTO, INumberTooSmallErrorDTO, INumberOutsideRangeErrorDTO, ICannotFindDTO } from "../../interfaces/dtos";
 
-export interface INumberOutsideRangeErrorDTOConstructorParameters {
-    fieldName: string;
-    value: number;
-    minValue: number;
-    maxValue: number;
+export interface ICannotFindDTOConstructorParameters {
+    message: string;
+    searchCriteria: string;
+    searchValue: string;
+    entityName: string;
 }
 
-export class NumberOutsideRangeErrorDTO implements INumberOutsideRangeErrorDTO
+export class CannotFindDTO implements ICannotFindDTO
 {
-	public readonly fieldName: string;
-
-	public readonly value: number;
-
-	public readonly minValue: number;
-
-	public readonly maxValue: number;
-
 	public readonly message: string;
 
-	constructor({ fieldName, value, minValue, maxValue }: INumberOutsideRangeErrorDTOConstructorParameters)
+	public readonly searchCriteria: string;
+
+	public readonly searchValue: string;
+
+	public readonly entityName: string;
+
+	constructor({ message, searchCriteria, searchValue, entityName }: ICannotFindDTOConstructorParameters)
 	{
-		this.fieldName = fieldName;
-		this.value = value;
-		this.minValue = minValue;
-		this.maxValue = maxValue;
-		this.message = `NumberOutsideRangeErrorDTO: Field "${fieldName}" with value "${value}" is outside the range of "${minValue}" and "${maxValue}".`;
+		this.message = message;
+		this.searchCriteria = searchCriteria;
+		this.searchValue = searchValue;
+		this.entityName = entityName;
 	}
 
 	public IsFieldDTO(): this is IFieldDTO
 	{
-		return true;
+		return false;
 	}
 
 	public IsMessageDTO(): this is IMessageDTO
@@ -70,11 +67,11 @@ export class NumberOutsideRangeErrorDTO implements INumberOutsideRangeErrorDTO
 
 	public IsNumberOutsideRangeDTO(): this is INumberOutsideRangeErrorDTO
 	{
-		return true;
+		return false;
 	}
 
 	public IsCannotFindDTO(): this is ICannotFindDTO
 	{
-		return false;
+		return true;
 	}
 }

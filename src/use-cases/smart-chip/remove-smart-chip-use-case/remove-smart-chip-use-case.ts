@@ -1,5 +1,5 @@
 import { Result } from "@/shared/result";
-import { MessageDTO } from "@/use-cases/dtos";
+import { CannotFindDTO } from "@/use-cases/dtos";
 import { ILogger } from "@/use-cases/interfaces/logger";
 import { IRemoveSmartChipUseCaseInputPort, IRemoveSmartChipUseCaseOutputPort, IRemoveSmartChipUseCaseRequestModel, ISmartChipRepository } from "@/use-cases/interfaces/smart-chip";
 
@@ -29,8 +29,15 @@ export class RemoveSmartChipUseCase implements IRemoveSmartChipUseCaseInputPort
 		const removeResult = await this._smartChipRepository.Remove(id);
 		if (!removeResult.ok)
 		{
+			this._logger.LogInfo(`RemoveSmartChipUseCase: Cannot remove SmartChip entity, because it was not found. Id: ${id}`);
+
 			return this._outputPort.Response({
-				response: Result.Fail(new MessageDTO({ message: "RemoveSmartChipUseCase: Cannot remove SmartChip entity, because the repository failed to remove it." }))
+				response: Result.Fail(new CannotFindDTO({
+					searchCriteria: "id",
+					searchValue: id,
+					entityName: "SmartChip",
+					message: "RemoveSmartChipUseCase: Cannot remove SmartChip entity, because it was not found."
+				}))
 			});
 		}
 

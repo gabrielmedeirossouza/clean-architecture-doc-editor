@@ -1,5 +1,5 @@
 import { Result } from "@/shared/result";
-import { MessageDTO } from "@/use-cases/dtos";
+import { CannotFindDTO } from "@/use-cases/dtos";
 import { ILogger } from "@/use-cases/interfaces/logger";
 import { IEditSmartChipUseCaseInputPort, IEditSmartChipUseCaseOutputPort, IEditSmartChipUseCaseRequestModel, ISmartChipRepository, ISmartChipValidationService } from "@/use-cases/interfaces/smart-chip";
 
@@ -49,16 +49,21 @@ export class EditSmartChipUseCase implements IEditSmartChipUseCaseInputPort
 
 		if (compose.someFailed)
 		{
-			return this._outputPort.Response({
-				response: Result.Fail(new MessageDTO({ message: "EditSmartChipUseCase: Cannot edit SmartChip entity, because one or more fields are invalid." }))
-			});
+			return this._logger.LogInfo("EditSmartChipUseCase: Cannot edit SmartChip entity, because one or more fields are invalid.");
 		}
 
 		const getSmartChipByIdResult = await this._smartChipRepository.GetSmartChipById(id);
 		if (!getSmartChipByIdResult.ok)
 		{
+			this._logger.LogInfo(`EditSmartChipUseCase: Cannot edit SmartChip entity, because it was not found. Id: "${id}"`);
+
 			return this._outputPort.Response({
-				response: Result.Fail(new MessageDTO({ message: "EditSmartChipUseCase: Cannot edit SmartChip entity, because the repository failed to get it." }))
+				response: Result.Fail(new CannotFindDTO({
+					searchCriteria: 'id',
+					searchValue: id,
+					message: "EditSmartChipUseCase: Cannot edit SmartChip entity, because it was not found.",
+					entityName: "SmartChip"
+				}))
 			});
 		}
 
@@ -68,11 +73,15 @@ export class EditSmartChipUseCase implements IEditSmartChipUseCaseInputPort
 		persistedSmartChip.entity.position = position ?? persistedSmartChip.entity.position;
 
 		const editSmartChipRepositoryResult = await this._smartChipRepository.Edit(persistedSmartChip);
-
 		if (!editSmartChipRepositoryResult.ok)
 		{
 			return this._outputPort.Response({
-				response: Result.Fail(new MessageDTO({ message: "EditSmartChipUseCase: Cannot edit SmartChip entity, because the repository failed to edit it." }))
+				response: Result.Fail(new CannotFindDTO({
+					searchCriteria: 'id',
+					searchValue: id,
+					message: "EditSmartChipUseCase: Cannot edit SmartChip entity, because it was not found.",
+					entityName: "SmartChip"
+				}))
 			});
 		}
 

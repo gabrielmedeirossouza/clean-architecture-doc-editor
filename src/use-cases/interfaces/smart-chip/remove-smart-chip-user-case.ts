@@ -1,5 +1,5 @@
 import { Result } from "@/shared/result";
-import { IMessageDTO } from "../dtos";
+import { ICannotFindDTO } from "../dtos";
 
 export interface IRemoveSmartChipUseCaseInputPort {
     Remove(requestModel: IRemoveSmartChipUseCaseRequestModel): Promise<void>;
@@ -14,6 +14,6 @@ export interface IRemoveSmartChipUseCaseRequestModel {
 }
 
 export interface IRemoveSmartChipUseCaseResponseModel {
-    response: Result<string, IMessageDTO>;
+    response: Result<string, ICannotFindDTO>;
 }
 

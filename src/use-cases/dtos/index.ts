@@ -8,3 +8,4 @@ export * from "./number-negative-error-dto";
 export * from "./number-too-large-error-dto";
 export * from "./number-too-small-error-dto";
 export * from "./number-outside-range-error-dto";
+export * from './cannot-find-dto';

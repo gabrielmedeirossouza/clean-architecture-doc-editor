@@ -1,4 +1,4 @@
-import { IFieldDTO, IMessageDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO, INumberZeroErrorDTO, INumberNegativeErrorDTO, INumberTooLargeErrorDTO, INumberTooSmallErrorDTO, INumberOutsideRangeErrorDTO } from ".";
+import { IFieldDTO, IMessageDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO, INumberZeroErrorDTO, INumberNegativeErrorDTO, INumberTooLargeErrorDTO, INumberTooSmallErrorDTO, INumberOutsideRangeErrorDTO, ICannotFindDTO } from ".";
 
 export interface IBaseDTO {
 	IsFieldDTO(): this is IFieldDTO;
@@ -10,4 +10,5 @@ export interface IBaseDTO {
 	IsNumberTooSmallDTO(): this is INumberTooSmallErrorDTO;
 	IsNumberTooLargeDTO(): this is INumberTooLargeErrorDTO;
 	IsNumberOutsideRangeDTO(): this is INumberOutsideRangeErrorDTO;
+    IsCannotFindDTO(): this is ICannotFindDTO;
 }

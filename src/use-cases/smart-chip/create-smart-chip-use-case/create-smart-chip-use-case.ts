@@ -40,6 +40,8 @@ export class CreateSmartChipUseCase implements ICreateSmartChipUseCaseInputPort
 
 		if (compose.someFailed)
 		{
+			this._logger.LogInfo("CreateSmartChipUseCase: Cannot create SmartChip entity, because one or more fields are invalid.");
+
 			return this._outputPort.Response({
 				response: Result.Fail(new MessageDTO({ message: "CreateSmartChipUseCase: Cannot create SmartChip entity, because one or more fields are invalid." }))
 			});

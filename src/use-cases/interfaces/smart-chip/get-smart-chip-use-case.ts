@@ -1,6 +1,6 @@
 import { IPersistedEntity, ISmartChip } from "@/entities/interfaces";
 import { Result } from "@/shared/result";
-import { IMessageDTO } from "../dtos";
+import { ICannotFindDTO } from "../dtos";
 
 export interface IGetSmartChipUseCaseInputPort {
     GetSmartChipById(requestModel: IGetSmartChipUseCaseRequestModel): Promise<void>;
@@ -15,5 +15,5 @@ export interface IGetSmartChipUseCaseRequestModel {
 }
 
 export interface IGetSmartChipUseCaseResponseModel {
-    response: Result<IPersistedEntity<ISmartChip>, IMessageDTO>;
+    response: Result<IPersistedEntity<ISmartChip>, ICannotFindDTO>;
 }

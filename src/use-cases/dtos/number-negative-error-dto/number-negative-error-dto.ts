@@ -1,4 +1,4 @@
-import { IFieldDTO, IMessageDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO, INumberZeroErrorDTO, INumberNegativeErrorDTO, INumberTooLargeErrorDTO, INumberTooSmallErrorDTO, INumberOutsideRangeErrorDTO } from "../../interfaces/dtos";
+import { IFieldDTO, IMessageDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO, INumberZeroErrorDTO, INumberNegativeErrorDTO, INumberTooLargeErrorDTO, INumberTooSmallErrorDTO, INumberOutsideRangeErrorDTO, ICannotFindDTO } from "../../interfaces/dtos";
 
 export interface INumberNegativeErrorDTOConstructorParameters {
     fieldName: string;
@@ -61,6 +61,11 @@ export class NumberNegativeErrorDTO implements INumberNegativeErrorDTO
 	}
 
 	public IsNumberOutsideRangeDTO(): this is INumberOutsideRangeErrorDTO
+	{
+		return false;
+	}
+
+	public IsCannotFindDTO(): this is ICannotFindDTO
 	{
 		return false;
 	}
