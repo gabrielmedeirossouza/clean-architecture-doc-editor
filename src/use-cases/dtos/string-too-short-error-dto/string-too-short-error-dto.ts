@@ -1,13 +1,16 @@
-import { IFieldDTO, IMessageDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO, INumberZeroErrorDTO, INumberNegativeErrorDTO, INumberTooLargeErrorDTO, INumberTooSmallErrorDTO, INumberOutsideRangeErrorDTO, ICannotFindDTO } from "../../interfaces/dtos";
+import { IStringTooShortErrorDTO } from "@/use-cases/interfaces/dtos";
 
-interface IStringTooShortErrorDTOConstructorParameters {
+interface IStringTooShortErrorDTOConstructorParameters<T> {
+    code: T;
     fieldName: string;
     value: string;
     minLength: number;
 }
 
-export class StringTooShortErrorDTO implements IStringTooShortErrorDTO
+export class StringTooShortErrorDTO<T extends string> implements IStringTooShortErrorDTO<T>
 {
+	public readonly code: T;
+
 	public readonly fieldName: string;
 
 	public readonly value: string;
@@ -16,62 +19,13 @@ export class StringTooShortErrorDTO implements IStringTooShortErrorDTO
 
 	public readonly message: string;
 
-	constructor({ fieldName, value, minLength }: IStringTooShortErrorDTOConstructorParameters)
+	constructor({ code, fieldName, value, minLength }: IStringTooShortErrorDTOConstructorParameters<T>)
 	{
+		this.code = code;
 		this.fieldName = fieldName;
 		this.value = value;
 		this.minLength = minLength;
 		this.message =
             `StringTooShortErrorDTO: Field "${fieldName}" with value "${value}" has a length of "${value.length}" which is shorter than the minimum length of "${minLength}".`;
-	}
-
-	public IsFieldDTO(): this is IFieldDTO
-	{
-		return true;
-	}
-
-	public IsMessageDTO(): this is IMessageDTO
-	{
-		return true;
-	}
-
-	public IsStringTooShortDTO(): this is IStringTooShortErrorDTO
-	{
-		return true;
-	}
-
-	public IsStringTooLongDTO(): this is IStringTooLongErrorDTO
-	{
-		return false;
-	}
-
-	public IsNumberZeroDTO(): this is INumberZeroErrorDTO
-	{
-		return false;
-	}
-
-	public IsNumberNegativeDTO(): this is INumberNegativeErrorDTO
-	{
-		return false;
-	}
-
-	public IsNumberTooLargeDTO(): this is INumberTooLargeErrorDTO
-	{
-		return false;
-	}
-
-	public IsNumberTooSmallDTO(): this is INumberTooSmallErrorDTO
-	{
-		return false;
-	}
-
-	public IsNumberOutsideRangeDTO(): this is INumberOutsideRangeErrorDTO
-	{
-		return false;
-	}
-
-	public IsCannotFindDTO(): this is ICannotFindDTO
-	{
-		return false;
 	}
 }

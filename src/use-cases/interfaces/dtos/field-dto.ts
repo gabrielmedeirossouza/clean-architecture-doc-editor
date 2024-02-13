@@ -1,5 +1,5 @@
 import { IBaseDTO } from "./base-dto";
 
-export interface IFieldDTO extends IBaseDTO {
+export interface IFieldDTO<T extends string> extends IBaseDTO<T> {
 	readonly fieldName: string;
 }

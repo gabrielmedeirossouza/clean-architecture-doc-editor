@@ -8,9 +8,6 @@ export interface ICreateSmartChipUseCaseInputPort {
 
 export interface ICreateSmartChipUseCaseOutputPort {
     CreateResponse(responseModel: ICreateSmartChipUseCaseResponseModel): void;
-    LabelResponse(responseModel: ICreateSmartChipUseCaseLabelResponseModel): void;
-    PrefixResponse(responseModel: ICreateSmartChipUseCasePrefixResponseModel): void;
-    PositionResponse(responseModel: ICreateSmartChipUseCasePositionResponseModel): void;
 }
 
 export interface ICreateSmartChipUseCaseRequestModel {
@@ -20,17 +17,13 @@ export interface ICreateSmartChipUseCaseRequestModel {
 }
 
 export interface ICreateSmartChipUseCaseResponseModel {
-    response: Result<IPersistedEntity<ISmartChip>, IMessageDTO>;
-}
-
-export interface ICreateSmartChipUseCaseLabelResponseModel {
-    response: Result<string, IStringTooShortErrorDTO | IStringTooLongErrorDTO>;
-}
-
-export interface ICreateSmartChipUseCasePrefixResponseModel {
-    response: Result<string, IStringTooShortErrorDTO | IStringTooLongErrorDTO>;
-}
-
-export interface ICreateSmartChipUseCasePositionResponseModel {
-    response: Result<number, INumberOutsideRangeErrorDTO>;
+    response: Result<
+        IPersistedEntity<ISmartChip>,
+        IMessageDTO<"GENERIC_SERVICE_ERROR"> |
+        IStringTooShortErrorDTO<"LABEL_TOO_SHORT"> |
+        IStringTooShortErrorDTO<"PREFIX_TOO_SHORT"> |
+        IStringTooLongErrorDTO<"LABEL_TOO_LONG"> |
+        IStringTooLongErrorDTO<"PREFIX_TOO_LONG"> |
+        INumberOutsideRangeErrorDTO<"POSITION_OUTSIDE_RANGE">
+    >;
 }

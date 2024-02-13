@@ -1,3 +1,3 @@
 import { IPresenterFieldDTO, IPresenterMessageDTO } from ".";
 
-export interface IPresenterNumberZeroErrorDTO extends IPresenterFieldDTO, IPresenterMessageDTO {}
+export interface IPresenterNumberZeroErrorDTO<T extends string> extends IPresenterFieldDTO<T>, IPresenterMessageDTO<T> {}

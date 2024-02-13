@@ -17,7 +17,13 @@ const createSmartChipUseCase = new CreateSmartChipUseCase({
 	logger
 });
 
-createSmartChipUseCase.Create({
+await createSmartChipUseCase.Create({
+	label: "Referência",
+	prefix: "RF",
+	position: 1
+});
+
+await createSmartChipUseCase.Create({
 	label: "Referência",
 	prefix: "RF",
 	position: 1

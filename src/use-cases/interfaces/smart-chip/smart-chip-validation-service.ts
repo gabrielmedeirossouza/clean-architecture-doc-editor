@@ -8,7 +8,7 @@ export interface ISmartChipValidationService {
   readonly PREFIX_MAX_LENGTH: number;
   readonly POSITION_MIN_VALUE: number;
   readonly POSITION_MAX_VALUE: number;
-  ValidateLabel(label: string): Result<string, IStringTooShortErrorDTO | IStringTooLongErrorDTO>;
-  ValidatePrefix(prefix: string): Result<string, IStringTooShortErrorDTO | IStringTooLongErrorDTO>;
-  ValidatePosition(position: number): Result<number, INumberOutsideRangeErrorDTO>;
+  ValidateLabel(label: string): Result<string, IStringTooShortErrorDTO<"LABEL_TOO_SHORT"> | IStringTooLongErrorDTO<"LABEL_TOO_LONG">>;
+  ValidatePrefix(prefix: string): Result<string, IStringTooShortErrorDTO<"PREFIX_TOO_SHORT"> | IStringTooLongErrorDTO<"PREFIX_TOO_LONG">>;
+  ValidatePosition(position: number): Result<number, INumberOutsideRangeErrorDTO<"POSITION_OUTSIDE_RANGE">>;
 }

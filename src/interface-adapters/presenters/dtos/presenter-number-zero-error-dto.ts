@@ -1,64 +1,23 @@
-import { IPresenterFieldDTO, IPresenterMessageDTO, IPresenterNumberNegativeErrorDTO, IPresenterNumberOutsideRangeErrorDTO, IPresenterNumberTooLargeErrorDTO, IPresenterNumberTooSmallErrorDTO, IPresenterNumberZeroErrorDTO, IPresenterStringTooLongErrorDTO, IPresenterStringTooShortErrorDTO } from "../../interfaces/presenters/dtos";
+import { IPresenterNumberZeroErrorDTO } from "@/interface-adapters/interfaces/presenters/dtos";
 
-interface IPresenterNumberZeroErrorDTOConstructorParameters {
+interface IPresenterNumberZeroErrorDTOConstructorParameters<T> {
+    code: T;
     fieldName: string;
     message: string;
 }
 
-export class PresenterNumberZeroErrorDTO implements IPresenterNumberZeroErrorDTO
+export class PresenterNumberZeroErrorDTO<T extends string> implements IPresenterNumberZeroErrorDTO<T>
 {
+	public readonly code: T;
+
 	public readonly fieldName: string;
 
 	public readonly message: string;
 
-	constructor({ fieldName, message }: IPresenterNumberZeroErrorDTOConstructorParameters)
+	constructor({ code, fieldName, message }: IPresenterNumberZeroErrorDTOConstructorParameters<T>)
 	{
+		this.code = code;
 		this.fieldName = fieldName;
 		this.message = message;
-	}
-
-	public IsPresentFieldDTO(): this is IPresenterFieldDTO
-	{
-		return true;
-	}
-
-	public IsPresentMessageDTO(): this is IPresenterMessageDTO
-	{
-		return true;
-	}
-
-	public IsPresentStringTooShortErrorDTO(): this is IPresenterStringTooShortErrorDTO
-	{
-		return false;
-	}
-
-	public IsPresentStringTooLongErrorDTO(): this is IPresenterStringTooLongErrorDTO
-	{
-		return false;
-	}
-
-	public IsPresentNumberZeroErrorDTO(): this is IPresenterNumberZeroErrorDTO
-	{
-		return true;
-	}
-
-	public IsPresentNumberNegativeErrorDTO(): this is IPresenterNumberNegativeErrorDTO
-	{
-		return false;
-	}
-
-	public IsPresentNumberTooLargeErrorDTO(): this is IPresenterNumberTooLargeErrorDTO
-	{
-		return false;
-	}
-
-	public IsPresentNumberTooSmallErrorDTO(): this is IPresenterNumberTooSmallErrorDTO
-	{
-		return false;
-	}
-
-	public IsPresentNumberOutsideRangeErrorDTO(): this is IPresenterNumberOutsideRangeErrorDTO
-	{
-		return false;
 	}
 }

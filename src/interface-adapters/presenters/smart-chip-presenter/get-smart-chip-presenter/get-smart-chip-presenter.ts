@@ -18,16 +18,16 @@ export class GetSmartChipPresenter implements IGetSmartChipUseCaseOutputPort
 
 	public GetSmartChipByIdResponse({ response }: IGetSmartChipUseCaseResponseModel): void
 	{
-		if (response.ok)
+		if (response.isPrimary)
 		{
-			return this._outputPort.getSmartChipByIdResponse?.Notify(Result.Ok({
-				id: response.value.id,
-				label: response.value.entity.label,
-				prefix: response.value.entity.prefix,
-				position: response.value.entity.position
+			return this._outputPort.getSmartChipByIdResponse?.Notify(Result.Primary({
+				id: response.primaryValue.id,
+				label: response.primaryValue.entity.label,
+				prefix: response.primaryValue.entity.prefix,
+				position: response.primaryValue.entity.position
 			}));
 		}
 
-		return this._outputPort.getSmartChipByIdResponse?.Notify(Result.Fail(new PresenterMessageDTO({ message: "Não foi possível obter o Smart Chip." })));
+		return this._outputPort.getSmartChipByIdResponse?.Notify(Result.Secondary(new PresenterMessageDTO({ message: "Não foi possível obter o Smart Chip." })));
 	}
 }

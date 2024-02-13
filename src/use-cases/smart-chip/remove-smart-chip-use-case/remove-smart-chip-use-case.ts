@@ -27,12 +27,12 @@ export class RemoveSmartChipUseCase implements IRemoveSmartChipUseCaseInputPort
 	public async Remove({ id }: IRemoveSmartChipUseCaseRequestModel): Promise<void>
 	{
 		const removeResult = await this._smartChipRepository.Remove(id);
-		if (!removeResult.ok)
+		if (!removeResult.isPrimary)
 		{
 			this._logger.LogInfo(`RemoveSmartChipUseCase: Cannot remove SmartChip entity, because it was not found. Id: ${id}`);
 
 			return this._outputPort.RemoveResponse({
-				response: Result.Fail(new CannotFindDTO({
+				response: Result.Secondary(new CannotFindDTO({
 					searchCriteria: "id",
 					searchValue: id,
 					entityName: "SmartChip",
@@ -44,7 +44,7 @@ export class RemoveSmartChipUseCase implements IRemoveSmartChipUseCaseInputPort
 		this._logger.LogInfo(`RemoveSmartChipUseCase: SmartChip entity removed successfully. ID: ${id}`);
 
 		this._outputPort.RemoveResponse({
-			response: Result.Ok(id)
+			response: Result.Primary(id)
 		});
 	}
 }

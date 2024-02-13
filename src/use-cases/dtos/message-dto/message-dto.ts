@@ -1,65 +1,19 @@
-import { IFieldDTO, IMessageDTO, IStringTooLongErrorDTO, IStringTooShortErrorDTO, INumberZeroErrorDTO, INumberNegativeErrorDTO, INumberTooLargeErrorDTO, INumberTooSmallErrorDTO, INumberOutsideRangeErrorDTO, ICannotFindDTO } from "../../interfaces/dtos";
+import { IMessageDTO } from "@/use-cases/interfaces/dtos";
 
-interface IMessageDTOConstructorParameters {
+interface IMessageDTOConstructorParameters<T> {
+    code: T;
     message: string;
 }
 
-export class MessageDTO implements IMessageDTO
+export class MessageDTO<T extends string> implements IMessageDTO<T>
 {
+	public readonly code: T;
+
 	public readonly message: string;
 
-	constructor({ message }: IMessageDTOConstructorParameters)
+	constructor({ code, message }: IMessageDTOConstructorParameters<T>)
 	{
+		this.code = code;
 		this.message = message;
-	}
-
-	public IsFieldDTO(): this is IFieldDTO
-	{
-		return false;
-	}
-
-	public IsMessageDTO(): this is IMessageDTO
-	{
-		return true;
-	}
-
-	public IsStringTooShortDTO(): this is IStringTooShortErrorDTO
-	{
-		return false;
-	}
-
-	public IsStringTooLongDTO(): this is IStringTooLongErrorDTO
-	{
-		return false;
-	}
-
-	public IsNumberZeroDTO(): this is INumberZeroErrorDTO
-	{
-		return false;
-	}
-
-	public IsNumberNegativeDTO(): this is INumberNegativeErrorDTO
-	{
-		return false;
-	}
-
-	public IsNumberTooLargeDTO(): this is INumberTooLargeErrorDTO
-	{
-		return false;
-	}
-
-	public IsNumberTooSmallDTO(): this is INumberTooSmallErrorDTO
-	{
-		return false;
-	}
-
-	public IsNumberOutsideRangeDTO(): this is INumberOutsideRangeErrorDTO
-	{
-		return false;
-	}
-
-	public IsCannotFindDTO(): this is ICannotFindDTO
-	{
-		return false;
 	}
 }

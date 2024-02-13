@@ -1,51 +1,17 @@
-import { IPresenterFieldDTO, IPresenterMessageDTO, IPresenterNumberNegativeErrorDTO, IPresenterNumberOutsideRangeErrorDTO, IPresenterNumberTooLargeErrorDTO, IPresenterNumberTooSmallErrorDTO, IPresenterNumberZeroErrorDTO, IPresenterStringTooLongErrorDTO, IPresenterStringTooShortErrorDTO } from "../../interfaces/presenters/dtos";
+import { IPresenterMessageDTO } from "@/interface-adapters/interfaces/presenters/dtos";
 
-export class PresenterUnknownErrorDTO implements IPresenterMessageDTO
+interface IPresenterUnknownErrorDTOConstructorParameters<T> {
+    code: T;
+}
+
+export class PresenterUnknownErrorDTO<T extends string> implements IPresenterMessageDTO<T>
 {
+	public readonly code: T;
+
 	public readonly message = "Ocorreu um erro desconhecido.";
 
-	public IsPresentFieldDTO(): this is IPresenterFieldDTO
+	constructor({ code }: IPresenterUnknownErrorDTOConstructorParameters<T>)
 	{
-		return false;
-	}
-
-	public IsPresentMessageDTO(): this is IPresenterMessageDTO
-	{
-		return true;
-	}
-
-	public IsPresentStringTooShortErrorDTO(): this is IPresenterStringTooShortErrorDTO
-	{
-		return false;
-	}
-
-	public IsPresentStringTooLongErrorDTO(): this is IPresenterStringTooLongErrorDTO
-	{
-		return false;
-	}
-
-	public IsPresentNumberZeroErrorDTO(): this is IPresenterNumberZeroErrorDTO
-	{
-		return false;
-	}
-
-	public IsPresentNumberNegativeErrorDTO(): this is IPresenterNumberNegativeErrorDTO
-	{
-		return false;
-	}
-
-	public IsPresentNumberTooLargeErrorDTO(): this is IPresenterNumberTooLargeErrorDTO
-	{
-		return false;
-	}
-
-	public IsPresentNumberTooSmallErrorDTO(): this is IPresenterNumberTooSmallErrorDTO
-	{
-		return false;
-	}
-
-	public IsPresentNumberOutsideRangeErrorDTO(): this is IPresenterNumberOutsideRangeErrorDTO
-	{
-		return false;
+		this.code = code;
 	}
 }

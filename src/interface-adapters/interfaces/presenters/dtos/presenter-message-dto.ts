@@ -1,5 +1,5 @@
 import { IBaseDTO } from ".";
 
-export interface IPresenterMessageDTO extends IBaseDTO {
+export interface IPresenterMessageDTO<T extends string> extends IBaseDTO<T> {
   readonly message: string;
 }

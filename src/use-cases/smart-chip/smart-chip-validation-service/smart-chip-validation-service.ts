@@ -21,39 +21,39 @@ export class SmartChipValidationService implements ISmartChipValidationService
 	{
 		if (label.length < this.LABEL_MIN_LENGTH)
 		{
-			return Result.Fail(new StringTooShortErrorDTO({ fieldName: "label", value: label, minLength: this.LABEL_MIN_LENGTH }));
+			return Result.Secondary(new StringTooShortErrorDTO({ fieldName: "label", value: label, minLength: this.LABEL_MIN_LENGTH }));
 		}
 
 		if (label.length > this.LABEL_MAX_LENGTH)
 		{
-			return Result.Fail(new StringTooLongErrorDTO({ fieldName: "label", value: label, maxLength: this.LABEL_MAX_LENGTH }));
+			return Result.Secondary(new StringTooLongErrorDTO({ fieldName: "label", value: label, maxLength: this.LABEL_MAX_LENGTH }));
 		}
 
-		return Result.Ok(label);
+		return Result.Primary(label);
 	}
 
 	public ValidatePrefix(prefix: string): Result<string, IStringTooShortErrorDTO | IStringTooLongErrorDTO>
 	{
 		if (prefix.length < this.PREFIX_MIN_LENGTH)
 		{
-			return Result.Fail(new StringTooShortErrorDTO({ fieldName: "prefix", value: prefix, minLength: this.PREFIX_MIN_LENGTH }));
+			return Result.Secondary(new StringTooShortErrorDTO({ fieldName: "prefix", value: prefix, minLength: this.PREFIX_MIN_LENGTH }));
 		}
 
 		if (prefix.length > this.PREFIX_MAX_LENGTH)
 		{
-			return Result.Fail(new StringTooLongErrorDTO({ fieldName: "prefix", value: prefix, maxLength: this.PREFIX_MAX_LENGTH }));
+			return Result.Secondary(new StringTooLongErrorDTO({ fieldName: "prefix", value: prefix, maxLength: this.PREFIX_MAX_LENGTH }));
 		}
 
-		return Result.Ok(prefix);
+		return Result.Primary(prefix);
 	}
 
 	public ValidatePosition(position: number): Result<number, INumberOutsideRangeErrorDTO>
 	{
 		if (position < this.POSITION_MIN_VALUE || position > this.POSITION_MAX_VALUE)
 		{
-			return Result.Fail(new NumberOutsideRangeErrorDTO({ fieldName: "position", value: position, minValue: this.POSITION_MIN_VALUE, maxValue: this.POSITION_MAX_VALUE }));
+			return Result.Secondary(new NumberOutsideRangeErrorDTO({ fieldName: "position", value: position, minValue: this.POSITION_MIN_VALUE, maxValue: this.POSITION_MAX_VALUE }));
 		}
 
-		return Result.Ok(position);
+		return Result.Primary(position);
 	}
 }

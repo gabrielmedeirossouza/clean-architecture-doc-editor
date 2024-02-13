@@ -36,7 +36,7 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository
 		const index = this._smartChips.findIndex((item) => item.id === smartChip.id);
 		if (index === -1)
 		{
-			return Result.Fail(new RepositoryCannotFindDTO({
+			return Result.Secondary(new RepositoryCannotFindDTO({
 				searchCriteria: "id",
 				searchValue: smartChip.id,
 				entityName: "SmartChip",
@@ -46,7 +46,7 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository
 
 		this._smartChips[index] = smartChip;
 
-		return Result.Ok(smartChip.id);
+		return Result.Primary(smartChip.id);
 	}
 
 	public async Remove(id: string): Promise<Result<string, IRepositoryCannotFindDTO>>
@@ -54,7 +54,7 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository
 		const index = this._smartChips.findIndex((item) => item.id === id);
 		if (index === -1)
 		{
-			return Result.Fail(new RepositoryCannotFindDTO({
+			return Result.Secondary(new RepositoryCannotFindDTO({
 				searchCriteria: "id",
 				searchValue: id,
 				entityName: "SmartChip",
@@ -64,7 +64,7 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository
 
 		this._smartChips.splice(index, 1);
 
-		return Result.Ok(id);
+		return Result.Primary(id);
 	}
 
 	public async GetSmartChipById(id: string): Promise<Result<IPersistedEntity<ISmartChip>, IRepositoryCannotFindDTO>>
@@ -72,7 +72,7 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository
 		const smartChip = this._smartChips.find((item) => item.id === id);
 		if (!smartChip)
 		{
-			return Result.Fail(new RepositoryCannotFindDTO({
+			return Result.Secondary(new RepositoryCannotFindDTO({
 				searchCriteria: "id",
 				searchValue: id,
 				entityName: "SmartChip",
@@ -80,7 +80,7 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository
 			}));
 		}
 
-		return Result.Ok(smartChip);
+		return Result.Primary(smartChip);
 	}
 
 	public async GetSmartChipList(): Promise<IPersistedEntity<ISmartChip>[]>
@@ -93,7 +93,7 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository
 		const smartChip = this._smartChips.find((item) => item.entity.label === label);
 		if (!smartChip)
 		{
-			return Result.Fail(new RepositoryCannotFindDTO({
+			return Result.Secondary(new RepositoryCannotFindDTO({
 				searchCriteria: "label",
 				searchValue: label,
 				entityName: "SmartChip",
@@ -101,7 +101,7 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository
 			}));
 		}
 
-		return Result.Ok(smartChip);
+		return Result.Primary(smartChip);
 	}
 
 	public async FindByPrefix(prefix: string): Promise<Result<IPersistedEntity<ISmartChip>, IRepositoryCannotFindDTO>>
@@ -109,7 +109,7 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository
 		const smartChip = this._smartChips.find((item) => item.entity.prefix === prefix);
 		if (!smartChip)
 		{
-			return Result.Fail(new RepositoryCannotFindDTO({
+			return Result.Secondary(new RepositoryCannotFindDTO({
 				searchCriteria: "prefix",
 				searchValue: prefix,
 				entityName: "SmartChip",
@@ -117,7 +117,7 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository
 			}));
 		}
 
-		return Result.Ok(smartChip);
+		return Result.Primary(smartChip);
 	}
 
 	public async FindByPosition(position: number): Promise<Result<IPersistedEntity<ISmartChip>, IRepositoryCannotFindDTO>>
@@ -125,7 +125,7 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository
 		const smartChip = this._smartChips.find((item) => item.entity.position === position);
 		if (!smartChip)
 		{
-			return Result.Fail(new RepositoryCannotFindDTO({
+			return Result.Secondary(new RepositoryCannotFindDTO({
 				searchCriteria: "position",
 				searchValue: position.toString(),
 				entityName: "SmartChip",
@@ -133,6 +133,6 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository
 			}));
 		}
 
-		return Result.Ok(smartChip);
+		return Result.Primary(smartChip);
 	}
 }

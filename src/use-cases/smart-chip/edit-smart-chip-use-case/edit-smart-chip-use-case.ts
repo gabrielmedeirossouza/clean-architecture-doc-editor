@@ -34,31 +34,31 @@ export class EditSmartChipUseCase implements IEditSmartChipUseCaseInputPort
 
 		if (label !== undefined)
 		{
-			compose.AddHandler(this._validationService.ValidateLabel(label), (response) => this._outputPort.LabelResponse({ response }));
+			compose.AddHandler(this._validationService.ValidateLabel(label)).On((response) => this._outputPort.LabelResponse({ response }));
 		}
 
 		if (prefix !== undefined)
 		{
-			compose.AddHandler(this._validationService.ValidatePrefix(prefix), (response) => this._outputPort.PrefixResponse({ response }));
+			compose.AddHandler(this._validationService.ValidatePrefix(prefix)).On((response) => this._outputPort.PrefixResponse({ response }));
 		}
 
 		if (position !== undefined)
 		{
-			compose.AddHandler(this._validationService.ValidatePosition(position), (response) => this._outputPort.PositionResponse({ response }));
+			compose.AddHandler(this._validationService.ValidatePosition(position)).On((response) => this._outputPort.PositionResponse({ response }));
 		}
 
-		if (compose.someFailed)
+		if (compose.hasSecondary)
 		{
 			return this._logger.LogInfo("EditSmartChipUseCase: Cannot edit SmartChip entity, because one or more fields are invalid.");
 		}
 
 		const getSmartChipByIdResult = await this._smartChipRepository.GetSmartChipById(id);
-		if (!getSmartChipByIdResult.ok)
+		if (!getSmartChipByIdResult.isPrimary)
 		{
 			this._logger.LogInfo(`EditSmartChipUseCase: Cannot edit SmartChip entity, because it was not found. Id: "${id}"`);
 
 			return this._outputPort.EditResponse({
-				response: Result.Fail(new CannotFindDTO({
+				response: Result.Secondary(new CannotFindDTO({
 					searchCriteria: 'id',
 					searchValue: id,
 					message: "EditSmartChipUseCase: Cannot edit SmartChip entity, because it was not found.",
@@ -67,16 +67,16 @@ export class EditSmartChipUseCase implements IEditSmartChipUseCaseInputPort
 			});
 		}
 
-		const persistedSmartChip = getSmartChipByIdResult.value;
+		const persistedSmartChip = getSmartChipByIdResult.primaryValue;
 		persistedSmartChip.entity.label = label ?? persistedSmartChip.entity.label;
 		persistedSmartChip.entity.prefix = prefix ?? persistedSmartChip.entity.prefix;
 		persistedSmartChip.entity.position = position ?? persistedSmartChip.entity.position;
 
 		const editSmartChipRepositoryResult = await this._smartChipRepository.Edit(persistedSmartChip);
-		if (!editSmartChipRepositoryResult.ok)
+		if (!editSmartChipRepositoryResult.isPrimary)
 		{
 			return this._outputPort.EditResponse({
-				response: Result.Fail(new CannotFindDTO({
+				response: Result.Secondary(new CannotFindDTO({
 					searchCriteria: 'id',
 					searchValue: id,
 					message: "EditSmartChipUseCase: Cannot edit SmartChip entity, because it was not found.",
@@ -89,6 +89,6 @@ export class EditSmartChipUseCase implements IEditSmartChipUseCaseInputPort
 			`EditSmartChipUseCase: SmartChip entity edited successfully. ID: "${id}", Label: "${label}", Prefix: "${prefix}", Position: "${position}"`
 		);
 
-		return this._outputPort.EditResponse({ response: Result.Ok(persistedSmartChip) });
+		return this._outputPort.EditResponse({ response: Result.Primary(persistedSmartChip) });
 	}
 }

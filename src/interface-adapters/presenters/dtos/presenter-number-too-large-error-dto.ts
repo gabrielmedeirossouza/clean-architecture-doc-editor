@@ -1,14 +1,17 @@
-import { IPresenterFieldDTO, IPresenterMessageDTO, IPresenterNumberNegativeErrorDTO, IPresenterNumberOutsideRangeErrorDTO, IPresenterNumberTooLargeErrorDTO, IPresenterNumberTooSmallErrorDTO, IPresenterNumberZeroErrorDTO, IPresenterStringTooLongErrorDTO, IPresenterStringTooShortErrorDTO } from "../../interfaces/presenters/dtos";
+import { IPresenterNumberTooLargeErrorDTO } from "@/interface-adapters/interfaces/presenters/dtos";
 
-interface IPresenterNumberTooLargeErrorDTOConstructorParameters {
+interface IPresenterNumberTooLargeErrorDTOConstructorParameters<T> {
+    code: T;
     fieldName: string;
     message: string;
     value: number;
     maxValue: number;
 }
 
-export class PresenterNumberTooLargeErrorDTO implements IPresenterNumberTooLargeErrorDTO
+export class PresenterNumberTooLargeErrorDTO<T extends string> implements IPresenterNumberTooLargeErrorDTO<T>
 {
+	public readonly code: T;
+
 	public readonly fieldName: string;
 
 	public readonly message: string;
@@ -17,56 +20,12 @@ export class PresenterNumberTooLargeErrorDTO implements IPresenterNumberTooLarge
 
 	public readonly maxValue: number;
 
-	constructor({ fieldName, message, value, maxValue }: IPresenterNumberTooLargeErrorDTOConstructorParameters)
+	constructor({ code, fieldName, message, value, maxValue }: IPresenterNumberTooLargeErrorDTOConstructorParameters<T>)
 	{
+		this.code = code;
 		this.fieldName = fieldName;
 		this.message = message;
 		this.value = value;
 		this.maxValue = maxValue;
-	}
-
-	public IsPresentFieldDTO(): this is IPresenterFieldDTO
-	{
-		return true;
-	}
-
-	public IsPresentMessageDTO(): this is IPresenterMessageDTO
-	{
-		return true;
-	}
-
-	public IsPresentStringTooShortErrorDTO(): this is IPresenterStringTooShortErrorDTO
-	{
-		return false;
-	}
-
-	public IsPresentStringTooLongErrorDTO(): this is IPresenterStringTooLongErrorDTO
-	{
-		return false;
-	}
-
-	public IsPresentNumberZeroErrorDTO(): this is IPresenterNumberZeroErrorDTO
-	{
-		return false;
-	}
-
-	public IsPresentNumberNegativeErrorDTO(): this is IPresenterNumberNegativeErrorDTO
-	{
-		return false;
-	}
-
-	public IsPresentNumberTooLargeErrorDTO(): this is IPresenterNumberTooLargeErrorDTO
-	{
-		return true;
-	}
-
-	public IsPresentNumberTooSmallErrorDTO(): this is IPresenterNumberTooSmallErrorDTO
-	{
-		return false;
-	}
-
-	public IsPresentNumberOutsideRangeErrorDTO(): this is IPresenterNumberOutsideRangeErrorDTO
-	{
-		return false;
 	}
 }

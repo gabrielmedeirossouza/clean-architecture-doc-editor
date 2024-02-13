@@ -27,12 +27,12 @@ export class GetSmartChipUseCase implements IGetSmartChipUseCaseInputPort
 	public async GetSmartChipById({ id }: IGetSmartChipUseCaseRequestModel): Promise<void>
 	{
 		const persistedSmartChipResult = await this._smartChipRepository.GetSmartChipById(id);
-		if (!persistedSmartChipResult.ok)
+		if (!persistedSmartChipResult.isPrimary)
 		{
 			this._logger.LogInfo(`GetSmartChipUseCase: Cannot get SmartChip entity, because it was not found. Id: "${id}"`);
 
 			return this._outputPort.GetSmartChipByIdResponse({
-				response: Result.Fail(new CannotFindDTO({
+				response: Result.Secondary(new CannotFindDTO({
 					searchCriteria: "id",
 					searchValue: id,
 					entityName: "SmartChip",
@@ -44,7 +44,7 @@ export class GetSmartChipUseCase implements IGetSmartChipUseCaseInputPort
 		this._logger.LogInfo(`GetSmartChipUseCase: GetSmartChipById SmartChip with id ${id} found.`);
 
 		return this._outputPort.GetSmartChipByIdResponse({
-			response: Result.Ok(persistedSmartChipResult.value)
+			response: Result.Primary(persistedSmartChipResult.primaryValue)
 		});
 	}
 }

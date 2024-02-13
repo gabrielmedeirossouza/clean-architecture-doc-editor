@@ -18,36 +18,36 @@ export class EditSmartChipPresenter implements IEditSmartChipUseCaseOutputPort
 
 	public EditResponse({ response }: IEditSmartChipUseCaseResponseModel): void
 	{
-		if (response.ok)
+		if (response.isPrimary)
 		{
 			return this._outputPort.editResponse?.Notify(
-				Result.Ok({
-					id: response.value.id,
-					label: response.value.entity.label,
-					prefix: response.value.entity.prefix,
-					position: response.value.entity.position
+				Result.Primary({
+					id: response.primaryValue.id,
+					label: response.primaryValue.entity.label,
+					prefix: response.primaryValue.entity.prefix,
+					position: response.primaryValue.entity.position
 				})
 			);
 		}
 
 		return this._outputPort.editResponse?.Notify(
-			Result.Fail(new PresenterMessageDTO({ message: "Não foi possível editar o Smart Chip." }))
+			Result.Secondary(new PresenterMessageDTO({ message: "Não foi possível editar o Smart Chip." }))
 		);
 	}
 
 	public LabelResponse({ response }: IEditSmartChipUseCaseLabelResponseModel): void
 	{
-		if (response.ok)
+		if (response.isPrimary)
 		{
-			return this._outputPort.labelResponse?.Notify(Result.Ok(response.value));
+			return this._outputPort.labelResponse?.Notify(Result.Primary(response.primaryValue));
 		}
 
-		if (response.error.IsStringTooShortDTO())
+		if (response.secondaryValue.IsStringTooShortDTO())
 		{
-			const { value, minLength } = response.error;
+			const { value, minLength } = response.secondaryValue;
 
 			return this._outputPort.labelResponse?.Notify(
-				Result.Fail(new PresenterStringTooShortErrorDTO({
+				Result.Secondary(new PresenterStringTooShortErrorDTO({
 					fieldName: "Etiqueta",
 					value,
 					minLength,
@@ -56,12 +56,12 @@ export class EditSmartChipPresenter implements IEditSmartChipUseCaseOutputPort
 			);
 		}
 
-		if (response.error.IsStringTooLongDTO())
+		if (response.secondaryValue.IsStringTooLongDTO())
 		{
-			const { value, maxLength } = response.error;
+			const { value, maxLength } = response.secondaryValue;
 
 			return this._outputPort.labelResponse?.Notify(
-				Result.Fail(new PresenterStringTooLongErrorDTO({
+				Result.Secondary(new PresenterStringTooLongErrorDTO({
 					fieldName: "Etiqueta",
 					value,
 					maxLength,
@@ -73,17 +73,17 @@ export class EditSmartChipPresenter implements IEditSmartChipUseCaseOutputPort
 
 	public PrefixResponse({ response }: IEditSmartChipUseCasePrefixResponseModel): void
 	{
-		if (response.ok)
+		if (response.isPrimary)
 		{
-			return this._outputPort.prefixResponse?.Notify(Result.Ok(response.value));
+			return this._outputPort.prefixResponse?.Notify(Result.Primary(response.primaryValue));
 		}
 
-		if (response.error.IsStringTooShortDTO())
+		if (response.secondaryValue.IsStringTooShortDTO())
 		{
-			const { value, minLength } = response.error;
+			const { value, minLength } = response.secondaryValue;
 
 			return this._outputPort.prefixResponse?.Notify(
-				Result.Fail(new PresenterStringTooShortErrorDTO({
+				Result.Secondary(new PresenterStringTooShortErrorDTO({
 					fieldName: "Prefixo",
 					value,
 					minLength,
@@ -92,12 +92,12 @@ export class EditSmartChipPresenter implements IEditSmartChipUseCaseOutputPort
 			);
 		}
 
-		if (response.error.IsStringTooLongDTO())
+		if (response.secondaryValue.IsStringTooLongDTO())
 		{
-			const { value, maxLength } = response.error;
+			const { value, maxLength } = response.secondaryValue;
 
 			return this._outputPort.prefixResponse?.Notify(
-				Result.Fail(new PresenterStringTooLongErrorDTO({
+				Result.Secondary(new PresenterStringTooLongErrorDTO({
 					fieldName: "Prefixo",
 					value,
 					maxLength,
@@ -109,17 +109,17 @@ export class EditSmartChipPresenter implements IEditSmartChipUseCaseOutputPort
 
 	public PositionResponse({ response }: IEditSmartChipUseCasePositionResponseModel): void
 	{
-		if (response.ok)
+		if (response.isPrimary)
 		{
-			return this._outputPort.positionResponse?.Notify(Result.Ok(response.value));
+			return this._outputPort.positionResponse?.Notify(Result.Primary(response.primaryValue));
 		}
 
-		if (response.error.IsNumberOutsideRangeDTO())
+		if (response.secondaryValue.IsNumberOutsideRangeDTO())
 		{
-			const { value, minValue, maxValue } = response.error;
+			const { value, minValue, maxValue } = response.secondaryValue;
 
 			return this._outputPort.positionResponse?.Notify(
-				Result.Fail(new PresenterNumberOutsideRangeErrorDTO({
+				Result.Secondary(new PresenterNumberOutsideRangeErrorDTO({
 					fieldName: "Posição",
 					value,
 					minValue,

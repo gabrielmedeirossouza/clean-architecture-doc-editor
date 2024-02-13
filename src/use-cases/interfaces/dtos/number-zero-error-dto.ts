@@ -1,3 +1,3 @@
 import { IFieldDTO, IMessageDTO } from ".";
 
-export interface INumberZeroErrorDTO extends IFieldDTO, IMessageDTO {}
+export interface INumberZeroErrorDTO<T extends string> extends IFieldDTO<T>, IMessageDTO<T> {}

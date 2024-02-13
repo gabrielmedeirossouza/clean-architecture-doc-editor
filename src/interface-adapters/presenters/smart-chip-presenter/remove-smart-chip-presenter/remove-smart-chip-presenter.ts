@@ -18,11 +18,11 @@ export class RemoveSmartChipPresenter implements IRemoveSmartChipUseCaseOutputPo
 
 	public RemoveResponse({ response }: IRemoveSmartChipUseCaseResponseModel): void
 	{
-		if (response.ok)
+		if (response.isPrimary)
 		{
 			return this._outputPort.removeResponse?.Notify(response);
 		}
 
-		return this._outputPort.removeResponse?.Notify(Result.Fail(new PresenterMessageDTO({ message: "Não foi possível excluir o Smart Chip." })));
+		return this._outputPort.removeResponse?.Notify(Result.Secondary(new PresenterMessageDTO({ message: "Não foi possível excluir o Smart Chip." })));
 	}
 }
