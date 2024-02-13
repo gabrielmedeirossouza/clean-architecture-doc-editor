@@ -2,6 +2,7 @@ import { IGetSmartChipPresenterOutputPort } from "@/interface-adapters/interface
 import { Result } from "@/shared";
 import { IGetSmartChipUseCaseOutputPort, IGetSmartChipUseCaseResponseModel } from "@/use-cases/interfaces/smart-chip";
 import { PresenterMessageDTO } from "../../dtos";
+import { PresenterGenericServiceErrorDTO } from "../../dtos/presenter-generic-service-error-dto";
 
 export interface IGetSmartChipPresenterConstructorParameters {
     outputPort: IGetSmartChipPresenterOutputPort;
@@ -28,6 +29,14 @@ export class GetSmartChipPresenter implements IGetSmartChipUseCaseOutputPort
 			}));
 		}
 
-		return this._outputPort.getSmartChipByIdResponse?.Notify(Result.Secondary(new PresenterMessageDTO({ message: "Não foi possível obter o Smart Chip." })));
+		if (response.secondaryValue.code === "SMART_CHIP_NOT_FOUND")
+		{
+			return this._outputPort.getSmartChipByIdResponse?.Notify(Result.Secondary(new PresenterMessageDTO({ code: "SMART_CHIP_NOT_FOUND", message: "Não foi possível obter o Smart Chip." })));
+		}
+
+		if (response.secondaryValue.code === "GENERIC_SERVICE_ERROR")
+		{
+			return this._outputPort.getSmartChipByIdResponse?.Notify(Result.Secondary(new PresenterGenericServiceErrorDTO()));
+		}
 	}
 }

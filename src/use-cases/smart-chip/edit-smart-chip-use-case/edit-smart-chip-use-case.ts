@@ -34,34 +34,33 @@ export class EditSmartChipUseCase implements IEditSmartChipUseCaseInputPort
 
 		if (label !== undefined)
 		{
-			compose.AddHandler(this._validationService.ValidateLabel(label)).On((response) => this._outputPort.LabelResponse({ response }));
+			compose.AddHandler(this._validationService.ValidateLabel(label)).OnSecondary((response) => this._outputPort.EditResponse({ response }));
 		}
 
 		if (prefix !== undefined)
 		{
-			compose.AddHandler(this._validationService.ValidatePrefix(prefix)).On((response) => this._outputPort.PrefixResponse({ response }));
+			compose.AddHandler(this._validationService.ValidatePrefix(prefix)).OnSecondary((response) => this._outputPort.EditResponse({ response }));
 		}
 
 		if (position !== undefined)
 		{
-			compose.AddHandler(this._validationService.ValidatePosition(position)).On((response) => this._outputPort.PositionResponse({ response }));
+			compose.AddHandler(this._validationService.ValidatePosition(position)).OnSecondary((response) => this._outputPort.EditResponse({ response }));
 		}
 
 		if (compose.hasSecondary)
 		{
-			return this._logger.LogInfo("EditSmartChipUseCase: Cannot edit SmartChip entity, because one or more fields are invalid.");
+			return;
 		}
 
 		const getSmartChipByIdResult = await this._smartChipRepository.GetSmartChipById(id);
 		if (!getSmartChipByIdResult.isPrimary)
 		{
-			this._logger.LogInfo(`EditSmartChipUseCase: Cannot edit SmartChip entity, because it was not found. Id: "${id}"`);
-
 			return this._outputPort.EditResponse({
 				response: Result.Secondary(new CannotFindDTO({
+					code: "SMART_CHIP_NOT_FOUND",
 					searchCriteria: 'id',
 					searchValue: id,
-					message: "EditSmartChipUseCase: Cannot edit SmartChip entity, because it was not found.",
+					message: `EditSmartChipUseCase: Cannot edit SmartChip entity with id ${id}, because it was not found.`,
 					entityName: "SmartChip"
 				}))
 			});
@@ -77,17 +76,14 @@ export class EditSmartChipUseCase implements IEditSmartChipUseCaseInputPort
 		{
 			return this._outputPort.EditResponse({
 				response: Result.Secondary(new CannotFindDTO({
+					code: "SMART_CHIP_NOT_FOUND",
 					searchCriteria: 'id',
 					searchValue: id,
-					message: "EditSmartChipUseCase: Cannot edit SmartChip entity, because it was not found.",
+					message: `EditSmartChipUseCase: Cannot edit SmartChip entity with id ${id}, because it was not found.`,
 					entityName: "SmartChip"
 				}))
 			});
 		}
-
-		this._logger.LogInfo(
-			`EditSmartChipUseCase: SmartChip entity edited successfully. ID: "${id}", Label: "${label}", Prefix: "${prefix}", Position: "${position}"`
-		);
 
 		return this._outputPort.EditResponse({ response: Result.Primary(persistedSmartChip) });
 	}

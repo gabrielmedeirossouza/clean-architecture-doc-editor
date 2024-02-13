@@ -15,5 +15,9 @@ export interface IGetSmartChipUseCaseRequestModel {
 }
 
 export interface IGetSmartChipUseCaseResponseModel {
-    response: Result<IPersistedEntity<ISmartChip>, ICannotFindDTO<"SMART_CHIP_NOT_FOUND">>;
+    response: Result<
+        IPersistedEntity<ISmartChip>,
+        ICannotFindDTO<"SMART_CHIP_NOT_FOUND"> |
+        ICannotFindDTO<"GENERIC_SERVICE_ERROR">
+    >;
 }

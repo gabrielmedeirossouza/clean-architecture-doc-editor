@@ -1,7 +1,8 @@
 import { IEditSmartChipPresenterOutputPort } from "@/interface-adapters/interfaces/presenters/smart-chip-presenter";
 import { Result } from "@/shared";
-import { IEditSmartChipUseCaseLabelResponseModel, IEditSmartChipUseCaseOutputPort, IEditSmartChipUseCasePositionResponseModel, IEditSmartChipUseCasePrefixResponseModel, IEditSmartChipUseCaseResponseModel } from "@/use-cases/interfaces/smart-chip";
-import { PresenterMessageDTO, PresenterStringTooLongErrorDTO, PresenterStringTooShortErrorDTO, PresenterNumberOutsideRangeErrorDTO } from "../../dtos";
+import { IEditSmartChipUseCaseOutputPort, IEditSmartChipUseCaseResponseModel } from "@/use-cases/interfaces/smart-chip";
+import {  PresenterStringTooLongErrorDTO, PresenterStringTooShortErrorDTO, PresenterNumberOutsideRangeErrorDTO } from "../../dtos";
+import { PresenterGenericServiceErrorDTO } from "../../dtos/presenter-generic-service-error-dto";
 
 export interface IEditSmartChipPresenterConstructorParameters {
     outputPort: IEditSmartChipPresenterOutputPort;
@@ -30,102 +31,76 @@ export class EditSmartChipPresenter implements IEditSmartChipUseCaseOutputPort
 			);
 		}
 
-		return this._outputPort.editResponse?.Notify(
-			Result.Secondary(new PresenterMessageDTO({ message: "Não foi possível editar o Smart Chip." }))
-		);
-	}
-
-	public LabelResponse({ response }: IEditSmartChipUseCaseLabelResponseModel): void
-	{
-		if (response.isPrimary)
+		if (response.secondaryValue.code === "LABEL_TOO_SHORT")
 		{
-			return this._outputPort.labelResponse?.Notify(Result.Primary(response.primaryValue));
-		}
-
-		if (response.secondaryValue.IsStringTooShortDTO())
-		{
-			const { value, minLength } = response.secondaryValue;
-
-			return this._outputPort.labelResponse?.Notify(
+			return this._outputPort.editResponse?.Notify(
 				Result.Secondary(new PresenterStringTooShortErrorDTO({
+					code: "LABEL_TOO_SHORT",
 					fieldName: "Etiqueta",
-					value,
-					minLength,
-					message: `O campo etiqueta deve ter no mínimo ${minLength} caracteres.`
+					message: `O campo Etiqueta deve ter no mínimo ${response.secondaryValue.minLength} caracteres.`,
+					value: response.secondaryValue.value,
+					minLength: response.secondaryValue.minLength
 				}))
 			);
 		}
 
-		if (response.secondaryValue.IsStringTooLongDTO())
+		if (response.secondaryValue.code === "LABEL_TOO_LONG")
 		{
-			const { value, maxLength } = response.secondaryValue;
-
-			return this._outputPort.labelResponse?.Notify(
+			return this._outputPort.editResponse?.Notify(
 				Result.Secondary(new PresenterStringTooLongErrorDTO({
+					code: "LABEL_TOO_LONG",
 					fieldName: "Etiqueta",
-					value,
-					maxLength,
-					message: `O campo etiqueta deve ter no máximo ${maxLength} caracteres.`
+					message: `O campo Etiqueta deve ter no máximo ${response.secondaryValue.maxLength} caracteres.`,
+					value: response.secondaryValue.value,
+					maxLength: response.secondaryValue.maxLength
 				}))
 			);
 		}
-	}
 
-	public PrefixResponse({ response }: IEditSmartChipUseCasePrefixResponseModel): void
-	{
-		if (response.isPrimary)
+		if (response.secondaryValue.code === "PREFIX_TOO_SHORT")
 		{
-			return this._outputPort.prefixResponse?.Notify(Result.Primary(response.primaryValue));
-		}
-
-		if (response.secondaryValue.IsStringTooShortDTO())
-		{
-			const { value, minLength } = response.secondaryValue;
-
-			return this._outputPort.prefixResponse?.Notify(
+			return this._outputPort.editResponse?.Notify(
 				Result.Secondary(new PresenterStringTooShortErrorDTO({
+					code: "PREFIX_TOO_SHORT",
 					fieldName: "Prefixo",
-					value,
-					minLength,
-					message: `O campo prefixo deve ter no mínimo ${minLength} caracteres.`
+					message: `O campo Prefixo deve ter no mínimo ${response.secondaryValue.minLength} caracteres.`,
+					value: response.secondaryValue.value,
+					minLength: response.secondaryValue.minLength
 				}))
 			);
 		}
 
-		if (response.secondaryValue.IsStringTooLongDTO())
+		if (response.secondaryValue.code === "PREFIX_TOO_LONG")
 		{
-			const { value, maxLength } = response.secondaryValue;
-
-			return this._outputPort.prefixResponse?.Notify(
+			return this._outputPort.editResponse?.Notify(
 				Result.Secondary(new PresenterStringTooLongErrorDTO({
+					code: "PREFIX_TOO_LONG",
 					fieldName: "Prefixo",
-					value,
-					maxLength,
-					message: `O campo prefixo deve ter no máximo ${maxLength} caracteres.`
+					message: `O campo Prefixo deve ter no máximo ${response.secondaryValue.maxLength} caracteres.`,
+					value: response.secondaryValue.value,
+					maxLength: response.secondaryValue.maxLength
 				}))
 			);
 		}
-	}
 
-	public PositionResponse({ response }: IEditSmartChipUseCasePositionResponseModel): void
-	{
-		if (response.isPrimary)
+		if (response.secondaryValue.code === "POSITION_OUTSIDE_RANGE")
 		{
-			return this._outputPort.positionResponse?.Notify(Result.Primary(response.primaryValue));
-		}
-
-		if (response.secondaryValue.IsNumberOutsideRangeDTO())
-		{
-			const { value, minValue, maxValue } = response.secondaryValue;
-
-			return this._outputPort.positionResponse?.Notify(
+			return this._outputPort.editResponse?.Notify(
 				Result.Secondary(new PresenterNumberOutsideRangeErrorDTO({
+					code: "POSITION_OUTSIDE_RANGE",
 					fieldName: "Posição",
-					value,
-					minValue,
-					maxValue,
-					message: `O campo posição deve estar entre ${minValue} e ${maxValue}.`
+					message: `O campo Posição deve estar entre ${response.secondaryValue.minValue} e ${response.secondaryValue.maxValue}.`,
+					value: response.secondaryValue.value,
+					minValue: response.secondaryValue.minValue,
+					maxValue: response.secondaryValue.maxValue
 				}))
+			);
+		}
+
+		if (response.secondaryValue.code === "SMART_CHIP_NOT_FOUND")
+		{
+			return this._outputPort.editResponse?.Notify(
+				Result.Secondary(new PresenterGenericServiceErrorDTO())
 			);
 		}
 	}

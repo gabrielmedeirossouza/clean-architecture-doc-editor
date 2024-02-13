@@ -1,8 +1,9 @@
 import { ICreateSmartChipPresenterOutputPort } from "@/interface-adapters/interfaces/presenters/smart-chip-presenter";
 import { Result } from "@/shared";
-import { ICreateSmartChipUseCaseLabelResponseModel, ICreateSmartChipUseCaseOutputPort, ICreateSmartChipUseCasePositionResponseModel, ICreateSmartChipUseCasePrefixResponseModel, ICreateSmartChipUseCaseResponseModel } from "@/use-cases/interfaces/smart-chip";
-import { PresenterMessageDTO, PresenterStringTooLongErrorDTO, PresenterStringTooShortErrorDTO } from "../../dtos";
+import {  ICreateSmartChipUseCaseOutputPort, ICreateSmartChipUseCaseResponseModel } from "@/use-cases/interfaces/smart-chip";
+import { PresenterStringTooLongErrorDTO, PresenterStringTooShortErrorDTO } from "../../dtos";
 import { PresenterNumberOutsideRangeErrorDTO } from "../../dtos/presenter-number-outside-range-error-dto";
+import { PresenterGenericServiceErrorDTO } from "../../dtos/presenter-generic-service-error-dto";
 
 export class CreateSmartChipPresenter implements ICreateSmartChipUseCaseOutputPort
 {
@@ -23,71 +24,76 @@ export class CreateSmartChipPresenter implements ICreateSmartChipUseCaseOutputPo
 			}));
 		}
 
-		this._outputPort.createResponse?.Notify(
-			Result.Secondary(new PresenterMessageDTO({ message: "Smart Chip não pode ser criado." }))
-		);
-	}
-
-	public LabelResponse({ response }: ICreateSmartChipUseCaseLabelResponseModel): void
-	{
-		if (response.isPrimary)
+		if (response.secondaryValue.code === "LABEL_TOO_SHORT")
 		{
-			return this._outputPort.labelResponse?.Notify(Result.Primary(response.primaryValue));
-		}
-
-		if (response.secondaryValue.IsStringTooShortDTO())
-		{
-			const { value, minLength } = response.secondaryValue;
-			this._outputPort.labelResponse?.Notify(
-				Result.Secondary(new PresenterStringTooShortErrorDTO({ fieldName: "Etiqueta", message: `O Campo etiqueta deve ter pelo menos ${minLength} caracteres.`, value, minLength }))
+			return this._outputPort.createResponse?.Notify(
+				Result.Secondary(new PresenterStringTooShortErrorDTO({
+					code: "LABEL_TOO_SHORT",
+					fieldName: "Etiqueta",
+					message: `O Campo Etiqueta deve ter pelo menos ${response.secondaryValue.minLength} caracteres.`,
+					value: response.secondaryValue.value,
+					minLength: response.secondaryValue.minLength
+				}))
 			);
 		}
 
-		if (response.secondaryValue.IsStringTooLongDTO())
+		if (response.secondaryValue.code === "LABEL_TOO_LONG")
 		{
-			const { value, maxLength } = response.secondaryValue;
-			this._outputPort.labelResponse?.Notify(
-				Result.Secondary(new PresenterStringTooLongErrorDTO({ fieldName: "Etiqueta", message: `O Campo etiqueta deve ter no máximo ${maxLength} caracteres.`, value, maxLength }))
-			);
-		}
-	}
-
-	public PrefixResponse({ response }: ICreateSmartChipUseCasePrefixResponseModel): void
-	{
-		if (response.isPrimary)
-		{
-			return this._outputPort.prefixResponse?.Notify(Result.Primary(response.primaryValue));
-		}
-
-		if (response.secondaryValue.IsStringTooShortDTO())
-		{
-			const { value, minLength } = response.secondaryValue;
-			this._outputPort.prefixResponse?.Notify(
-				Result.Secondary(new PresenterStringTooShortErrorDTO({ fieldName: "Prefixo", message: `O Campo prefixo deve ter pelo menos ${minLength} caracteres.`, value, minLength }))
+			return this._outputPort.createResponse?.Notify(
+				Result.Secondary(new PresenterStringTooLongErrorDTO({
+					code: "LABEL_TOO_LONG",
+					fieldName: "Etiqueta",
+					message: `O Campo Etiqueta deve ter no máximo ${response.secondaryValue.maxLength} caracteres.`,
+					value: response.secondaryValue.value,
+					maxLength: response.secondaryValue.maxLength
+				}))
 			);
 		}
 
-		if (response.secondaryValue.IsStringTooLongDTO())
+		if (response.secondaryValue.code === "PREFIX_TOO_SHORT")
 		{
-			const { value, maxLength } = response.secondaryValue;
-			this._outputPort.prefixResponse?.Notify(
-				Result.Secondary(new PresenterStringTooLongErrorDTO({ fieldName: "Prefixo", message: `O Campo prefixo deve ter no máximo ${maxLength} caracteres.`, value, maxLength }))
+			return this._outputPort.createResponse?.Notify(
+				Result.Secondary(new PresenterStringTooShortErrorDTO({
+					code: "PREFIX_TOO_SHORT",
+					fieldName: "Prefixo",
+					message: `O Campo Prefixo deve ter pelo menos ${response.secondaryValue.minLength} caracteres.`,
+					value: response.secondaryValue.value,
+					minLength: response.secondaryValue.minLength
+				}))
 			);
 		}
-	}
 
-	public PositionResponse({ response }: ICreateSmartChipUseCasePositionResponseModel): void
-	{
-		if (response.isPrimary)
+		if (response.secondaryValue.code === "PREFIX_TOO_LONG")
 		{
-			return this._outputPort.positionResponse?.Notify(Result.Primary(response.primaryValue));
+			return this._outputPort.createResponse?.Notify(
+				Result.Secondary(new PresenterStringTooLongErrorDTO({
+					code: "PREFIX_TOO_LONG",
+					fieldName: "Prefixo",
+					message: `O Campo Prefixo deve ter no máximo ${response.secondaryValue.maxLength} caracteres.`,
+					value: response.secondaryValue.value,
+					maxLength: response.secondaryValue.maxLength
+				}))
+			);
 		}
 
-		if (response.secondaryValue.IsNumberOutsideRangeDTO())
+		if (response.secondaryValue.code === "POSITION_OUTSIDE_RANGE")
 		{
-			const { value, minValue, maxValue } = response.secondaryValue;
-			this._outputPort.positionResponse?.Notify(
-				Result.Secondary(new PresenterNumberOutsideRangeErrorDTO({ fieldName: "Posição", message: `O Campo posição deve ser entre ${minValue} e ${maxValue}.`, value, minValue, maxValue }))
+			return this._outputPort.createResponse?.Notify(
+				Result.Secondary(new PresenterNumberOutsideRangeErrorDTO({
+					code: "POSITION_OUTSIDE_RANGE",
+					fieldName: "Posição",
+					message: `O Campo Posição deve ser entre ${response.secondaryValue.minValue} e ${response.secondaryValue.maxValue}.`,
+					value: response.secondaryValue.value,
+					minValue: response.secondaryValue.minValue,
+					maxValue: response.secondaryValue.maxValue
+				}))
+			);
+		}
+
+		if (response.secondaryValue.code === "GENERIC_SERVICE_ERROR")
+		{
+			return this._outputPort.createResponse?.Notify(
+				Result.Secondary(new PresenterGenericServiceErrorDTO())
 			);
 		}
 	}

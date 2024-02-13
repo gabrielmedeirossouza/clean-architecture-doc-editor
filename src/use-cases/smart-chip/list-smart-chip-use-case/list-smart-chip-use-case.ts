@@ -26,8 +26,6 @@ export class ListSmartChipUseCase implements IListSmartChipUseCaseInputPort
 	{
 		const smartChipList = await this._smartChipRepository.GetSmartChipList();
 
-		this._logger.LogInfo("ListSmartChipUseCase: Smart chip list retrieved successfully.");
-
 		return this._outputPort.ListResponse({ response: smartChipList });
 	}
 }

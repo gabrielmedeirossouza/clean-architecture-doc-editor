@@ -1,17 +1,9 @@
-import { IPresenterMessageDTO } from "@/interface-adapters/interfaces/presenters/dtos";
+import { PresenterMessageDTO } from "./presenter-message-dto";
 
-interface IPresenterGenericServiceErrorDTOConstructorParameters<T> {
-    code: T;
-}
-
-export class PresenterGenericServiceErrorDTO<T extends string> implements IPresenterMessageDTO<T>
+export class PresenterGenericServiceErrorDTO extends PresenterMessageDTO<"GENERIC_SERVICE_ERROR">
 {
-	public readonly code: T;
-
-	public readonly message = "Ocorreu um problema em nossos serviços. Por favor, tente novamente mais tarde.";
-
-	constructor({ code }: IPresenterGenericServiceErrorDTOConstructorParameters<T>)
+	constructor()
 	{
-		this.code = code;
+		super({ code: "GENERIC_SERVICE_ERROR", message: "Ocorreu um problema em nossos serviços. Por favor, tente novamente mais tarde." });
 	}
 }

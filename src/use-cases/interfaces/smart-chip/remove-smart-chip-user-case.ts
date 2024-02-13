@@ -14,6 +14,10 @@ export interface IRemoveSmartChipUseCaseRequestModel {
 }
 
 export interface IRemoveSmartChipUseCaseResponseModel {
-    response: Result<string, ICannotFindDTO<"SMART_CHIP_NOT_FOUND">>;
+    response: Result<
+        string,
+        ICannotFindDTO<"SMART_CHIP_NOT_FOUND"> |
+        ICannotFindDTO<"GENERIC_SERVICE_ERROR">
+    >;
 }
 

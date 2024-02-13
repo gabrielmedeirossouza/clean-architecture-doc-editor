@@ -20,6 +20,9 @@ export interface ICreateSmartChipUseCaseResponseModel {
     response: Result<
         IPersistedEntity<ISmartChip>,
         IMessageDTO<"GENERIC_SERVICE_ERROR"> |
+        IMessageDTO<"LABEL_ALREADY_EXISTS"> |
+        IMessageDTO<"PREFIX_ALREADY_EXISTS"> |
+        IMessageDTO<"POSITION_ALREADY_EXISTS"> |
         IStringTooShortErrorDTO<"LABEL_TOO_SHORT"> |
         IStringTooShortErrorDTO<"PREFIX_TOO_SHORT"> |
         IStringTooLongErrorDTO<"LABEL_TOO_LONG"> |
