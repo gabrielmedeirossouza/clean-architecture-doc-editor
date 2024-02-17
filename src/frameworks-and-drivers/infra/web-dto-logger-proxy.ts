@@ -29,7 +29,7 @@ export namespace ConcreteWebDtoLoggerProxy
     	{
     		if (this._logInfoEnabled)
     		{
-    			console.info(dto.message);
+    			console.info(`[${this.origin}]\n\n${dto.message}`);
     		}
 
     		return dto;
@@ -39,7 +39,7 @@ export namespace ConcreteWebDtoLoggerProxy
     	{
     		if (this._logErrorEnabled)
     		{
-    			console.error(dto.message);
+    			console.error(`[${this.origin}]\n\n${dto.message}`);
     		}
 
     		return dto;

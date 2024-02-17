@@ -28,7 +28,6 @@ export namespace ConcreteListSmartChipPresenter {
     			id: smartChip.id,
     			label: smartChip.entity.label,
     			prefix: smartChip.entity.prefix,
-    			position: smartChip.entity.position
     		}));
     	}
     }

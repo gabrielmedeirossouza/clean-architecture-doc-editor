@@ -2,16 +2,45 @@
 <html lang="en">
 
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.0-beta.0/dist/quill.snow.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
 
     <title>Doc Editor</title>
 </head>
 
 <body>
-    <h1>Hello Doc Editor!</h1>
+    <section class="toaster-area"></section>
+
+    <div class="smart-chip-area">
+        <button type="button" class="btn-create">Criar</button>
+        <ul class="list-area">
+            <li class="item">
+                <form class="form">
+                    <input value="Referência" disabled />
+                    <input value="RF" disabled />
+                    <button type="button" class="btn-start-edit">Editar</button>
+                    <section class="actions hidden">
+                        <button type="button" class="btn-remove danger">Remover</button>
+                        <button type="button" class="btn-confirm-edit" disabled>Alterar</button>
+                    </section>
+                </form>
+            </li>
+        </ul>
+
+        <section class="create-area">
+            <form class="form hidden">
+                <input placeholder="Etiqueta" />
+                <input placeholder="Prefixo" />
+                <button type="button" class="btn-cancel">Cancelar</button>
+                <button type="button" class="btn-confirm">Confirmar</button>
+            </form>
+        </section>
+    </div>
+
     <script type="module" src="/src/frameworks-and-drivers/ui/main.ts"></script>
 </body>
 

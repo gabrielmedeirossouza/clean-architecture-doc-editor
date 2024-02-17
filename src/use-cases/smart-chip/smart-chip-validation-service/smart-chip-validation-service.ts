@@ -1,5 +1,5 @@
 import { Result } from "@/cross-cutting-concerns/result";
-import { ConcreteNumberOutsideRangeErrorDto, ConcreteStringTooLongErrorDto, ConcreteStringTooShortErrorDto } from "@/use-cases/dtos";
+import { ConcreteStringTooLongErrorDto, ConcreteStringTooShortErrorDto } from "@/use-cases/dtos";
 import { SmartChipValidationService } from "@/use-cases/interfaces/smart-chip";
 
 export namespace ConcreteSmartChipValidationService {
@@ -76,26 +76,6 @@ export namespace ConcreteSmartChipValidationService {
 
     		return {
     			response: Result.Primary(prefix)
-    		};
-    	}
-
-    	public ValidatePosition({ position }: SmartChipValidationService.ValidatePositionRequestModel): SmartChipValidationService.ValidatePositionResponseModel
-    	{
-    		if (position < this._POSITION_MIN_VALUE || position > this._POSITION_MAX_VALUE)
-    		{
-    			return {
-    				response: Result.Secondary(new ConcreteNumberOutsideRangeErrorDto.Dto({
-    					code: SmartChipValidationService.Code.POSITION_OUTSIDE_RANGE,
-    					fieldName: "position",
-    					value: position,
-    					minValue: this._POSITION_MIN_VALUE,
-    					maxValue: this._POSITION_MAX_VALUE
-    				}))
-    			};
-    		}
-
-    		return {
-    			response: Result.Primary(position)
     		};
     	}
     }

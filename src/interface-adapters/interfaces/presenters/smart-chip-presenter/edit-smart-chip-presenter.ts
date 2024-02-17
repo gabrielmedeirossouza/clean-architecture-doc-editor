@@ -1,5 +1,5 @@
 import { Observable, Result } from "@/cross-cutting-concerns";
-import { PresenterMessageDto, PresenterNumberOutsideRangeErrorDto, PresenterStringTooLongErrorDto, PresenterStringTooShortErrorDto } from "@/interface-adapters/interfaces/presenters/dtos";
+import { PresenterMessageDto, PresenterStringTooLongErrorDto, PresenterStringTooShortErrorDto } from "@/interface-adapters/interfaces/presenters/dtos";
 import { SmartChipViewModel } from "./view-model";
 
 export namespace EditSmartChipPresenter {
@@ -10,12 +10,10 @@ export namespace EditSmartChipPresenter {
             PresenterMessageDto<Code.SMART_CHIP_NOT_FOUND> |
             PresenterMessageDto<Code.LABEL_ALREADY_EXISTS> |
             PresenterMessageDto<Code.PREFIX_ALREADY_EXISTS> |
-            PresenterMessageDto<Code.POSITION_ALREADY_EXISTS> |
             PresenterStringTooShortErrorDto<Code.LABEL_TOO_SHORT> |
             PresenterStringTooShortErrorDto<Code.PREFIX_TOO_SHORT> |
             PresenterStringTooLongErrorDto<Code.LABEL_TOO_LONG> |
-            PresenterStringTooLongErrorDto<Code.PREFIX_TOO_LONG> |
-            PresenterNumberOutsideRangeErrorDto<Code.POSITION_OUTSIDE_RANGE>
+            PresenterStringTooLongErrorDto<Code.PREFIX_TOO_LONG>
         >>;
     }
 
@@ -24,11 +22,9 @@ export namespace EditSmartChipPresenter {
         SMART_CHIP_NOT_FOUND,
         LABEL_ALREADY_EXISTS,
         PREFIX_ALREADY_EXISTS,
-        POSITION_ALREADY_EXISTS,
         LABEL_TOO_SHORT,
         PREFIX_TOO_SHORT,
         LABEL_TOO_LONG,
         PREFIX_TOO_LONG,
-        POSITION_OUTSIDE_RANGE
     }
 }

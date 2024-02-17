@@ -29,7 +29,7 @@ export namespace ConcreteEditSmartChipUseCase {
     		this._validationService = validationService;
     	}
 
-    	public async Edit({ id, label, prefix, position }: EditSmartChipUseCase.EditRequestModel): Promise<void>
+    	public async Edit({ id, label, prefix }: EditSmartChipUseCase.EditRequestModel): Promise<void>
     	{
     		const compose = Result.compose;
 
@@ -42,11 +42,6 @@ export namespace ConcreteEditSmartChipUseCase {
     		if (prefix !== undefined)
     		{
     			compose.AddHandler(this._validationService.ValidatePrefix({ prefix }).response).OnSecondary((response) => this._outputPort.EditResponse({ response: Result.Secondary(this._dtoLogger.ProxyInfo(response)) }));
-    		}
-
-    		if (position !== undefined)
-    		{
-    			compose.AddHandler(this._validationService.ValidatePosition({ position }).response).OnSecondary((response) => this._outputPort.EditResponse({ response: Result.Secondary(this._dtoLogger.ProxyInfo(response)) }));
     		}
 
     		if (compose.hasSecondary)
@@ -71,7 +66,6 @@ export namespace ConcreteEditSmartChipUseCase {
     		const persistedSmartChip = idResponse.primaryValue;
     		persistedSmartChip.entity.label = label ?? persistedSmartChip.entity.label;
     		persistedSmartChip.entity.prefix = prefix ?? persistedSmartChip.entity.prefix;
-    		persistedSmartChip.entity.position = position ?? persistedSmartChip.entity.position;
 
     		const { response: editResult } = await this._smartChipRepository.Edit({ smartChip: persistedSmartChip });
     		if (!editResult.isPrimary)

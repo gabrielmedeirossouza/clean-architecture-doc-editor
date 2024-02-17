@@ -147,26 +147,5 @@ export namespace ConcreteSmartChipInMemoryRepository {
     			response: Result.Primary(smartChip)
     		};
     	}
-
-    	public async FindByPosition({ position }: SmartChipRepository.FindByPositionRequestModel): Promise<SmartChipRepository.FindByPositionResponseModel>
-    	{
-    		const smartChip = this._smartChips.find((item) => item.entity.position === position);
-    		if (!smartChip)
-    		{
-    			return {
-    				response: Result.Secondary(new ConcreteRepositoryCannotFindDto.Dto({
-    					code: SmartChipRepository.Code.SMART_CHIP_NOT_FOUND,
-    					searchCriteria: "position",
-    					searchValue: position.toString(),
-    					entityName: "SmartChip",
-    					message: `Cannot find SmartChip entity with position ${position}, because it was not found.`,
-    				}))
-    			};
-    		}
-
-    		return {
-    			response: Result.Primary(smartChip)
-    		};
-    	}
     }
 }

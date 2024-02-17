@@ -65,9 +65,6 @@
                 "newlines-between": "never"
             }
         ],
-        "import/no-internal-modules": ["error", {
-            "allow": ["@/**"]
-        }],
         "import/extensions": [
             "error",
             "ignorePackages",

@@ -1,7 +1,7 @@
 import { Result } from "@/cross-cutting-concerns";
 import { EditSmartChipUseCase, SmartChipValidationService } from "@/use-cases/interfaces/smart-chip";
 import { EditSmartChipPresenter } from "@/interface-adapters/interfaces/presenters/smart-chip-presenter";
-import { ConcretePresenterNumberOutsideRangeErrorDto, ConcretePresenterStringTooLongErrorDto, ConcretePresenterStringTooShortErrorDto } from "@/interface-adapters/presenters/dtos";
+import { ConcretePresenterStringTooLongErrorDto, ConcretePresenterStringTooShortErrorDto } from "@/interface-adapters/presenters/dtos";
 
 export namespace ConcreteEditSmartChipPresenter {
     export interface ConstructorParameters {
@@ -26,7 +26,6 @@ export namespace ConcreteEditSmartChipPresenter {
     					id: response.primaryValue.id,
     					label: response.primaryValue.entity.label,
     					prefix: response.primaryValue.entity.prefix,
-    					position: response.primaryValue.entity.position
     				})
     			);
     		}
@@ -79,20 +78,6 @@ export namespace ConcreteEditSmartChipPresenter {
     					message: `O campo Prefixo deve ter no máximo ${response.secondaryValue.maxLength} caracteres.`,
     					value: response.secondaryValue.value,
     					maxLength: response.secondaryValue.maxLength
-    				}))
-    			);
-    		}
-
-    		if (response.secondaryValue.code === SmartChipValidationService.Code.POSITION_OUTSIDE_RANGE)
-    		{
-    			return this._outputPort.editResponse?.Notify(
-    				Result.Secondary(new ConcretePresenterNumberOutsideRangeErrorDto.Dto({
-    					code: EditSmartChipPresenter.Code.POSITION_OUTSIDE_RANGE,
-    					fieldName: "Posição",
-    					message: `O campo Posição deve estar entre ${response.secondaryValue.minValue} e ${response.secondaryValue.maxValue}.`,
-    					value: response.secondaryValue.value,
-    					minValue: response.secondaryValue.minValue,
-    					maxValue: response.secondaryValue.maxValue
     				}))
     			);
     		}

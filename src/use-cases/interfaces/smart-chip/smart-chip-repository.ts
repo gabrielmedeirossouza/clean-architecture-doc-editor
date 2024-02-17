@@ -11,7 +11,6 @@ export namespace SmartChipRepository {
         List(): Promise<ListResponseModel>;
         FindByLabel(requestModel: FindByLabelRequestModel): Promise<FindByLabelResponseModel>;
         FindByPrefix(requestModel: FindByPrefixRequestModel): Promise<FindByPrefixResponseModel>;
-        FindByPosition(requestModel: FindByPositionRequestModel): Promise<FindByPositionResponseModel>;
     }
 
     export interface CreateRequestModel {
@@ -63,14 +62,6 @@ export namespace SmartChipRepository {
     }
 
     export interface FindByPrefixResponseModel {
-        response: Result<PersistedEntity<SmartChip>, RepositoryCannotFindDto<Code.SMART_CHIP_NOT_FOUND>>;
-    }
-
-    export interface FindByPositionRequestModel {
-        position: number;
-    }
-
-    export interface FindByPositionResponseModel {
         response: Result<PersistedEntity<SmartChip>, RepositoryCannotFindDto<Code.SMART_CHIP_NOT_FOUND>>;
     }
 

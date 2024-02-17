@@ -26,7 +26,6 @@ export namespace ConcreteGetSmartChipPresenter {
     				id: response.primaryValue.id,
     				label: response.primaryValue.entity.label,
     				prefix: response.primaryValue.entity.prefix,
-    				position: response.primaryValue.entity.position
     			}));
     		}
 

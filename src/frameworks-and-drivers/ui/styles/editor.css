@@ -1,0 +1,38 @@
+.smart-chip-area {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    width: 800px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+
+    .btn-create {
+        align-self: flex-end;
+    }
+
+    .list-area {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .item {
+            display: flex;
+            gap: 20px;
+
+            .form {
+                display: flex;
+                gap: 10px;
+
+                .actions {
+                    display: flex;
+                    gap: 10px;
+
+                    &.hidden {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+}

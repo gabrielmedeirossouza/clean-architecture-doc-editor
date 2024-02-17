@@ -1,7 +1,11 @@
+import './styles/global.css';
+import './styles/editor.css';
+
 import { ConcreteWebDtoLoggerProxy, WebIdGenerator } from "@/frameworks-and-drivers/infra";
 import { ConcreteCreateSmartChipUseCase, ConcreteSmartChipValidationService } from "@/use-cases/smart-chip";
 import { ConcreteCreateSmartChipPresenter } from "@/interface-adapters/presenters/smart-chip-presenter";
 import { ConcreteSmartChipInMemoryRepository } from "@/interface-adapters/repositories/smart-chip-repository";
+import { showToast } from './toaster';
 
 const dtoLogger = new ConcreteWebDtoLoggerProxy.Proxy({ origin: "CreateSmartChipUseCase" });
 const smartChipValidationService = new ConcreteSmartChipValidationService.Service();
@@ -19,11 +23,14 @@ const createSmartChipUseCase = new ConcreteCreateSmartChipUseCase.UseCase({
 await createSmartChipUseCase.Create({
 	label: "rd",
 	prefix: "RF",
-	position: 1
 });
 
 await createSmartChipUseCase.Create({
 	label: "Referência",
 	prefix: "RF",
-	position: 1
+});
+
+window.addEventListener('click', () =>
+{
+	showToast("Smart chip created successfully!");
 });

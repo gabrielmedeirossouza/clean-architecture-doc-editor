@@ -30,16 +30,13 @@ export namespace ConcreteCreateSmartChipUseCase {
     		this._smartChipRepository = smartChipRepository;
     	}
 
-    	public async Create({ label, prefix, position }: CreateSmartChipUseCase.CreateRequestModel): Promise<void>
+    	public async Create({ label, prefix }: CreateSmartChipUseCase.CreateRequestModel): Promise<void>
     	{
     		const composeFields = Result.compose
     			.AddHandler(this._smartChipValidationService.ValidateLabel({ label }).response)
     			.OnSecondary((response) => this._outputPort.CreateResponse({ response: Result.Secondary(this._dtoLogger.ProxyInfo(response)) }))
     			.Handle()
     			.AddHandler(this._smartChipValidationService.ValidatePrefix({ prefix }).response)
-    			.OnSecondary((response) => this._outputPort.CreateResponse({ response: Result.Secondary(this._dtoLogger.ProxyInfo(response)) }))
-    			.Handle()
-    			.AddHandler(this._smartChipValidationService.ValidatePosition({ position }).response)
     			.OnSecondary((response) => this._outputPort.CreateResponse({ response: Result.Secondary(this._dtoLogger.ProxyInfo(response)) }))
     			.Handle();
 
@@ -48,10 +45,9 @@ export namespace ConcreteCreateSmartChipUseCase {
     			return;
     		}
 
-    		const [labelResult, prefixResult, positionResult] = await Promise.all([
+    		const [labelResult, prefixResult] = await Promise.all([
     			this._smartChipRepository.FindByLabel({ label }),
     			this._smartChipRepository.FindByPrefix({ prefix }),
-    			this._smartChipRepository.FindByPosition({ position })
     		]);
 
     		const composeFinds = Result.compose
@@ -70,14 +66,6 @@ export namespace ConcreteCreateSmartChipUseCase {
     					message: `Cannot create SmartChip entity, because a SmartChip with prefix "${prefix}" already exists.`
     				})))
     			}))
-    			.Handle()
-    			.AddHandler(positionResult.response)
-    			.OnPrimary(() => this._outputPort.CreateResponse({
-    				response: Result.Secondary(this._dtoLogger.ProxyInfo(new ConcreteMessageDto.Dto({
-    					code: CreateSmartChipUseCase.Code.POSITION_ALREADY_EXISTS,
-    					message: `Cannot create SmartChip entity, because a SmartChip with position "${position}" already exists.`
-    				})))
-    			}))
     			.Handle();
 
     		if (!composeFinds.hasSecondary)
@@ -85,7 +73,7 @@ export namespace ConcreteCreateSmartChipUseCase {
     			return;
     		}
 
-    		const smartChip = new ConcreteSmartChip.Entity({ label, prefix, position, children: [] });
+    		const smartChip = new ConcreteSmartChip.Entity({ label, prefix });
     		const { response: idResponse } = await this._smartChipRepository.Create({ smartChip });
     		if (!idResponse.isPrimary)
     		{

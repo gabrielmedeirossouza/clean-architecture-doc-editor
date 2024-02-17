@@ -1,7 +1,7 @@
 import { Result } from "@/cross-cutting-concerns";
 import { CreateSmartChipUseCase, SmartChipValidationService } from "@/use-cases/interfaces/smart-chip";
 import { CreateSmartChipPresenter } from "@/interface-adapters/interfaces/presenters/smart-chip-presenter";
-import { ConcretePresenterMessageDto, ConcretePresenterNumberOutsideRangeErrorDto, ConcretePresenterStringTooLongErrorDto, ConcretePresenterStringTooShortErrorDto } from "@/interface-adapters/presenters/dtos";
+import { ConcretePresenterMessageDto, ConcretePresenterStringTooLongErrorDto, ConcretePresenterStringTooShortErrorDto } from "@/interface-adapters/presenters/dtos";
 import { ConcretePresenterGenericServiceErrorDto } from "@/interface-adapters/presenters/dtos/presenter-generic-service-error-dto";
 
 export namespace ConcreteCreateSmartChipPresenter {
@@ -20,7 +20,6 @@ export namespace ConcreteCreateSmartChipPresenter {
     				id: response.primaryValue.id,
     				label: response.primaryValue.entity.label,
     				prefix: response.primaryValue.entity.prefix,
-    				position: response.primaryValue.entity.position
     			}));
     		}
 
@@ -76,20 +75,6 @@ export namespace ConcreteCreateSmartChipPresenter {
     			);
     		}
 
-    		if (response.secondaryValue.code === SmartChipValidationService.Code.POSITION_OUTSIDE_RANGE)
-    		{
-    			return this._outputPort.createResponse?.Notify(
-    				Result.Secondary(new ConcretePresenterNumberOutsideRangeErrorDto.Dto({
-    					code: CreateSmartChipPresenter.Code.POSITION_OUTSIDE_RANGE,
-    					fieldName: "Posição",
-    					message: `O Campo Posição deve ser entre ${response.secondaryValue.minValue} e ${response.secondaryValue.maxValue}.`,
-    					value: response.secondaryValue.value,
-    					minValue: response.secondaryValue.minValue,
-    					maxValue: response.secondaryValue.maxValue
-    				}))
-    			);
-    		}
-
     		if (response.secondaryValue.code === CreateSmartChipUseCase.Code.LABEL_ALREADY_EXISTS)
     		{
     			return this._outputPort.createResponse?.Notify(
@@ -106,16 +91,6 @@ export namespace ConcreteCreateSmartChipPresenter {
     				Result.Secondary(new ConcretePresenterMessageDto.Dto({
     					code: CreateSmartChipPresenter.Code.PREFIX_ALREADY_EXISTS,
     					message: `Um Smart Chip com esse Prefixo já existe.`
-    				}))
-    			);
-    		}
-
-    		if (response.secondaryValue.code === CreateSmartChipUseCase.Code.POSITION_ALREADY_EXISTS)
-    		{
-    			return this._outputPort.createResponse?.Notify(
-    				Result.Secondary(new ConcretePresenterMessageDto.Dto({
-    					code: CreateSmartChipPresenter.Code.POSITION_ALREADY_EXISTS,
-    					message: `Um Smart Chip com essa Posição já existe.`
     				}))
     			);
     		}
