@@ -1,6 +1,6 @@
-import { IFieldDTO, IMessageDTO } from ".";
+import { FieldDto, MessageDto } from ".";
 
-export interface INumberTooSmallErrorDTO<T extends string> extends IFieldDTO<T>, IMessageDTO<T> {
+export interface NumberTooSmallErrorDto<T> extends FieldDto<T>, MessageDto<T> {
   readonly minValue: number;
   readonly value: number;
 }

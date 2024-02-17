@@ -1,6 +1,6 @@
-import { IPresenterFieldDTO, IPresenterMessageDTO } from ".";
+import { PresenterFieldDto, PresenterMessageDto } from ".";
 
-export interface IPresenterNumberTooLargeErrorDTO<T extends string> extends IPresenterFieldDTO<T>, IPresenterMessageDTO<T> {
+export interface PresenterNumberTooLargeErrorDto<T> extends PresenterFieldDto<T>, PresenterMessageDto<T> {
   readonly value: number;
   readonly maxValue: number;
 }

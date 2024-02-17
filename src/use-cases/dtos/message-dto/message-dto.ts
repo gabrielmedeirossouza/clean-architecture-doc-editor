@@ -1,19 +1,21 @@
-import { IMessageDTO } from "@/use-cases/interfaces/dtos";
+import { MessageDto } from "@/use-cases/interfaces/dtos";
 
-interface IMessageDTOConstructorParameters<T> {
-    code: T;
-    message: string;
-}
+export namespace ConcreteMessageDto {
+    export interface ConstructorParameters<T> {
+        code: T;
+        message: string;
+    }
 
-export class MessageDTO<T extends string> implements IMessageDTO<T>
-{
-	public readonly code: T;
+    export class Dto<T> implements MessageDto<T>
+    {
+    	public readonly code: T;
 
-	public readonly message: string;
+    	public readonly message: string;
 
-	constructor({ code, message }: IMessageDTOConstructorParameters<T>)
-	{
-		this.code = code;
-		this.message = message;
-	}
+    	constructor({ code, message }: ConstructorParameters<T>)
+    	{
+    		this.code = code;
+    		this.message = `ConcreteMessageDto: ${message}`;
+    	}
+    }
 }

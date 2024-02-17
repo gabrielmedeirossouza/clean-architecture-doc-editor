@@ -1,19 +1,22 @@
-import { IFieldDTO } from "@/use-cases/interfaces/dtos";
+import { FieldDto } from "@/use-cases/interfaces/dtos";
 
-interface IFieldDTOConstructorParameters<T> {
-    code: T;
-    fieldName: string;
-}
+export namespace ConcreteFieldDto {
+    export interface ConstructorParameters<T> {
+        code: T;
+        fieldName: string;
+    }
 
-export class FieldDTO<T extends string> implements IFieldDTO<T>
-{
-	public readonly code: T;
+    export class Dto<T> implements FieldDto<T>
+    {
+    	public readonly code: T;
 
-	public readonly fieldName: string;
+    	public readonly fieldName: string;
 
-	constructor({ code, fieldName }: IFieldDTOConstructorParameters<T>)
-	{
-		this.code = code;
-		this.fieldName = fieldName;
-	}
+    	constructor({ code, fieldName }: ConstructorParameters<T>)
+    	{
+    		this.code = code;
+    		this.fieldName = fieldName;
+    	}
+    }
+
 }

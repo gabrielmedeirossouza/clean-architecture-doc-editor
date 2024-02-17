@@ -1,5 +1,5 @@
-import { IBaseDTO } from ".";
+import { BaseDto } from ".";
 
-export interface IPresenterFieldDTO<T extends string> extends IBaseDTO<T> {
+export interface PresenterFieldDto<T> extends BaseDto<T> {
   readonly fieldName: string;
 }

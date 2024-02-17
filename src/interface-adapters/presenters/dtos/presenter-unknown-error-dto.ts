@@ -1,17 +1,19 @@
-import { IPresenterMessageDTO } from "@/interface-adapters/interfaces/presenters/dtos";
+import { PresenterMessageDto } from "@/interface-adapters/interfaces/presenters/dtos";
 
-interface IPresenterUnknownErrorDTOConstructorParameters<T> {
-    code: T;
-}
+export namespace ConcretePresenterUnknownErrorDto {
+    export interface ConstructorParameters<T> {
+        code: T;
+    }
 
-export class PresenterUnknownErrorDTO<T extends string> implements IPresenterMessageDTO<T>
-{
-	public readonly code: T;
+    export class Dto<T> implements PresenterMessageDto<T>
+    {
+    	public readonly code: T;
 
-	public readonly message = "Ocorreu um erro desconhecido.";
+    	public readonly message = "Ocorreu um erro desconhecido.";
 
-	constructor({ code }: IPresenterUnknownErrorDTOConstructorParameters<T>)
-	{
-		this.code = code;
-	}
+    	constructor({ code }: ConstructorParameters<T>)
+    	{
+    		this.code = code;
+    	}
+    }
 }

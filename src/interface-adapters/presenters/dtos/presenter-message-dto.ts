@@ -1,19 +1,21 @@
-import { IPresenterMessageDTO } from "@/interface-adapters/interfaces/presenters/dtos";
+import { PresenterMessageDto } from "@/interface-adapters/interfaces/presenters/dtos";
 
-interface IPresenterMessageDTOConstructorParameters<T> {
-    code: T;
-    message: string;
-}
+export namespace ConcretePresenterMessageDto {
+    export interface ConstructorParameters<T> {
+        code: T;
+        message: string;
+    }
 
-export class PresenterMessageDTO<T extends string> implements IPresenterMessageDTO<T>
-{
-	public readonly code: T;
+    export class Dto<T> implements PresenterMessageDto<T>
+    {
+    	public readonly code: T;
 
-	public readonly message: string;
+    	public readonly message: string;
 
-	constructor({ code, message }: IPresenterMessageDTOConstructorParameters<T>)
-	{
-		this.code = code;
-		this.message = message;
-	}
+    	constructor({ code, message }: ConstructorParameters<T>)
+    	{
+    		this.code = code;
+    		this.message = message;
+    	}
+    }
 }

@@ -1,23 +1,31 @@
-import { IPersistedEntity, ISmartChip } from "@/entities/interfaces";
-import { Result } from "@/shared/result";
-import { ICannotFindDTO } from "../dtos";
+import { Result } from "@/cross-cutting-concerns";
+import { PersistedEntity, SmartChip } from "@/entities/interfaces";
+import { CannotFindDto } from "@/use-cases/interfaces/dtos";
 
-export interface IGetSmartChipUseCaseInputPort {
-    GetSmartChipById(requestModel: IGetSmartChipUseCaseRequestModel): Promise<void>;
+export namespace GetSmartChipUseCase {
+    export interface InputPort {
+        GetById(requestModel: GetByIdRequestModel): Promise<void>;
+    }
+
+    export interface OutputPort {
+        GetByIdResponse(responseModel: GetByIdResponseModel): void;
+    }
+
+    export interface GetByIdRequestModel {
+        id: string;
+    }
+
+    export interface GetByIdResponseModel {
+        response: Result<
+            PersistedEntity<SmartChip>,
+            CannotFindDto<Code.SMART_CHIP_NOT_FOUND> |
+            CannotFindDto<Code.GENERIC_SERVICE_ERROR>
+        >;
+    }
+
+    export enum Code {
+        SMART_CHIP_NOT_FOUND,
+        GENERIC_SERVICE_ERROR
+    }
 }
 
-export interface IGetSmartChipUseCaseOutputPort {
-    GetSmartChipByIdResponse(responseModel: IGetSmartChipUseCaseResponseModel): void;
-}
-
-export interface IGetSmartChipUseCaseRequestModel {
-    id: string;
-}
-
-export interface IGetSmartChipUseCaseResponseModel {
-    response: Result<
-        IPersistedEntity<ISmartChip>,
-        ICannotFindDTO<"SMART_CHIP_NOT_FOUND"> |
-        ICannotFindDTO<"GENERIC_SERVICE_ERROR">
-    >;
-}

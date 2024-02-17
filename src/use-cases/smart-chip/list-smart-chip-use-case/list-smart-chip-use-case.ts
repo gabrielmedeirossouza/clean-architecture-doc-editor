@@ -1,31 +1,34 @@
-import { ILogger } from "@/use-cases/interfaces/logger";
-import { IListSmartChipUseCaseInputPort, IListSmartChipUseCaseOutputPort, ISmartChipRepository } from "@/use-cases/interfaces/smart-chip";
+import { DtoLoggerProxy } from "@/use-cases/interfaces/proxies/dto-logger-proxy";
+import { ListSmartChipUseCase, SmartChipRepository } from "@/use-cases/interfaces/smart-chip";
 
-export interface IListSmartChipUseCaseConstructorParameters {
-    outputPort: IListSmartChipUseCaseOutputPort;
-    smartChipRepository: ISmartChipRepository;
-    logger: ILogger;
-}
+export namespace ConcreteListSmartChipUseCase {
+    export interface ConstructorParameters {
+        outputPort: ListSmartChipUseCase.OutputPort;
+        smartChipRepository: SmartChipRepository.InputPort;
+        dtoLogger: DtoLoggerProxy;
+    }
 
-export class ListSmartChipUseCase implements IListSmartChipUseCaseInputPort
-{
-	private readonly _outputPort: IListSmartChipUseCaseOutputPort;
+    export class UseCase implements ListSmartChipUseCase.InputPort
+    {
+    	private readonly _outputPort: ListSmartChipUseCase.OutputPort;
 
-	private readonly _smartChipRepository: ISmartChipRepository;
+    	private readonly _smartChipRepository: SmartChipRepository.InputPort;
 
-	private readonly _logger: ILogger;
+    	private readonly _dtoLogger: DtoLoggerProxy;
 
-	constructor({ outputPort, smartChipRepository, logger }: IListSmartChipUseCaseConstructorParameters)
-	{
-		this._outputPort = outputPort;
-		this._smartChipRepository = smartChipRepository;
-		this._logger = logger;
-	}
+    	constructor({ outputPort, smartChipRepository, dtoLogger }: ConstructorParameters)
+    	{
+    		this._outputPort = outputPort;
+    		this._smartChipRepository = smartChipRepository;
+    		this._dtoLogger = dtoLogger;
+    	}
 
-	public async List(): Promise<void>
-	{
-		const smartChipList = await this._smartChipRepository.GetSmartChipList();
+    	public async List(): Promise<void>
+    	{
+    		// TODO: Implement result response
+    		const { response: smartChipList } = await this._smartChipRepository.List();
 
-		return this._outputPort.ListResponse({ response: smartChipList });
-	}
+    		return this._outputPort.ListResponse({ response: smartChipList });
+    	}
+    }
 }

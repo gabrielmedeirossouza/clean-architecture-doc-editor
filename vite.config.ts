@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-internal-modules
 import { defineConfig } from "vitest/config";
 import { checker } from "vite-plugin-checker";
 

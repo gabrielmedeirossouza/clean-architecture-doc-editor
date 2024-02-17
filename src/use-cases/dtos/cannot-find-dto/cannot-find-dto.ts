@@ -1,31 +1,33 @@
-import { ICannotFindDTO } from "@/use-cases/interfaces/dtos";
+import { CannotFindDto } from "@/use-cases/interfaces/dtos";
 
-interface ICannotFindDTOConstructorParameters<T> {
-    code: T;
-    message: string;
-    searchCriteria: string;
-    searchValue: string;
-    entityName: string;
-}
+export namespace ConcreteCannotFindDto {
+    export interface ConstructorParameters<T> {
+        code: T;
+        message: string;
+        searchCriteria: string;
+        searchValue: string;
+        entityName: string;
+    }
 
-export class CannotFindDTO<T extends string> implements ICannotFindDTO<T>
-{
-	public readonly code: T;
+    export class Dto<T> implements CannotFindDto<T>
+    {
+    	public readonly code: T;
 
-	public readonly message: string;
+    	public readonly message: string;
 
-	public readonly searchCriteria: string;
+    	public readonly searchCriteria: string;
 
-	public readonly searchValue: string;
+    	public readonly searchValue: string;
 
-	public readonly entityName: string;
+    	public readonly entityName: string;
 
-	constructor({ code, message, searchCriteria, searchValue, entityName }: ICannotFindDTOConstructorParameters<T>)
-	{
-		this.code = code;
-		this.message = message;
-		this.searchCriteria = searchCriteria;
-		this.searchValue = searchValue;
-		this.entityName = entityName;
-	}
+    	constructor({ code, message, searchCriteria, searchValue, entityName }: ConstructorParameters<T>)
+    	{
+    		this.code = code;
+    		this.message = `ConcreteCannotFindDto: ${message}`;
+    		this.searchCriteria = searchCriteria;
+    		this.searchValue = searchValue;
+    		this.entityName = entityName;
+    	}
+    }
 }

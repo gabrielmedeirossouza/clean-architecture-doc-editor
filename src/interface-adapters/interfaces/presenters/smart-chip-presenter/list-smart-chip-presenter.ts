@@ -1,6 +1,8 @@
-import { Observable } from "@/shared";
-import { ISmartChipViewModel } from "./view-model";
+import { Observable } from "@/cross-cutting-concerns";
+import { SmartChipViewModel } from "./view-model";
 
-export interface IListSmartChipPresenterOutputPort {
-    listResponse?: Observable<ISmartChipViewModel[]>;
+export namespace ListSmartChipPresenter {
+    export interface OutputPort {
+        listResponse?: Observable<SmartChipViewModel[]>;
+    }
 }

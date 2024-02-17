@@ -1,89 +1,101 @@
-import { PersistedEntity, SmartChip } from "@/entities/smart-chip";
-import { Result } from "@/shared/result";
-import { MessageDTO } from "@/use-cases/dtos";
-import { ILogger } from "@/use-cases/interfaces/logger";
-import { ICreateSmartChipUseCaseInputPort, ICreateSmartChipUseCaseOutputPort, ICreateSmartChipUseCaseRequestModel } from "@/use-cases/interfaces/smart-chip/create-smart-chip-use-case";
-import { ISmartChipRepository } from "@/use-cases/interfaces/smart-chip/smart-chip-repository";
-import { ISmartChipValidationService } from "@/use-cases/interfaces/smart-chip/smart-chip-validation-service";
+import { Result } from "@/cross-cutting-concerns";
+import { ConcretePersistedEntity, ConcreteSmartChip } from "@/entities/smart-chip";
+import { ConcreteGenericServiceErrorDto, ConcreteMessageDto } from "@/use-cases/dtos";
+import { DtoLoggerProxy } from "@/use-cases/interfaces/proxies/dto-logger-proxy";
+import { CreateSmartChipUseCase, SmartChipRepository, SmartChipValidationService } from "@/use-cases/interfaces/smart-chip";
 
-export interface ICreateSmartChipUseCaseConstructorParameters {
-    logger: ILogger;
-    outputPort: ICreateSmartChipUseCaseOutputPort;
-    smartChipValidationService: ISmartChipValidationService;
-    smartChipRepository: ISmartChipRepository;
+export namespace ConcreteCreateSmartChipUseCase {
+    export interface ConstructorParameters {
+        dtoLogger: DtoLoggerProxy;
+        outputPort: CreateSmartChipUseCase.OutputPort;
+        smartChipValidationService: SmartChipValidationService.InputPort;
+        smartChipRepository: SmartChipRepository.InputPort;
+    }
+
+    export class UseCase implements CreateSmartChipUseCase.InputPort
+    {
+    	private readonly _outputPort: CreateSmartChipUseCase.OutputPort;
+
+    	private readonly _smartChipValidationService: SmartChipValidationService.InputPort;
+
+    	private readonly _dtoLogger: DtoLoggerProxy;
+
+    	private readonly _smartChipRepository: SmartChipRepository.InputPort;
+
+    	constructor({ outputPort, smartChipValidationService, dtoLogger, smartChipRepository }: ConstructorParameters)
+    	{
+    		this._outputPort = outputPort;
+    		this._smartChipValidationService = smartChipValidationService;
+    		this._dtoLogger = dtoLogger;
+    		this._smartChipRepository = smartChipRepository;
+    	}
+
+    	public async Create({ label, prefix, position }: CreateSmartChipUseCase.CreateRequestModel): Promise<void>
+    	{
+    		const composeFields = Result.compose
+    			.AddHandler(this._smartChipValidationService.ValidateLabel({ label }).response)
+    			.OnSecondary((response) => this._outputPort.CreateResponse({ response: Result.Secondary(this._dtoLogger.ProxyInfo(response)) }))
+    			.Handle()
+    			.AddHandler(this._smartChipValidationService.ValidatePrefix({ prefix }).response)
+    			.OnSecondary((response) => this._outputPort.CreateResponse({ response: Result.Secondary(this._dtoLogger.ProxyInfo(response)) }))
+    			.Handle()
+    			.AddHandler(this._smartChipValidationService.ValidatePosition({ position }).response)
+    			.OnSecondary((response) => this._outputPort.CreateResponse({ response: Result.Secondary(this._dtoLogger.ProxyInfo(response)) }))
+    			.Handle();
+
+    		if (composeFields.hasSecondary)
+    		{
+    			return;
+    		}
+
+    		const [labelResult, prefixResult, positionResult] = await Promise.all([
+    			this._smartChipRepository.FindByLabel({ label }),
+    			this._smartChipRepository.FindByPrefix({ prefix }),
+    			this._smartChipRepository.FindByPosition({ position })
+    		]);
+
+    		const composeFinds = Result.compose
+    			.AddHandler(labelResult.response)
+    			.OnPrimary(() => this._outputPort.CreateResponse({
+    				response: Result.Secondary(this._dtoLogger.ProxyInfo(new ConcreteMessageDto.Dto({
+    					code: CreateSmartChipUseCase.Code.LABEL_ALREADY_EXISTS,
+    					message: `Cannot create SmartChip entity, because a SmartChip with label "${label}" already exists.`
+    				})))
+    			}))
+    			.Handle()
+    			.AddHandler(prefixResult.response)
+    			.OnPrimary(() => this._outputPort.CreateResponse({
+    				response: Result.Secondary(this._dtoLogger.ProxyInfo(new ConcreteMessageDto.Dto({
+    					code: CreateSmartChipUseCase.Code.PREFIX_ALREADY_EXISTS,
+    					message: `Cannot create SmartChip entity, because a SmartChip with prefix "${prefix}" already exists.`
+    				})))
+    			}))
+    			.Handle()
+    			.AddHandler(positionResult.response)
+    			.OnPrimary(() => this._outputPort.CreateResponse({
+    				response: Result.Secondary(this._dtoLogger.ProxyInfo(new ConcreteMessageDto.Dto({
+    					code: CreateSmartChipUseCase.Code.POSITION_ALREADY_EXISTS,
+    					message: `Cannot create SmartChip entity, because a SmartChip with position "${position}" already exists.`
+    				})))
+    			}))
+    			.Handle();
+
+    		if (!composeFinds.hasSecondary)
+    		{
+    			return;
+    		}
+
+    		const smartChip = new ConcreteSmartChip.Entity({ label, prefix, position, children: [] });
+    		const { response: idResponse } = await this._smartChipRepository.Create({ smartChip });
+    		if (!idResponse.isPrimary)
+    		{
+    			return this._outputPort.CreateResponse({ response: Result.Secondary(this._dtoLogger.ProxyInfo(new ConcreteGenericServiceErrorDto.Dto({ code: CreateSmartChipUseCase.Code.GENERIC_SERVICE_ERROR }))) });
+    		}
+
+    		const persistedSmartChip = new ConcretePersistedEntity.Entity({ id: idResponse.primaryValue, entity: smartChip });
+
+    		return this._outputPort.CreateResponse({ response: Result.Primary(persistedSmartChip) });
+    	}
+    }
 }
 
-export class CreateSmartChipUseCase implements ICreateSmartChipUseCaseInputPort
-{
-	private readonly _outputPort: ICreateSmartChipUseCaseOutputPort;
-
-	private readonly _smartChipValidationService: ISmartChipValidationService;
-
-	private readonly _logger: ILogger;
-
-	private readonly _smartChipRepository: ISmartChipRepository;
-
-	constructor({ outputPort, smartChipValidationService, logger, smartChipRepository }: ICreateSmartChipUseCaseConstructorParameters)
-	{
-		this._outputPort = outputPort;
-		this._smartChipValidationService = smartChipValidationService;
-		this._logger = logger;
-		this._smartChipRepository = smartChipRepository;
-	}
-
-	public async Create({ label, prefix, position }: ICreateSmartChipUseCaseRequestModel): Promise<void>
-	{
-		const composeFields = Result.compose
-			.AddHandler(this._smartChipValidationService.ValidateLabel(label)).OnSecondary((response) => this._outputPort.CreateResponse({ response })).Handle()
-			.AddHandler(this._smartChipValidationService.ValidatePrefix(prefix)).OnSecondary((response) => this._outputPort.CreateResponse({ response })).Handle()
-			.AddHandler(this._smartChipValidationService.ValidatePosition(position)).OnSecondary((response) => this._outputPort.CreateResponse({ response })).Handle();
-
-		if (composeFields.hasSecondary)
-		{
-			return;
-		}
-
-		const [labelResult, prefixResult, positionResult] = await Promise.all([
-			this._smartChipRepository.FindByLabel(label),
-			this._smartChipRepository.FindByPrefix(prefix),
-			this._smartChipRepository.FindByPosition(position)
-		]);
-
-		const composeFinds = Result.compose
-			.AddHandler(labelResult)
-			.OnPrimary(() => this._outputPort.CreateResponse({
-				response: Result.Secondary(new MessageDTO({
-					code: "LABEL_ALREADY_EXISTS",
-					message: `CreateSmartChipUseCase: Cannot create SmartChip entity, because a SmartChip with label "${label}" already exists.`
-				}))
-			}))
-			.Handle()
-			.AddHandler(prefixResult)
-			.OnPrimary(() => this._outputPort.CreateResponse({
-				response: Result.Secondary(new MessageDTO({
-					code: "PREFIX_ALREADY_EXISTS",
-					message: `CreateSmartChipUseCase: Cannot create SmartChip entity, because a SmartChip with prefix "${prefix}" already exists.`
-				}))
-			}))
-			.Handle()
-			.AddHandler(positionResult)
-			.OnPrimary(() => this._outputPort.CreateResponse({
-				response: Result.Secondary(new MessageDTO({
-					code: "POSITION_ALREADY_EXISTS",
-					message: `CreateSmartChipUseCase: Cannot create SmartChip entity, because a SmartChip with position "${position}" already exists.`
-				}))
-			}))
-			.Handle();
-
-		if (!composeFinds.hasSecondary)
-		{
-			return;
-		}
-
-		const smartChip = new SmartChip(label, prefix, position, []);
-		const id = await this._smartChipRepository.Create(smartChip);
-		const persistedSmartChip = new PersistedEntity(id, smartChip);
-
-		return this._outputPort.CreateResponse({ response: Result.Primary(persistedSmartChip) });
-	}
-}

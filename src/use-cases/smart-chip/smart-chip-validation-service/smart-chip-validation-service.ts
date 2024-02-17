@@ -1,59 +1,102 @@
-import { Result } from "@/shared/result";
-import { NumberOutsideRangeErrorDTO, StringTooLongErrorDTO, StringTooShortErrorDTO } from "@/use-cases/dtos";
-import { IStringTooShortErrorDTO, IStringTooLongErrorDTO, INumberOutsideRangeErrorDTO } from "@/use-cases/interfaces/dtos";
-import { ISmartChipValidationService } from "@/use-cases/interfaces/smart-chip";
+import { Result } from "@/cross-cutting-concerns/result";
+import { ConcreteNumberOutsideRangeErrorDto, ConcreteStringTooLongErrorDto, ConcreteStringTooShortErrorDto } from "@/use-cases/dtos";
+import { SmartChipValidationService } from "@/use-cases/interfaces/smart-chip";
 
-export class SmartChipValidationService implements ISmartChipValidationService
-{
-	public readonly LABEL_MIN_LENGTH = 2;
+export namespace ConcreteSmartChipValidationService {
+    export class Service implements SmartChipValidationService.InputPort
+    {
+    	private readonly _LABEL_MIN_LENGTH = 2;
 
-	public readonly LABEL_MAX_LENGTH = 20;
+    	private readonly _LABEL_MAX_LENGTH = 20;
 
-	public readonly PREFIX_MIN_LENGTH = 2;
+    	private readonly _PREFIX_MIN_LENGTH = 2;
 
-	public readonly PREFIX_MAX_LENGTH = 10;
+    	private readonly _PREFIX_MAX_LENGTH = 10;
 
-	public readonly POSITION_MIN_VALUE = 1;
+    	private readonly _POSITION_MIN_VALUE = 1;
 
-	public readonly POSITION_MAX_VALUE = 1000;
+    	private readonly _POSITION_MAX_VALUE = 1000;
 
-	public ValidateLabel(label: string): Result<string, IStringTooShortErrorDTO<"LABEL_TOO_SHORT"> | IStringTooLongErrorDTO<"LABEL_TOO_LONG">>
-	{
-		if (label.length < this.LABEL_MIN_LENGTH)
-		{
-			return Result.Secondary(new StringTooShortErrorDTO({ code: "LABEL_TOO_SHORT", fieldName: "label", value: label, minLength: this.LABEL_MIN_LENGTH }));
-		}
+    	public ValidateLabel({ label }: SmartChipValidationService.ValidateLabelRequestModel): SmartChipValidationService.ValidateLabelResponseModel
+    	{
+    		if (label.length < this._LABEL_MIN_LENGTH)
+    		{
+    			return {
+    				response: Result.Secondary(new ConcreteStringTooShortErrorDto.Dto({
+    					code: SmartChipValidationService.Code.LABEL_TOO_SHORT,
+    					fieldName: "label",
+    					value: label,
+    					minLength: this._LABEL_MIN_LENGTH
+    				}))
+    			};
+    		}
 
-		if (label.length > this.LABEL_MAX_LENGTH)
-		{
-			return Result.Secondary(new StringTooLongErrorDTO({ code: "LABEL_TOO_LONG", fieldName: "label", value: label, maxLength: this.LABEL_MAX_LENGTH }));
-		}
+    		if (label.length > this._LABEL_MAX_LENGTH)
+    		{
+    			return {
+    				response: Result.Secondary(new ConcreteStringTooLongErrorDto.Dto({
+    					code: SmartChipValidationService.Code.LABEL_TOO_LONG,
+    					fieldName: "label",
+    					value: label,
+    					maxLength: this._LABEL_MAX_LENGTH
+    				}))
+    			};
+    		}
 
-		return Result.Primary(label);
-	}
+    		return {
+    			response: Result.Primary(label)
+    		};
+    	}
 
-	public ValidatePrefix(prefix: string): Result<string, IStringTooShortErrorDTO<"PREFIX_TOO_SHORT"> | IStringTooLongErrorDTO<"PREFIX_TOO_LONG">>
-	{
-		if (prefix.length < this.PREFIX_MIN_LENGTH)
-		{
-			return Result.Secondary(new StringTooShortErrorDTO({ code: "PREFIX_TOO_SHORT", fieldName: "prefix", value: prefix, minLength: this.PREFIX_MIN_LENGTH }));
-		}
+    	public ValidatePrefix({ prefix }: SmartChipValidationService.ValidatePrefixRequestModel): SmartChipValidationService.ValidatePrefixResponseModel
+    	{
+    		if (prefix.length < this._PREFIX_MIN_LENGTH)
+    		{
+    			return {
+    				response: Result.Secondary(new ConcreteStringTooShortErrorDto.Dto({
+    					code: SmartChipValidationService.Code.PREFIX_TOO_SHORT,
+    					fieldName: "prefix",
+    					value: prefix,
+    					minLength: this._PREFIX_MIN_LENGTH
+    				}))
+    			};
+    		}
 
-		if (prefix.length > this.PREFIX_MAX_LENGTH)
-		{
-			return Result.Secondary(new StringTooLongErrorDTO({ code: "PREFIX_TOO_LONG", fieldName: "prefix", value: prefix, maxLength: this.PREFIX_MAX_LENGTH }));
-		}
+    		if (prefix.length > this._PREFIX_MAX_LENGTH)
+    		{
+    			return {
+    				response: Result.Secondary(new ConcreteStringTooLongErrorDto.Dto({
+    					code: SmartChipValidationService.Code.PREFIX_TOO_LONG,
+    					fieldName: "prefix",
+    					value: prefix,
+    					maxLength: this._PREFIX_MAX_LENGTH
+    				}))
+    			};
+    		}
 
-		return Result.Primary(prefix);
-	}
+    		return {
+    			response: Result.Primary(prefix)
+    		};
+    	}
 
-	public ValidatePosition(position: number): Result<number, INumberOutsideRangeErrorDTO<"POSITION_OUTSIDE_RANGE">>
-	{
-		if (position < this.POSITION_MIN_VALUE || position > this.POSITION_MAX_VALUE)
-		{
-			return Result.Secondary(new NumberOutsideRangeErrorDTO({ code: "POSITION_OUTSIDE_RANGE", fieldName: "position", value: position, minValue: this.POSITION_MIN_VALUE, maxValue: this.POSITION_MAX_VALUE }));
-		}
+    	public ValidatePosition({ position }: SmartChipValidationService.ValidatePositionRequestModel): SmartChipValidationService.ValidatePositionResponseModel
+    	{
+    		if (position < this._POSITION_MIN_VALUE || position > this._POSITION_MAX_VALUE)
+    		{
+    			return {
+    				response: Result.Secondary(new ConcreteNumberOutsideRangeErrorDto.Dto({
+    					code: SmartChipValidationService.Code.POSITION_OUTSIDE_RANGE,
+    					fieldName: "position",
+    					value: position,
+    					minValue: this._POSITION_MIN_VALUE,
+    					maxValue: this._POSITION_MAX_VALUE
+    				}))
+    			};
+    		}
 
-		return Result.Primary(position);
-	}
+    		return {
+    			response: Result.Primary(position)
+    		};
+    	}
+    }
 }

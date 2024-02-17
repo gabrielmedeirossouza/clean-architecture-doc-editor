@@ -1,26 +1,28 @@
-import { INumberNegativeErrorDTO } from "@/use-cases/interfaces/dtos";
+import { NumberNegativeErrorDto } from "@/use-cases/interfaces/dtos";
 
-interface INumberNegativeErrorDTOConstructorParameters<T> {
-    code: T;
-    fieldName: string;
-    value: number;
-}
+export namespace ConcreteNumberNegativeErrorDto {
+    export interface ConstructorParameters<T> {
+        code: T;
+        fieldName: string;
+        value: number;
+    }
 
-export class NumberNegativeErrorDTO<T extends string> implements INumberNegativeErrorDTO<T>
-{
-	public readonly code: T;
+    export class Dto<T> implements NumberNegativeErrorDto<T>
+    {
+    	public readonly code: T;
 
-	public readonly fieldName: string;
+    	public readonly fieldName: string;
 
-	public readonly value: number;
+    	public readonly value: number;
 
-	public readonly message: string;
+    	public readonly message: string;
 
-	constructor({ code, fieldName, value }: INumberNegativeErrorDTOConstructorParameters<T>)
-	{
-		this.code = code;
-		this.fieldName = fieldName;
-		this.value = value;
-		this.message = `NumberNegativeErrorDTO: Field "${fieldName}" with value "${value}" is negative.`;
-	}
+    	constructor({ code, fieldName, value }: ConstructorParameters<T>)
+    	{
+    		this.code = code;
+    		this.fieldName = fieldName;
+    		this.value = value;
+    		this.message = `ConcreteNumberNegativeErrorDto: Field "${fieldName}" with value "${value}" is negative.`;
+    	}
+    }
 }

@@ -1,3 +1,3 @@
-export interface IBaseDTO<T extends string> {
+export interface BaseDto<T> {
     readonly code: T;
 }

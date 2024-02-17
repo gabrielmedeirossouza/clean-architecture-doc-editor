@@ -1,9 +1,17 @@
-import { MessageDTO } from "../message-dto/message-dto";
+import { ConcreteMessageDto } from "@/use-cases/dtos/message-dto";
 
-export class GenericServiceErrorDTO extends MessageDTO<"GENERIC_SERVICE_ERROR">
-{
-	constructor()
-	{
-		super({ code: "GENERIC_SERVICE_ERROR", message: "GenericServiceErrorDTO: Generic Service Error." });
-	}
+export namespace ConcreteGenericServiceErrorDto {
+    export interface ConstructorParameters<T> {
+        code: T
+    }
+
+    export class Dto<T> extends ConcreteMessageDto.Dto<T>
+    {
+    	constructor({ code }: ConstructorParameters<T>)
+    	{
+    		{
+    			super({ code, message: "ConcreteGenericServiceErrorDto: Generic Service Error." });
+    		}
+    	}
+    }
 }

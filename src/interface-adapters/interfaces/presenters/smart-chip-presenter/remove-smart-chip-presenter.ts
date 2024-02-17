@@ -1,10 +1,18 @@
-import { Observable, Result } from "@/shared";
-import { IPresenterMessageDTO } from "../dtos";
+import { Observable, Result } from "@/cross-cutting-concerns";
+import { PresenterMessageDto } from "@/interface-adapters/interfaces/presenters/dtos";
 
-export interface IRemoveSmartChipPresenterOutputPort {
-    removeResponse?: Observable<Result<
-        string,
-        IPresenterMessageDTO<"GENERIC_SERVICE_ERROR"> |
-        IPresenterMessageDTO<"SMART_CHIP_NOT_FOUND">
-    >>;
+export namespace RemoveSmartChipPresenter {
+    export interface OutputPort {
+        removeResponse?: Observable<Result<
+            string,
+            PresenterMessageDto<Code.GENERIC_SERVICE_ERROR> |
+            PresenterMessageDto<Code.SMART_CHIP_NOT_FOUND>
+        >>;
+    }
+
+    export enum Code {
+        GENERIC_SERVICE_ERROR,
+        SMART_CHIP_NOT_FOUND
+    }
 }
+

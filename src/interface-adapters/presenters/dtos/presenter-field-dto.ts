@@ -1,19 +1,22 @@
-import { IPresenterFieldDTO } from "@/interface-adapters/interfaces/presenters/dtos";
+import { PresenterFieldDto } from "@/interface-adapters/interfaces/presenters/dtos";
 
-interface IPresenterFieldDTOConstructorParameters<T> {
-    code: T;
-    fieldName: string;
+export namespace ConcretePresenterFieldDto {
+    export interface ConstructorParameters<T> {
+        code: T;
+        fieldName: string;
+    }
+
+    export class Dto<T> implements PresenterFieldDto<T>
+    {
+    	public readonly code: T;
+
+    	public readonly fieldName: string;
+
+    	constructor({ code, fieldName }: ConstructorParameters<T>)
+    	{
+    		this.code = code;
+    		this.fieldName = fieldName;
+    	}
+    }
 }
 
-export class PresenterFieldDTO<T extends string> implements IPresenterFieldDTO<T>
-{
-	public readonly code: T;
-
-	public readonly fieldName: string;
-
-	constructor({ code, fieldName }: IPresenterFieldDTOConstructorParameters<T>)
-	{
-		this.code = code;
-		this.fieldName = fieldName;
-	}
-}

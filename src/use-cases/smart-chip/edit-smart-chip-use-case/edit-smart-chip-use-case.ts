@@ -1,90 +1,93 @@
-import { Result } from "@/shared/result";
-import { CannotFindDTO } from "@/use-cases/dtos";
-import { ILogger } from "@/use-cases/interfaces/logger";
-import { IEditSmartChipUseCaseInputPort, IEditSmartChipUseCaseOutputPort, IEditSmartChipUseCaseRequestModel, ISmartChipRepository, ISmartChipValidationService } from "@/use-cases/interfaces/smart-chip";
+import { Result } from "@/cross-cutting-concerns";
+import { ConcreteCannotFindDto } from "@/use-cases/dtos";
+import { DtoLoggerProxy } from "@/use-cases/interfaces/proxies";
+import {  EditSmartChipUseCase, SmartChipRepository, SmartChipValidationService } from "@/use-cases/interfaces/smart-chip";
 
-export interface IEditSmartChipUseCaseConstructorParameters {
-    outputPort: IEditSmartChipUseCaseOutputPort;
-    validationService: ISmartChipValidationService;
-    smartChipRepository: ISmartChipRepository;
-    logger: ILogger;
-}
+export namespace ConcreteEditSmartChipUseCase {
+    export interface ConstructorParameters {
+        outputPort: EditSmartChipUseCase.OutputPort;
+        validationService: SmartChipValidationService.InputPort;
+        smartChipRepository: SmartChipRepository.InputPort;
+        dtoLogger: DtoLoggerProxy;
+    }
 
-export class EditSmartChipUseCase implements IEditSmartChipUseCaseInputPort
-{
-	private readonly _outputPort: IEditSmartChipUseCaseOutputPort;
+    export class UseCase implements EditSmartChipUseCase.InputPort
+    {
+    	private readonly _outputPort: EditSmartChipUseCase.OutputPort;
 
-	private readonly _smartChipRepository: ISmartChipRepository;
+    	private readonly _smartChipRepository: SmartChipRepository.InputPort;
 
-	private readonly _logger: ILogger;
+    	private readonly _dtoLogger: DtoLoggerProxy;
 
-	private readonly _validationService: ISmartChipValidationService;
+    	private readonly _validationService: SmartChipValidationService.InputPort;
 
-	constructor({ outputPort, smartChipRepository, logger, validationService }: IEditSmartChipUseCaseConstructorParameters)
-	{
-		this._outputPort = outputPort;
-		this._smartChipRepository = smartChipRepository;
-		this._logger = logger;
-		this._validationService = validationService;
-	}
+    	constructor({ outputPort, smartChipRepository, dtoLogger, validationService }: ConstructorParameters)
+    	{
+    		this._outputPort = outputPort;
+    		this._smartChipRepository = smartChipRepository;
+    		this._dtoLogger = dtoLogger;
+    		this._validationService = validationService;
+    	}
 
-	public async Edit({ id, label, prefix, position }: IEditSmartChipUseCaseRequestModel): Promise<void>
-	{
-		const compose = Result.compose;
+    	public async Edit({ id, label, prefix, position }: EditSmartChipUseCase.EditRequestModel): Promise<void>
+    	{
+    		const compose = Result.compose;
 
-		if (label !== undefined)
-		{
-			compose.AddHandler(this._validationService.ValidateLabel(label)).OnSecondary((response) => this._outputPort.EditResponse({ response }));
-		}
+    		if (label !== undefined)
+    		{
+    			compose.AddHandler(this._validationService.ValidateLabel({ label }).response)
+    				.OnSecondary((response) => this._outputPort.EditResponse({ response: Result.Secondary(this._dtoLogger.ProxyInfo(response)) }));
+    		}
 
-		if (prefix !== undefined)
-		{
-			compose.AddHandler(this._validationService.ValidatePrefix(prefix)).OnSecondary((response) => this._outputPort.EditResponse({ response }));
-		}
+    		if (prefix !== undefined)
+    		{
+    			compose.AddHandler(this._validationService.ValidatePrefix({ prefix }).response).OnSecondary((response) => this._outputPort.EditResponse({ response: Result.Secondary(this._dtoLogger.ProxyInfo(response)) }));
+    		}
 
-		if (position !== undefined)
-		{
-			compose.AddHandler(this._validationService.ValidatePosition(position)).OnSecondary((response) => this._outputPort.EditResponse({ response }));
-		}
+    		if (position !== undefined)
+    		{
+    			compose.AddHandler(this._validationService.ValidatePosition({ position }).response).OnSecondary((response) => this._outputPort.EditResponse({ response: Result.Secondary(this._dtoLogger.ProxyInfo(response)) }));
+    		}
 
-		if (compose.hasSecondary)
-		{
-			return;
-		}
+    		if (compose.hasSecondary)
+    		{
+    			return;
+    		}
 
-		const getSmartChipByIdResult = await this._smartChipRepository.GetSmartChipById(id);
-		if (!getSmartChipByIdResult.isPrimary)
-		{
-			return this._outputPort.EditResponse({
-				response: Result.Secondary(new CannotFindDTO({
-					code: "SMART_CHIP_NOT_FOUND",
-					searchCriteria: 'id',
-					searchValue: id,
-					message: `EditSmartChipUseCase: Cannot edit SmartChip entity with id ${id}, because it was not found.`,
-					entityName: "SmartChip"
-				}))
-			});
-		}
+    		const { response: idResponse } = await this._smartChipRepository.Get({ id });
+    		if (!idResponse.isPrimary)
+    		{
+    			return this._outputPort.EditResponse({
+    				response: Result.Secondary(new ConcreteCannotFindDto.Dto({
+    					code: EditSmartChipUseCase.Code.SMART_CHIP_NOT_FOUND,
+    					searchCriteria: 'id',
+    					searchValue: id,
+    					message: `Cannot edit SmartChip entity with id ${id}, because it was not found.`,
+    					entityName: "SmartChip"
+    				}))
+    			});
+    		}
 
-		const persistedSmartChip = getSmartChipByIdResult.primaryValue;
-		persistedSmartChip.entity.label = label ?? persistedSmartChip.entity.label;
-		persistedSmartChip.entity.prefix = prefix ?? persistedSmartChip.entity.prefix;
-		persistedSmartChip.entity.position = position ?? persistedSmartChip.entity.position;
+    		const persistedSmartChip = idResponse.primaryValue;
+    		persistedSmartChip.entity.label = label ?? persistedSmartChip.entity.label;
+    		persistedSmartChip.entity.prefix = prefix ?? persistedSmartChip.entity.prefix;
+    		persistedSmartChip.entity.position = position ?? persistedSmartChip.entity.position;
 
-		const editSmartChipRepositoryResult = await this._smartChipRepository.Edit(persistedSmartChip);
-		if (!editSmartChipRepositoryResult.isPrimary)
-		{
-			return this._outputPort.EditResponse({
-				response: Result.Secondary(new CannotFindDTO({
-					code: "SMART_CHIP_NOT_FOUND",
-					searchCriteria: 'id',
-					searchValue: id,
-					message: `EditSmartChipUseCase: Cannot edit SmartChip entity with id ${id}, because it was not found.`,
-					entityName: "SmartChip"
-				}))
-			});
-		}
+    		const { response: editResult } = await this._smartChipRepository.Edit({ smartChip: persistedSmartChip });
+    		if (!editResult.isPrimary)
+    		{
+    			return this._outputPort.EditResponse({
+    				response: Result.Secondary(new ConcreteCannotFindDto.Dto({
+    					code: EditSmartChipUseCase.Code.SMART_CHIP_NOT_FOUND,
+    					searchCriteria: 'id',
+    					searchValue: id,
+    					message: `Cannot edit SmartChip entity with id ${id}, because it was not found.`,
+    					entityName: "SmartChip"
+    				}))
+    			});
+    		}
 
-		return this._outputPort.EditResponse({ response: Result.Primary(persistedSmartChip) });
-	}
+    		return this._outputPort.EditResponse({ response: Result.Primary(persistedSmartChip) });
+    	}
+    }
 }

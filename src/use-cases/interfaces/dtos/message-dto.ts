@@ -1,5 +1,5 @@
-import { IBaseDTO } from "./base-dto";
+import { BaseDto } from "./base-dto";
 
-export interface IMessageDTO<T extends string> extends IBaseDTO<T> {
+export interface MessageDto<T> extends BaseDto<T> {
 	readonly message: string;
 }

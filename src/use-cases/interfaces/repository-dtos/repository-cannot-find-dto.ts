@@ -1,6 +1,6 @@
-import { IBaseDTO } from "./base-dto";
+import { BaseDto } from "./base-dto";
 
-export interface IRepositoryCannotFindDTO extends IBaseDTO {
+export interface RepositoryCannotFindDto<T> extends BaseDto<T> {
     readonly searchCriteria: string;
     readonly searchValue: string;
     readonly entityName: string;

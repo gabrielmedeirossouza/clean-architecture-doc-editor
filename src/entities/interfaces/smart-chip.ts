@@ -1,7 +1,7 @@
-export interface ISmartChip {
+export interface SmartChip {
     label: string;
     prefix: string;
     position: number;
-    children: ISmartChip[];
-    requiredParent?: ISmartChip;
+    children: SmartChip[];
+    requiredParent?: SmartChip;
 }

@@ -1,7 +1,6 @@
-import { IFieldDTO } from "./field-dto";
-import { IMessageDTO } from "./message-dto";
+import { FieldDto, MessageDto } from ".";
 
-export interface IStringTooLongErrorDTO<T extends string> extends IFieldDTO<T>, IMessageDTO<T> {
+export interface StringTooLongErrorDto<T> extends FieldDto<T>, MessageDto<T> {
 	readonly maxLength: number;
 	readonly value: string;
 }

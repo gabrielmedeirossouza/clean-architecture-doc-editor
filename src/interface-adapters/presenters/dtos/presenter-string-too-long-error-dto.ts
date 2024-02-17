@@ -1,31 +1,33 @@
-import { IPresenterStringTooLongErrorDTO } from "@/interface-adapters/interfaces/presenters/dtos";
+import { PresenterStringTooLongErrorDto } from "@/interface-adapters/interfaces/presenters/dtos";
 
-interface IPresenterStringTooLongErrorDTOConstructorParameters<T> {
-    code: T;
-    fieldName: string;
-    message: string;
-    value: string;
-    maxLength: number;
-}
+export namespace ConcretePresenterStringTooLongErrorDto {
+    export interface ConstructorParameters<T> {
+        code: T;
+        fieldName: string;
+        message: string;
+        value: string;
+        maxLength: number;
+    }
 
-export class PresenterStringTooLongErrorDTO<T extends string> implements IPresenterStringTooLongErrorDTO<T>
-{
-	public readonly code: T;
+    export class Dto<T> implements PresenterStringTooLongErrorDto<T>
+    {
+    	public readonly code: T;
 
-	public readonly fieldName: string;
+    	public readonly fieldName: string;
 
-	public readonly message: string;
+    	public readonly message: string;
 
-	public readonly value: string;
+    	public readonly value: string;
 
-	public readonly maxLength: number;
+    	public readonly maxLength: number;
 
-	constructor({ code, fieldName, message, value, maxLength }: IPresenterStringTooLongErrorDTOConstructorParameters<T>)
-	{
-		this.code = code;
-		this.fieldName = fieldName;
-		this.message = message;
-		this.value = value;
-		this.maxLength = maxLength;
-	}
+    	constructor({ code, fieldName, message, value, maxLength }: ConstructorParameters<T>)
+    	{
+    		this.code = code;
+    		this.fieldName = fieldName;
+    		this.message = message;
+    		this.value = value;
+    		this.maxLength = maxLength;
+    	}
+    }
 }

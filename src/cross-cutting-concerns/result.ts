@@ -70,9 +70,9 @@ class Handler<P, S>
 {
 	private _onCallback: ((callback: Result<P, S>) => void) | undefined;
 
-	private _onPrimaryCallback: ((callback: Primary<P>) => void) | undefined;
+	private _onPrimaryCallback: ((callback: P) => void) | undefined;
 
-	private _onSecondaryCallback: ((callback: Secondary<S>) => void) | undefined;
+	private _onSecondaryCallback: ((callback: S) => void) | undefined;
 
 	constructor(
         private readonly _compose: Compose,
@@ -88,14 +88,14 @@ class Handler<P, S>
 		return this;
 	}
 
-	public OnPrimary(callback: (value: Primary<P>) => void): this
+	public OnPrimary(callback: (value: P) => void): this
 	{
 		this._onPrimaryCallback = callback;
 
 		return this;
 	}
 
-	public OnSecondary(callback: (value: Secondary<S>) => void): this
+	public OnSecondary(callback: (value: S) => void): this
 	{
 		this._onSecondaryCallback = callback;
 
@@ -108,11 +108,11 @@ class Handler<P, S>
 
 		if (this._result.isPrimary)
 		{
-			this._onPrimaryCallback?.(this._result);
+			this._onPrimaryCallback?.(this._result.primaryValue);
 		}
 		else
 		{
-			this._onSecondaryCallback?.(this._result);
+			this._onSecondaryCallback?.(this._result.secondaryValue);
 		}
 
 		this._observable.Notify(this._result);

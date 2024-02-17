@@ -1,5 +1,5 @@
-import { IFieldDTO, IMessageDTO } from ".";
+import { FieldDto, MessageDto } from ".";
 
-export interface INumberNegativeErrorDTO<T extends string> extends IFieldDTO<T>, IMessageDTO<T> {
+export interface NumberNegativeErrorDto<T> extends FieldDto<T>, MessageDto<T> {
   readonly value: number;
 }

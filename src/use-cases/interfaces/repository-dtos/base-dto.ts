@@ -1,6 +1,4 @@
-import { IRepositoryCannotFindDTO } from './repository-cannot-find-dto';
-
-export interface IBaseDTO {
+export interface BaseDto<T> {
+    readonly code: T;
     readonly message: string;
-    IsRepositoryCannotFindDTO(): this is IRepositoryCannotFindDTO;
 }

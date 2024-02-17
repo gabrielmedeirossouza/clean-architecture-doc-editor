@@ -1,32 +1,33 @@
-import { IRepositoryCannotFindDTO } from "@/use-cases/interfaces/repository-dtos";
+import { RepositoryCannotFindDto } from "@/use-cases/interfaces/repository-dtos";
 
-export interface IRepositoryCannotFindDTOConstructorParameters {
-    searchCriteria: string;
-    searchValue: string;
-    entityName: string;
-    message: string;
-}
+export namespace ConcreteRepositoryCannotFindDto {
+    export interface ConstructorParameters<T> {
+        code: T;
+        searchCriteria: string;
+        searchValue: string;
+        entityName: string;
+        message: string;
+    }
 
-export class RepositoryCannotFindDTO implements IRepositoryCannotFindDTO
-{
-	public readonly searchCriteria: string;
+    export class Dto<T> implements RepositoryCannotFindDto<T>
+    {
+    	public readonly code: T;
 
-	public readonly searchValue: string;
+    	public readonly searchCriteria: string;
 
-	public readonly entityName: string;
+    	public readonly searchValue: string;
 
-	public readonly message: string;
+    	public readonly entityName: string;
 
-	constructor({ searchCriteria, searchValue, entityName, message }: IRepositoryCannotFindDTOConstructorParameters)
-	{
-		this.searchCriteria = searchCriteria;
-		this.searchValue = searchValue;
-		this.entityName = entityName;
-		this.message = message;
-	}
+    	public readonly message: string;
 
-	public IsRepositoryCannotFindDTO(): this is IRepositoryCannotFindDTO
-	{
-		return true;
-	}
+    	constructor({ code, searchCriteria, searchValue, entityName, message }: ConstructorParameters<T>)
+    	{
+    		this.code = code;
+    		this.searchCriteria = searchCriteria;
+    		this.searchValue = searchValue;
+    		this.entityName = entityName;
+    		this.message = message;
+    	}
+    }
 }

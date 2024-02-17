@@ -1,19 +1,34 @@
-import { Observable, Result } from "@/shared";
-import { ISmartChipViewModel } from "./view-model";
-import { IPresenterMessageDTO, IPresenterNumberOutsideRangeErrorDTO, IPresenterStringTooLongErrorDTO, IPresenterStringTooShortErrorDTO } from "../dtos";
+import { Observable, Result } from "@/cross-cutting-concerns";
+import { PresenterMessageDto, PresenterNumberOutsideRangeErrorDto, PresenterStringTooLongErrorDto, PresenterStringTooShortErrorDto } from "@/interface-adapters/interfaces/presenters/dtos";
+import { SmartChipViewModel } from "./view-model";
 
-export interface IEditSmartChipPresenterOutputPort {
-    editResponse?: Observable<Result<
-        ISmartChipViewModel,
-        IPresenterMessageDTO<"GENERIC_SERVICE_ERROR"> |
-        IPresenterMessageDTO<"SMART_CHIP_NOT_FOUND"> |
-        IPresenterMessageDTO<"SMART_CHIP_WITH_SAME_LABEL_ALREADY_EXISTS"> |
-        IPresenterMessageDTO<"SMART_CHIP_WITH_SAME_PREFIX_ALREADY_EXISTS"> |
-        IPresenterMessageDTO<"SMART_CHIP_WITH_SAME_POSITION_ALREADY_EXISTS"> |
-        IPresenterStringTooShortErrorDTO<"LABEL_TOO_SHORT"> |
-        IPresenterStringTooShortErrorDTO<"PREFIX_TOO_SHORT"> |
-        IPresenterStringTooLongErrorDTO<"LABEL_TOO_LONG"> |
-        IPresenterStringTooLongErrorDTO<"PREFIX_TOO_LONG"> |
-        IPresenterNumberOutsideRangeErrorDTO<"POSITION_OUTSIDE_RANGE">
-    >>;
+export namespace EditSmartChipPresenter {
+    export interface OutputPort {
+        editResponse?: Observable<Result<
+            SmartChipViewModel,
+            PresenterMessageDto<Code.GENERIC_SERVICE_ERROR> |
+            PresenterMessageDto<Code.SMART_CHIP_NOT_FOUND> |
+            PresenterMessageDto<Code.LABEL_ALREADY_EXISTS> |
+            PresenterMessageDto<Code.PREFIX_ALREADY_EXISTS> |
+            PresenterMessageDto<Code.POSITION_ALREADY_EXISTS> |
+            PresenterStringTooShortErrorDto<Code.LABEL_TOO_SHORT> |
+            PresenterStringTooShortErrorDto<Code.PREFIX_TOO_SHORT> |
+            PresenterStringTooLongErrorDto<Code.LABEL_TOO_LONG> |
+            PresenterStringTooLongErrorDto<Code.PREFIX_TOO_LONG> |
+            PresenterNumberOutsideRangeErrorDto<Code.POSITION_OUTSIDE_RANGE>
+        >>;
+    }
+
+    export enum Code {
+        GENERIC_SERVICE_ERROR,
+        SMART_CHIP_NOT_FOUND,
+        LABEL_ALREADY_EXISTS,
+        PREFIX_ALREADY_EXISTS,
+        POSITION_ALREADY_EXISTS,
+        LABEL_TOO_SHORT,
+        PREFIX_TOO_SHORT,
+        LABEL_TOO_LONG,
+        PREFIX_TOO_LONG,
+        POSITION_OUTSIDE_RANGE
+    }
 }

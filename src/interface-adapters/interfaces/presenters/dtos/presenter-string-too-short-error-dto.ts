@@ -1,6 +1,6 @@
-import { IPresenterFieldDTO, IPresenterMessageDTO } from ".";
+import { PresenterFieldDto, PresenterMessageDto } from ".";
 
-export interface IPresenterStringTooShortErrorDTO<T extends string> extends IPresenterFieldDTO<T>, IPresenterMessageDTO<T> {
+export interface PresenterStringTooShortErrorDto<T> extends PresenterFieldDto<T>, PresenterMessageDto<T> {
   readonly value: string;
   readonly minLength: number;
 }

@@ -1,32 +1,35 @@
-import { IPersistedEntity, ISmartChip } from "@/entities/interfaces";
-import { IListSmartChipPresenterOutputPort, ISmartChipViewModel } from "@/interface-adapters/interfaces/presenters/smart-chip-presenter";
-import { IListSmartChipUseCaseOutputPort, IListSmartChipUseCaseResponseModel } from "@/use-cases/interfaces/smart-chip";
+import { PersistedEntity, SmartChip } from "@/entities/interfaces";
+import { ListSmartChipUseCase } from "@/use-cases/interfaces/smart-chip";
+import { ListSmartChipPresenter, SmartChipViewModel } from "@/interface-adapters/interfaces/presenters/smart-chip-presenter";
 
-export interface IListSmartChipPresenterConstructorParameters {
-    outputPort: IListSmartChipPresenterOutputPort;
-}
+export namespace ConcreteListSmartChipPresenter {
 
-export class ListSmartChipPresenter implements IListSmartChipUseCaseOutputPort
-{
-	private readonly _outputPort: IListSmartChipPresenterOutputPort;
+    export interface ConstructorParameters {
+        outputPort: ListSmartChipPresenter.OutputPort;
+    }
 
-	constructor({ outputPort }: IListSmartChipPresenterConstructorParameters)
-	{
-		this._outputPort = outputPort;
-	}
+    export class Presenter implements ListSmartChipUseCase.OutputPort
+    {
+    	private readonly _outputPort: ListSmartChipPresenter.OutputPort;
 
-	public ListResponse({ response }: IListSmartChipUseCaseResponseModel): void
-	{
-		return this._outputPort.listResponse?.Notify(this._MapSmartChipListToViewModelList(response));
-	}
+    	constructor({ outputPort }: ConstructorParameters)
+    	{
+    		this._outputPort = outputPort;
+    	}
 
-	private _MapSmartChipListToViewModelList(smartChipList: IPersistedEntity<ISmartChip>[]): ISmartChipViewModel[]
-	{
-		return smartChipList.map(smartChip => ({
-			id: smartChip.id,
-			label: smartChip.entity.label,
-			prefix: smartChip.entity.prefix,
-			position: smartChip.entity.position
-		}));
-	}
+    	public ListResponse({ response }: ListSmartChipUseCase.ListResponseModel): void
+    	{
+    		return this._outputPort.listResponse?.Notify(this._MapSmartChipListToViewModelList(response));
+    	}
+
+    	private _MapSmartChipListToViewModelList(smartChipList: PersistedEntity<SmartChip>[]): SmartChipViewModel[]
+    	{
+    		return smartChipList.map(smartChip => ({
+    			id: smartChip.id,
+    			label: smartChip.entity.label,
+    			prefix: smartChip.entity.prefix,
+    			position: smartChip.entity.position
+    		}));
+    	}
+    }
 }

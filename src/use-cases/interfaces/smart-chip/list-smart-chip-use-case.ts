@@ -1,18 +1,20 @@
-import { IPersistedEntity, ISmartChip } from "@/entities/interfaces";
+import { PersistedEntity, SmartChip } from "@/entities/interfaces";
 
-export interface IListSmartChipUseCaseInputPort {
-    List(): Promise<void>;
-}
+export namespace ListSmartChipUseCase {
+    export interface InputPort {
+        List(): Promise<void>;
+    }
 
-export interface IListSmartChipUseCaseOutputPort {
-    ListResponse(responseModel: IListSmartChipUseCaseResponseModel): void;
-}
+    export interface OutputPort {
+        ListResponse(responseModel: ListResponseModel): void;
+    }
 
-// export interface IListSmartChipUseCaseRequestModel {
-//     page: number;
-//     limit: number;
-// }
+    // export interface ListRequestModel {
+    //     page: number;
+    //     limit: number;
+    // }
 
-export interface IListSmartChipUseCaseResponseModel {
-    response: IPersistedEntity<ISmartChip>[];
+    export interface ListResponseModel {
+        response: PersistedEntity<SmartChip>[];
+    }
 }

@@ -1,49 +1,49 @@
-import { Result } from "@/shared/result";
-import { CannotFindDTO } from "@/use-cases/dtos";
-import { ILogger } from "@/use-cases/interfaces/logger";
-import { IGetSmartChipUseCaseInputPort, IGetSmartChipUseCaseOutputPort, IGetSmartChipUseCaseRequestModel, ISmartChipRepository } from "@/use-cases/interfaces/smart-chip";
+import { Result } from "@/cross-cutting-concerns";
+import { ConcreteCannotFindDto } from "@/use-cases/dtos";
+import { DtoLoggerProxy } from "@/use-cases/interfaces/proxies/dto-logger-proxy";
+import { GetSmartChipUseCase, SmartChipRepository } from "@/use-cases/interfaces/smart-chip";
 
-export interface IGetSmartChipUseCaseConstructorParameters {
-    outputPort: IGetSmartChipUseCaseOutputPort;
-    smartChipRepository: ISmartChipRepository;
-    logger: ILogger;
-}
+export namespace ConcreteGetSmartChipUseCase {
+    export interface ConstructorParameters {
+        outputPort: GetSmartChipUseCase.OutputPort;
+        smartChipRepository: SmartChipRepository.InputPort;
+        dtoLogger: DtoLoggerProxy;
+    }
 
-export class GetSmartChipUseCase implements IGetSmartChipUseCaseInputPort
-{
-	private _outputPort: IGetSmartChipUseCaseOutputPort;
+    export class UseCase implements GetSmartChipUseCase.InputPort
+    {
+    	private _outputPort: GetSmartChipUseCase.OutputPort;
 
-	private _smartChipRepository: ISmartChipRepository;
+    	private _smartChipRepository: SmartChipRepository.InputPort;
 
-	private _logger: ILogger;
+    	private _dtoLogger: DtoLoggerProxy;
 
-	constructor({ outputPort, smartChipRepository, logger }: IGetSmartChipUseCaseConstructorParameters)
-	{
-		this._outputPort = outputPort;
-		this._smartChipRepository = smartChipRepository;
-		this._logger = logger;
-	}
+    	constructor({ outputPort, smartChipRepository, dtoLogger }: ConstructorParameters)
+    	{
+    		this._outputPort = outputPort;
+    		this._smartChipRepository = smartChipRepository;
+    		this._dtoLogger = dtoLogger;
+    	}
 
-	public async GetSmartChipById({ id }: IGetSmartChipUseCaseRequestModel): Promise<void>
-	{
-		const persistedSmartChipResult = await this._smartChipRepository.GetSmartChipById(id);
-		if (!persistedSmartChipResult.isPrimary)
-		{
-			return this._outputPort.GetSmartChipByIdResponse({
-				response: Result.Secondary(new CannotFindDTO({
-					code: "SMART_CHIP_NOT_FOUND",
-					searchCriteria: "id",
-					searchValue: id,
-					entityName: "SmartChip",
-					message: `GetSmartChipUseCase: Cannot get SmartChip entity with id ${id}, because it was not found.`
-				}))
-			});
-		}
+    	public async GetById({ id }: GetSmartChipUseCase.GetByIdRequestModel): Promise<void>
+    	{
+    		const { response: persistedSmartChipResult } = await this._smartChipRepository.Get({ id });
+    		if (!persistedSmartChipResult.isPrimary)
+    		{
+    			return this._outputPort.GetByIdResponse({
+    				response: Result.Secondary(this._dtoLogger.ProxyInfo(new ConcreteCannotFindDto.Dto({
+    					code: GetSmartChipUseCase.Code.SMART_CHIP_NOT_FOUND,
+    					searchCriteria: "id",
+    					searchValue: id,
+    					entityName: "SmartChip",
+    					message: `Cannot get SmartChip entity with id ${id}, because it was not found.`
+    				})))
+    			});
+    		}
 
-		this._logger.LogInfo(`GetSmartChipUseCase: GetSmartChipById SmartChip with id ${id} found.`);
-
-		return this._outputPort.GetSmartChipByIdResponse({
-			response: Result.Primary(persistedSmartChipResult.primaryValue)
-		});
-	}
+    		return this._outputPort.GetByIdResponse({
+    			response: Result.Primary(persistedSmartChipResult.primaryValue)
+    		});
+    	}
+    }
 }

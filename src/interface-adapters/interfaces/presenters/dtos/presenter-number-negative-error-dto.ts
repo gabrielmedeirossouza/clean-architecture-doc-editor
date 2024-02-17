@@ -1,5 +1,5 @@
-import { IPresenterFieldDTO, IPresenterMessageDTO } from ".";
+import { PresenterFieldDto, PresenterMessageDto } from ".";
 
-export interface IPresenterNumberNegativeErrorDTO<T extends string> extends IPresenterFieldDTO<T>, IPresenterMessageDTO<T> {
+export interface PresenterNumberNegativeErrorDto<T> extends PresenterFieldDto<T>, PresenterMessageDto<T> {
   readonly value: number;
 }

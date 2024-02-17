@@ -1,11 +1,18 @@
-import { Observable, Result } from "@/shared";
-import { ISmartChipViewModel } from "./view-model";
-import { IPresenterMessageDTO } from "../dtos";
+import { Observable, Result } from "@/cross-cutting-concerns";
+import { PresenterMessageDto } from "@/interface-adapters/interfaces/presenters/dtos";
+import { SmartChipViewModel } from "./view-model";
 
-export interface IGetSmartChipPresenterOutputPort {
-    getSmartChipByIdResponse?: Observable<Result<
-        ISmartChipViewModel,
-        IPresenterMessageDTO<"GENERIC_SERVICE_ERROR"> |
-        IPresenterMessageDTO<"SMART_CHIP_NOT_FOUND">
-    >>;
+export namespace GetSmartChipPresenter {
+    export interface OutputPort {
+        getSmartChipByIdResponse?: Observable<Result<
+            SmartChipViewModel,
+            PresenterMessageDto<Code.GENERIC_SERVICE_ERROR> |
+            PresenterMessageDto<Code.SMART_CHIP_NOT_FOUND>
+        >>;
+    }
+
+    export enum Code {
+        GENERIC_SERVICE_ERROR,
+        SMART_CHIP_NOT_FOUND
+    }
 }

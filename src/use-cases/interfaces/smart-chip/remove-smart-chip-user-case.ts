@@ -1,23 +1,29 @@
-import { Result } from "@/shared/result";
-import { ICannotFindDTO } from "../dtos";
+import { Result } from "@/cross-cutting-concerns";
+import { CannotFindDto } from "@/use-cases/interfaces/dtos";
 
-export interface IRemoveSmartChipUseCaseInputPort {
-    Remove(requestModel: IRemoveSmartChipUseCaseRequestModel): Promise<void>;
+export namespace RemoveSmartChipUseCase {
+    export interface InputPort {
+        Remove(requestModel: RemoveRequestModel): Promise<void>;
+    }
+
+    export interface OutputPort {
+        RemoveResponse(responseModel: RemoveResponseModel): void;
+    }
+
+    export interface RemoveRequestModel {
+        id: string;
+    }
+
+    export interface RemoveResponseModel {
+        response: Result<
+            string,
+            CannotFindDto<Code.SMART_CHIP_NOT_FOUND> |
+            CannotFindDto<Code.GENERIC_SERVICE_ERROR>
+        >;
+    }
+
+    export enum Code {
+        SMART_CHIP_NOT_FOUND,
+        GENERIC_SERVICE_ERROR
+    }
 }
-
-export interface IRemoveSmartChipUseCaseOutputPort {
-    RemoveResponse(responseModel: IRemoveSmartChipUseCaseResponseModel): void;
-}
-
-export interface IRemoveSmartChipUseCaseRequestModel {
-    id: string;
-}
-
-export interface IRemoveSmartChipUseCaseResponseModel {
-    response: Result<
-        string,
-        ICannotFindDTO<"SMART_CHIP_NOT_FOUND"> |
-        ICannotFindDTO<"GENERIC_SERVICE_ERROR">
-    >;
-}
-

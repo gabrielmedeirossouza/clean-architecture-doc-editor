@@ -1,31 +1,33 @@
-import { IPresenterNumberTooSmallErrorDTO } from "@/interface-adapters/interfaces/presenters/dtos";
+import { PresenterNumberTooSmallErrorDto } from "@/interface-adapters/interfaces/presenters/dtos";
 
-interface IPresenterNumberTooSmallErrorDTOConstructorParameters<T> {
-    code: T;
-    fieldName: string;
-    message: string;
-    value: number;
-    minValue: number;
-}
+export namespace ConcretePresenterNumberTooSmallErrorDto {
+    export interface ConstructorParameters<T> {
+        code: T;
+        fieldName: string;
+        message: string;
+        value: number;
+        minValue: number;
+    }
 
-export class PresenterNumberTooSmallErrorDTO<T extends string> implements IPresenterNumberTooSmallErrorDTO<T>
-{
-	public readonly code: T;
+    export class Dto<T> implements PresenterNumberTooSmallErrorDto<T>
+    {
+    	public readonly code: T;
 
-	public readonly fieldName: string;
+    	public readonly fieldName: string;
 
-	public readonly message: string;
+    	public readonly message: string;
 
-	public readonly value: number;
+    	public readonly value: number;
 
-	public readonly minValue: number;
+    	public readonly minValue: number;
 
-	constructor({ code, fieldName, message, value, minValue }: IPresenterNumberTooSmallErrorDTOConstructorParameters<T>)
-	{
-		this.code = code;
-		this.fieldName = fieldName;
-		this.message = message;
-		this.value = value;
-		this.minValue = minValue;
-	}
+    	constructor({ code, fieldName, message, value, minValue }: ConstructorParameters<T>)
+    	{
+    		this.code = code;
+    		this.fieldName = fieldName;
+    		this.message = message;
+    		this.value = value;
+    		this.minValue = minValue;
+    	}
+    }
 }
