@@ -1,19 +1,19 @@
-import { Result } from "@/cross-cutting-concerns/result";
+import { Result } from "@/shared/result";
 import { PersistedEntity, SmartChip } from "@/entities/interfaces";
 import { SmartChipRepository } from "@/use-cases/interfaces/smart-chip";
-import { IIdGenerator } from "@/interface-adapters/interfaces/id-generator";
+import { IUuidGenerator } from "@/interface-adapters/interfaces/id-generator";
 import { ConcreteRepositoryCannotFindDto } from "@/interface-adapters/repositories/dtos";
 
 export namespace ConcreteSmartChipInMemoryRepository {
     export interface ConstructorParameters {
-        idGenerator: IIdGenerator;
+        idGenerator: IUuidGenerator;
     }
 
     export class Repository implements SmartChipRepository.InputPort
     {
     	private _smartChips: PersistedEntity<SmartChip>[] = [];
 
-    	private _idGenerator: IIdGenerator;
+    	private _idGenerator: IUuidGenerator;
 
     	constructor({ idGenerator }: ConstructorParameters)
     	{
@@ -22,7 +22,7 @@ export namespace ConcreteSmartChipInMemoryRepository {
 
     	public async Create({ smartChip }: SmartChipRepository.CreateRequestModel): Promise<SmartChipRepository.CreateResponseModel>
     	{
-    		const id = this._idGenerator.GenerateId();
+    		const id = this._idGenerator.GenerateUuidV4();
 
     		this._smartChips.push({
     			id,

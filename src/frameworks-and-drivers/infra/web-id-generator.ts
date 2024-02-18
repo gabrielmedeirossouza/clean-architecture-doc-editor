@@ -1,8 +1,8 @@
-import { IIdGenerator } from "@/interface-adapters/interfaces/id-generator";
+import { IUuidGenerator } from "@/interface-adapters/protocols/uuid-generator";
 
-export class WebIdGenerator implements IIdGenerator
+export class WebUuidGenerator implements IUuidGenerator
 {
-	public GenerateId(): string
+	public GenerateUuidV4(): string
 	{
 		return crypto.randomUUID();
 	}

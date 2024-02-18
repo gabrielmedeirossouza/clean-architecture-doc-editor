@@ -1,4 +1,4 @@
-import { Result } from "@/cross-cutting-concerns";
+import { Result } from "@/shared";
 import { ConcreteCannotFindDto } from "@/use-cases/dtos";
 import { DtoLoggerProxy } from "@/use-cases/interfaces/proxies/dto-logger-proxy";
 import { GetSmartChipUseCase, SmartChipRepository } from "@/use-cases/interfaces/smart-chip";

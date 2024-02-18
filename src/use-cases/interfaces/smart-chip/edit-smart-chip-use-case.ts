@@ -1,4 +1,4 @@
-import { Result } from "@/cross-cutting-concerns";
+import { Result } from "@/shared";
 import { PersistedEntity, SmartChip } from "@/entities/interfaces";
 import { CannotFindDto, MessageDto, StringTooLongErrorDto, StringTooShortErrorDto } from "@/use-cases/interfaces/dtos";
 import { SmartChipValidationService } from "./smart-chip-validation-service";

@@ -1,4 +1,4 @@
-import { Result } from "@/cross-cutting-concerns/result";
+import { Result } from "@/shared/result";
 import { ConcreteStringTooLongErrorDto, ConcreteStringTooShortErrorDto } from "@/use-cases/dtos";
 import { SmartChipValidationService } from "@/use-cases/interfaces/smart-chip";
 

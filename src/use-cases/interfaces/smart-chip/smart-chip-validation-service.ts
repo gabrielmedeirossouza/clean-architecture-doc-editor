@@ -1,4 +1,4 @@
-import { Result } from "@/cross-cutting-concerns";
+import { Result } from "@/shared";
 import { StringTooLongErrorDto, StringTooShortErrorDto } from "@/use-cases/interfaces/dtos";
 
 export namespace SmartChipValidationService {

@@ -1,4 +1,4 @@
-import { Result } from "@/cross-cutting-concerns";
+import { Result } from "@/shared";
 import { ConcretePersistedEntity, ConcreteSmartChip } from "@/entities/smart-chip";
 import { ConcreteGenericServiceErrorDto, ConcreteMessageDto } from "@/use-cases/dtos";
 import { DtoLoggerProxy } from "@/use-cases/interfaces/proxies/dto-logger-proxy";

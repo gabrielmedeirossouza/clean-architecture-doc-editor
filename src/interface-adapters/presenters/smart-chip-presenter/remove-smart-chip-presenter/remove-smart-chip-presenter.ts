@@ -1,4 +1,4 @@
-import { Result } from "@/cross-cutting-concerns";
+import { Result } from "@/shared";
 import { RemoveSmartChipUseCase } from "@/use-cases/interfaces/smart-chip";
 import { RemoveSmartChipPresenter } from "@/interface-adapters/interfaces/presenters/smart-chip-presenter";
 import { ConcretePresenterMessageDto } from "@/interface-adapters/presenters/dtos";

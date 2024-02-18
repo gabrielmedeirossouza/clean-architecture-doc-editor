@@ -1,21 +1,7 @@
-import { SmartChip } from "@/entities/interfaces";
+import { ISmartChip } from "@/entities/protocols/smart-chip";
 
-export namespace ConcreteSmartChip {
-    export interface ConstructorParameters {
-        label: string;
-        prefix: string;
-    }
-
-    export class Entity implements SmartChip
-    {
-    	public readonly label: string;
-
-    	public readonly prefix: string;
-
-    	constructor({ label, prefix }: ConstructorParameters)
-    	{
-    		this.label = label;
-    		this.prefix = prefix;
-    	}
-    }
+export class SmartChip  implements ISmartChip
+{
+	constructor(public readonly label: string, public readonly prefix: string)
+	{}
 }

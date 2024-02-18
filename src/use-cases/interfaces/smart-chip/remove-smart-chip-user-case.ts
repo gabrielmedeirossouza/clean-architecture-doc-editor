@@ -1,4 +1,4 @@
-import { Result } from "@/cross-cutting-concerns";
+import { Result } from "@/shared";
 import { CannotFindDto } from "@/use-cases/interfaces/dtos";
 
 export namespace RemoveSmartChipUseCase {
