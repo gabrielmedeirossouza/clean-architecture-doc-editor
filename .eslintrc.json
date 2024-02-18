@@ -137,6 +137,13 @@
                 "accessorPairPositioning": "getThenSet"
             }
         ],
+        "@typescript-eslint/lines-between-class-members": [
+            "error",
+            "always",
+            {
+                "exceptAfterSingleLine": true
+            }
+        ],
         "@typescript-eslint/naming-convention": [
             "error",
             {
@@ -149,31 +156,36 @@
                 "selector": ["classMethod"],
                 "format": ["PascalCase"],
                 "modifiers": ["private"],
-                "prefix": ["_"]
+                "leadingUnderscore": "allow",
+                "trailingUnderscore": "allow"
             },
             {
                 "selector": ["classMethod"],
                 "format": ["PascalCase"],
                 "modifiers": ["protected"],
-                "prefix": ["_"]
+                "leadingUnderscore": "allow",
+                "trailingUnderscore": "allow"
             },
             {
                 "selector": ["classProperty"],
                 "format": ["camelCase", "UPPER_CASE"],
                 "modifiers": ["private"],
-                "prefix": ["_"]
+                "leadingUnderscore": "allow",
+                "trailingUnderscore": "allow"
             },
             {
                 "selector": ["classProperty"],
                 "format": ["camelCase"],
                 "modifiers": ["protected"],
-                "prefix": ["_"]
+                "leadingUnderscore": "allow",
+                "trailingUnderscore": "allow"
             },
             {
                 "selector": "parameterProperty",
                 "modifiers": ["private"],
                 "format": ["camelCase"],
-                "prefix": ["_"]
+                "leadingUnderscore": "allow",
+                "trailingUnderscore": "allow"
             }
         ]
     }

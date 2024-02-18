@@ -14,91 +14,91 @@ export namespace ConcreteCreateSmartChipPresenter {
 
     	public CreateResponse({ response }: CreateSmartChipUseCase.CreateResponseModel): void
     	{
-    		if (response.isPrimary)
+    		if (response.ok)
     		{
-    			return this._outputPort.createResponse?.Notify(Result.Primary({
-    				id: response.primaryValue.id,
-    				label: response.primaryValue.entity.label,
-    				prefix: response.primaryValue.entity.prefix,
+    			return this._outputPort.createResponse?.Notify(Result.Ok({
+    				id: response.value.id,
+    				label: response.value.entity.label,
+    				prefix: response.value.entity.prefix,
     			}));
     		}
 
-    		if (response.secondaryValue.code === SmartChipValidationService.Code.LABEL_TOO_SHORT)
+    		if (response.value.code === SmartChipValidationService.Code.LABEL_TOO_SHORT)
     		{
     			return this._outputPort.createResponse?.Notify(
-    				Result.Secondary(new ConcretePresenterStringTooShortErrorDto.Dto({
+    				Result.Fail(new ConcretePresenterStringTooShortErrorDto.Dto({
     					code: CreateSmartChipPresenter.Code.LABEL_TOO_SHORT,
     					fieldName: "Etiqueta",
-    					message: `O Campo Etiqueta deve ter pelo menos ${response.secondaryValue.minLength} caracteres.`,
-    					value: response.secondaryValue.value,
-    					minLength: response.secondaryValue.minLength
+    					message: `O Campo Etiqueta deve ter pelo menos ${response.value.minLength} caracteres.`,
+    					value: response.value.value,
+    					minLength: response.value.minLength
     				}))
     			);
     		}
 
-    		if (response.secondaryValue.code === SmartChipValidationService.Code.LABEL_TOO_LONG)
+    		if (response.value.code === SmartChipValidationService.Code.LABEL_TOO_LONG)
     		{
     			return this._outputPort.createResponse?.Notify(
-    				Result.Secondary(new ConcretePresenterStringTooLongErrorDto.Dto({
+    				Result.Fail(new ConcretePresenterStringTooLongErrorDto.Dto({
     					code: CreateSmartChipPresenter.Code.LABEL_TOO_LONG,
     					fieldName: "Etiqueta",
-    					message: `O Campo Etiqueta deve ter no máximo ${response.secondaryValue.maxLength} caracteres.`,
-    					value: response.secondaryValue.value,
-    					maxLength: response.secondaryValue.maxLength
+    					message: `O Campo Etiqueta deve ter no máximo ${response.value.maxLength} caracteres.`,
+    					value: response.value.value,
+    					maxLength: response.value.maxLength
     				}))
     			);
     		}
 
-    		if (response.secondaryValue.code === SmartChipValidationService.Code.PREFIX_TOO_SHORT)
+    		if (response.value.code === SmartChipValidationService.Code.PREFIX_TOO_SHORT)
     		{
     			return this._outputPort.createResponse?.Notify(
-    				Result.Secondary(new ConcretePresenterStringTooShortErrorDto.Dto({
+    				Result.Fail(new ConcretePresenterStringTooShortErrorDto.Dto({
     					code: CreateSmartChipPresenter.Code.PREFIX_TOO_SHORT,
     					fieldName: "Prefixo",
-    					message: `O Campo Prefixo deve ter pelo menos ${response.secondaryValue.minLength} caracteres.`,
-    					value: response.secondaryValue.value,
-    					minLength: response.secondaryValue.minLength
+    					message: `O Campo Prefixo deve ter pelo menos ${response.value.minLength} caracteres.`,
+    					value: response.value.value,
+    					minLength: response.value.minLength
     				}))
     			);
     		}
 
-    		if (response.secondaryValue.code === SmartChipValidationService.Code.PREFIX_TOO_LONG)
+    		if (response.value.code === SmartChipValidationService.Code.PREFIX_TOO_LONG)
     		{
     			return this._outputPort.createResponse?.Notify(
-    				Result.Secondary(new ConcretePresenterStringTooLongErrorDto.Dto({
+    				Result.Fail(new ConcretePresenterStringTooLongErrorDto.Dto({
     					code: CreateSmartChipPresenter.Code.PREFIX_TOO_LONG,
     					fieldName: "Prefixo",
-    					message: `O Campo Prefixo deve ter no máximo ${response.secondaryValue.maxLength} caracteres.`,
-    					value: response.secondaryValue.value,
-    					maxLength: response.secondaryValue.maxLength
+    					message: `O Campo Prefixo deve ter no máximo ${response.value.maxLength} caracteres.`,
+    					value: response.value.value,
+    					maxLength: response.value.maxLength
     				}))
     			);
     		}
 
-    		if (response.secondaryValue.code === CreateSmartChipUseCase.Code.LABEL_ALREADY_EXISTS)
+    		if (response.value.code === CreateSmartChipUseCase.Code.LABEL_ALREADY_EXISTS)
     		{
     			return this._outputPort.createResponse?.Notify(
-    				Result.Secondary(new ConcretePresenterMessageDto.Dto({
+    				Result.Fail(new ConcretePresenterMessageDto.Dto({
     					code: CreateSmartChipPresenter.Code.LABEL_ALREADY_EXISTS,
     					message: `Um Smart Chip com essa Etiqueta já existe.`
     				}))
     			);
     		}
 
-    		if (response.secondaryValue.code === CreateSmartChipUseCase.Code.PREFIX_ALREADY_EXISTS)
+    		if (response.value.code === CreateSmartChipUseCase.Code.PREFIX_ALREADY_EXISTS)
     		{
     			return this._outputPort.createResponse?.Notify(
-    				Result.Secondary(new ConcretePresenterMessageDto.Dto({
+    				Result.Fail(new ConcretePresenterMessageDto.Dto({
     					code: CreateSmartChipPresenter.Code.PREFIX_ALREADY_EXISTS,
     					message: `Um Smart Chip com esse Prefixo já existe.`
     				}))
     			);
     		}
 
-    		if (response.secondaryValue.code === CreateSmartChipUseCase.Code.GENERIC_SERVICE_ERROR)
+    		if (response.value.code === CreateSmartChipUseCase.Code.GENERIC_SERVICE_ERROR)
     		{
     			return this._outputPort.createResponse?.Notify(
-    				Result.Secondary(new ConcretePresenterGenericServiceErrorDto.Dto({ code: CreateSmartChipPresenter.Code.GENERIC_SERVICE_ERROR }))
+    				Result.Fail(new ConcretePresenterGenericServiceErrorDto.Dto({ code: CreateSmartChipPresenter.Code.GENERIC_SERVICE_ERROR }))
     			);
     		}
     	}

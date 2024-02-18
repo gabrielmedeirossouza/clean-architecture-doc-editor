@@ -29,7 +29,7 @@ export namespace ConcreteSmartChipInMemoryRepository {
     			entity: smartChip
     		});
 
-    		return { response: Result.Primary(id) };
+    		return { response: Result.Ok(id) };
     	}
 
     	public async Edit({ smartChip }: SmartChipRepository.EditRequestModel): Promise<SmartChipRepository.EditResponseModel>
@@ -38,7 +38,7 @@ export namespace ConcreteSmartChipInMemoryRepository {
     		if (index === -1)
     		{
     			return {
-    				response: Result.Secondary(new ConcreteRepositoryCannotFindDto.Dto({
+    				response: Result.Fail(new ConcreteRepositoryCannotFindDto.Dto({
     					code: SmartChipRepository.Code.SMART_CHIP_NOT_FOUND,
     					searchCriteria: "id",
     					searchValue: smartChip.id,
@@ -51,7 +51,7 @@ export namespace ConcreteSmartChipInMemoryRepository {
     		this._smartChips[index] = smartChip;
 
     		return {
-    			response: Result.Primary(smartChip.id)
+    			response: Result.Ok(smartChip.id)
     		};
     	}
 
@@ -61,7 +61,7 @@ export namespace ConcreteSmartChipInMemoryRepository {
     		if (index === -1)
     		{
     			return {
-    				response: Result.Secondary(new ConcreteRepositoryCannotFindDto.Dto({
+    				response: Result.Fail(new ConcreteRepositoryCannotFindDto.Dto({
     					code: SmartChipRepository.Code.SMART_CHIP_NOT_FOUND,
     					searchCriteria: "id",
     					searchValue: id,
@@ -74,7 +74,7 @@ export namespace ConcreteSmartChipInMemoryRepository {
     		this._smartChips.splice(index, 1);
 
     		return {
-    			response: Result.Primary(id)
+    			response: Result.Ok(id)
     		};
     	}
 
@@ -84,7 +84,7 @@ export namespace ConcreteSmartChipInMemoryRepository {
     		if (!smartChip)
     		{
     			return {
-    				response: Result.Secondary(new ConcreteRepositoryCannotFindDto.Dto({
+    				response: Result.Fail(new ConcreteRepositoryCannotFindDto.Dto({
     					code: SmartChipRepository.Code.SMART_CHIP_NOT_FOUND,
     					searchCriteria: "id",
     					searchValue: id,
@@ -95,7 +95,7 @@ export namespace ConcreteSmartChipInMemoryRepository {
     		}
 
     		return {
-    			response: Result.Primary(smartChip)
+    			response: Result.Ok(smartChip)
     		};
     	}
 
@@ -112,7 +112,7 @@ export namespace ConcreteSmartChipInMemoryRepository {
     		if (!smartChip)
     		{
     			return {
-    				response: Result.Secondary(new ConcreteRepositoryCannotFindDto.Dto({
+    				response: Result.Fail(new ConcreteRepositoryCannotFindDto.Dto({
     					code: SmartChipRepository.Code.SMART_CHIP_NOT_FOUND,
     					searchCriteria: "label",
     					searchValue: label,
@@ -123,7 +123,7 @@ export namespace ConcreteSmartChipInMemoryRepository {
     		}
 
     		return {
-    			response: Result.Primary(smartChip)
+    			response: Result.Ok(smartChip)
     		};
     	}
 
@@ -133,7 +133,7 @@ export namespace ConcreteSmartChipInMemoryRepository {
     		if (!smartChip)
     		{
     			return {
-    				response: Result.Secondary(new ConcreteRepositoryCannotFindDto.Dto({
+    				response: Result.Fail(new ConcreteRepositoryCannotFindDto.Dto({
     					code: SmartChipRepository.Code.SMART_CHIP_NOT_FOUND,
     					searchCriteria: "prefix",
     					searchValue: prefix,
@@ -144,7 +144,7 @@ export namespace ConcreteSmartChipInMemoryRepository {
     		}
 
     		return {
-    			response: Result.Primary(smartChip)
+    			response: Result.Ok(smartChip)
     		};
     	}
     }

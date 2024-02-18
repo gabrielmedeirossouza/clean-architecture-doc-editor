@@ -19,65 +19,65 @@ export namespace ConcreteEditSmartChipPresenter {
 
     	public EditResponse({ response }: EditSmartChipUseCase.EditResponseModel): void
     	{
-    		if (response.isPrimary)
+    		if (response.ok)
     		{
     			return this._outputPort.editResponse?.Notify(
-    				Result.Primary({
-    					id: response.primaryValue.id,
-    					label: response.primaryValue.entity.label,
-    					prefix: response.primaryValue.entity.prefix,
+    				Result.Ok({
+    					id: response.value.id,
+    					label: response.value.entity.label,
+    					prefix: response.value.entity.prefix,
     				})
     			);
     		}
 
-    		if (response.secondaryValue.code === SmartChipValidationService.Code.LABEL_TOO_SHORT)
+    		if (response.value.code === SmartChipValidationService.Code.LABEL_TOO_SHORT)
     		{
     			return this._outputPort.editResponse?.Notify(
-    				Result.Secondary(new ConcretePresenterStringTooShortErrorDto.Dto({
+    				Result.Fail(new ConcretePresenterStringTooShortErrorDto.Dto({
     					code: EditSmartChipPresenter.Code.LABEL_TOO_SHORT,
     					fieldName: "Etiqueta",
-    					message: `O campo Etiqueta deve ter no mínimo ${response.secondaryValue.minLength} caracteres.`,
-    					value: response.secondaryValue.value,
-    					minLength: response.secondaryValue.minLength
+    					message: `O campo Etiqueta deve ter no mínimo ${response.value.minLength} caracteres.`,
+    					value: response.value.value,
+    					minLength: response.value.minLength
     				}))
     			);
     		}
 
-    		if (response.secondaryValue.code === SmartChipValidationService.Code.LABEL_TOO_LONG)
+    		if (response.value.code === SmartChipValidationService.Code.LABEL_TOO_LONG)
     		{
     			return this._outputPort.editResponse?.Notify(
-    				Result.Secondary(new ConcretePresenterStringTooLongErrorDto.Dto({
+    				Result.Fail(new ConcretePresenterStringTooLongErrorDto.Dto({
     					code: EditSmartChipPresenter.Code.LABEL_TOO_LONG,
     					fieldName: "Etiqueta",
-    					message: `O campo Etiqueta deve ter no máximo ${response.secondaryValue.maxLength} caracteres.`,
-    					value: response.secondaryValue.value,
-    					maxLength: response.secondaryValue.maxLength
+    					message: `O campo Etiqueta deve ter no máximo ${response.value.maxLength} caracteres.`,
+    					value: response.value.value,
+    					maxLength: response.value.maxLength
     				}))
     			);
     		}
 
-    		if (response.secondaryValue.code === SmartChipValidationService.Code.PREFIX_TOO_SHORT)
+    		if (response.value.code === SmartChipValidationService.Code.PREFIX_TOO_SHORT)
     		{
     			return this._outputPort.editResponse?.Notify(
-    				Result.Secondary(new ConcretePresenterStringTooShortErrorDto.Dto({
+    				Result.Fail(new ConcretePresenterStringTooShortErrorDto.Dto({
     					code: EditSmartChipPresenter.Code.PREFIX_TOO_SHORT,
     					fieldName: "Prefixo",
-    					message: `O campo Prefixo deve ter no mínimo ${response.secondaryValue.minLength} caracteres.`,
-    					value: response.secondaryValue.value,
-    					minLength: response.secondaryValue.minLength
+    					message: `O campo Prefixo deve ter no mínimo ${response.value.minLength} caracteres.`,
+    					value: response.value.value,
+    					minLength: response.value.minLength
     				}))
     			);
     		}
 
-    		if (response.secondaryValue.code === SmartChipValidationService.Code.PREFIX_TOO_LONG)
+    		if (response.value.code === SmartChipValidationService.Code.PREFIX_TOO_LONG)
     		{
     			return this._outputPort.editResponse?.Notify(
-    				Result.Secondary(new ConcretePresenterStringTooLongErrorDto.Dto({
+    				Result.Fail(new ConcretePresenterStringTooLongErrorDto.Dto({
     					code: EditSmartChipPresenter.Code.PREFIX_TOO_LONG,
     					fieldName: "Prefixo",
-    					message: `O campo Prefixo deve ter no máximo ${response.secondaryValue.maxLength} caracteres.`,
-    					value: response.secondaryValue.value,
-    					maxLength: response.secondaryValue.maxLength
+    					message: `O campo Prefixo deve ter no máximo ${response.value.maxLength} caracteres.`,
+    					value: response.value.value,
+    					maxLength: response.value.maxLength
     				}))
     			);
     		}

@@ -28,10 +28,10 @@ export namespace ConcreteRemoveSmartChipUseCase {
     	public async Remove({ id }: RemoveSmartChipUseCase.RemoveRequestModel): Promise<void>
     	{
     		const { response: removeResult } = await this._smartChipRepository.Remove({ id });
-    		if (!removeResult.isPrimary)
+    		if (!removeResult.ok)
     		{
     			return this._outputPort.RemoveResponse({
-    				response: Result.Secondary(this._dtoLogger.ProxyInfo(new ConcreteCannotFindDto.Dto({
+    				response: Result.Fail(this._dtoLogger.ProxyInfo(new ConcreteCannotFindDto.Dto({
     					code: RemoveSmartChipUseCase.Code.SMART_CHIP_NOT_FOUND,
     					searchCriteria: "id",
     					searchValue: id,
@@ -42,7 +42,7 @@ export namespace ConcreteRemoveSmartChipUseCase {
     		}
 
     		this._outputPort.RemoveResponse({
-    			response: Result.Primary(id)
+    			response: Result.Ok(id)
     		});
     	}
     }

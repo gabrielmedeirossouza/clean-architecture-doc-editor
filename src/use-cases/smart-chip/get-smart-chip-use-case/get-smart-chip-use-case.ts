@@ -28,10 +28,10 @@ export namespace ConcreteGetSmartChipUseCase {
     	public async GetById({ id }: GetSmartChipUseCase.GetByIdRequestModel): Promise<void>
     	{
     		const { response: persistedSmartChipResult } = await this._smartChipRepository.Get({ id });
-    		if (!persistedSmartChipResult.isPrimary)
+    		if (!persistedSmartChipResult.ok)
     		{
     			return this._outputPort.GetByIdResponse({
-    				response: Result.Secondary(this._dtoLogger.ProxyInfo(new ConcreteCannotFindDto.Dto({
+    				response: Result.Fail(this._dtoLogger.ProxyInfo(new ConcreteCannotFindDto.Dto({
     					code: GetSmartChipUseCase.Code.SMART_CHIP_NOT_FOUND,
     					searchCriteria: "id",
     					searchValue: id,
@@ -42,7 +42,7 @@ export namespace ConcreteGetSmartChipUseCase {
     		}
 
     		return this._outputPort.GetByIdResponse({
-    			response: Result.Primary(persistedSmartChipResult.primaryValue)
+    			response: Result.Ok(persistedSmartChipResult.value)
     		});
     	}
     }

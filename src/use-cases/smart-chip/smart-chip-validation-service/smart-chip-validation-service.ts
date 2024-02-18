@@ -22,7 +22,7 @@ export namespace ConcreteSmartChipValidationService {
     		if (label.length < this._LABEL_MIN_LENGTH)
     		{
     			return {
-    				response: Result.Secondary(new ConcreteStringTooShortErrorDto.Dto({
+    				response: Result.Fail(new ConcreteStringTooShortErrorDto.Dto({
     					code: SmartChipValidationService.Code.LABEL_TOO_SHORT,
     					fieldName: "label",
     					value: label,
@@ -34,7 +34,7 @@ export namespace ConcreteSmartChipValidationService {
     		if (label.length > this._LABEL_MAX_LENGTH)
     		{
     			return {
-    				response: Result.Secondary(new ConcreteStringTooLongErrorDto.Dto({
+    				response: Result.Fail(new ConcreteStringTooLongErrorDto.Dto({
     					code: SmartChipValidationService.Code.LABEL_TOO_LONG,
     					fieldName: "label",
     					value: label,
@@ -44,7 +44,7 @@ export namespace ConcreteSmartChipValidationService {
     		}
 
     		return {
-    			response: Result.Primary(label)
+    			response: Result.Ok(label)
     		};
     	}
 
@@ -53,7 +53,7 @@ export namespace ConcreteSmartChipValidationService {
     		if (prefix.length < this._PREFIX_MIN_LENGTH)
     		{
     			return {
-    				response: Result.Secondary(new ConcreteStringTooShortErrorDto.Dto({
+    				response: Result.Fail(new ConcreteStringTooShortErrorDto.Dto({
     					code: SmartChipValidationService.Code.PREFIX_TOO_SHORT,
     					fieldName: "prefix",
     					value: prefix,
@@ -65,7 +65,7 @@ export namespace ConcreteSmartChipValidationService {
     		if (prefix.length > this._PREFIX_MAX_LENGTH)
     		{
     			return {
-    				response: Result.Secondary(new ConcreteStringTooLongErrorDto.Dto({
+    				response: Result.Fail(new ConcreteStringTooLongErrorDto.Dto({
     					code: SmartChipValidationService.Code.PREFIX_TOO_LONG,
     					fieldName: "prefix",
     					value: prefix,
@@ -75,7 +75,7 @@ export namespace ConcreteSmartChipValidationService {
     		}
 
     		return {
-    			response: Result.Primary(prefix)
+    			response: Result.Ok(prefix)
     		};
     	}
     }

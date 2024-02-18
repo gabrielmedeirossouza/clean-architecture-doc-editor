@@ -14,75 +14,72 @@ export namespace ConcreteCreateSmartChipUseCase {
 
     export class UseCase implements CreateSmartChipUseCase.InputPort
     {
-    	private readonly _outputPort: CreateSmartChipUseCase.OutputPort;
-
-    	private readonly _smartChipValidationService: SmartChipValidationService.InputPort;
-
-    	private readonly _dtoLogger: DtoLoggerProxy;
-
-    	private readonly _smartChipRepository: SmartChipRepository.InputPort;
+    	private readonly outputPort: CreateSmartChipUseCase.OutputPort;
+    	private readonly smartChipValidationService: SmartChipValidationService.InputPort;
+    	private readonly dtoLogger: DtoLoggerProxy;
+    	private readonly smartChipRepository: SmartChipRepository.InputPort;
 
     	constructor({ outputPort, smartChipValidationService, dtoLogger, smartChipRepository }: ConstructorParameters)
     	{
-    		this._outputPort = outputPort;
-    		this._smartChipValidationService = smartChipValidationService;
-    		this._dtoLogger = dtoLogger;
-    		this._smartChipRepository = smartChipRepository;
+    		this.outputPort = outputPort;
+    		this.smartChipValidationService = smartChipValidationService;
+    		this.dtoLogger = dtoLogger;
+    		this.smartChipRepository = smartChipRepository;
     	}
 
     	public async Create({ label, prefix }: CreateSmartChipUseCase.CreateRequestModel): Promise<void>
     	{
     		const composeFields = Result.compose
-    			.AddHandler(this._smartChipValidationService.ValidateLabel({ label }).response)
-    			.OnSecondary((response) => this._outputPort.CreateResponse({ response: Result.Secondary(this._dtoLogger.ProxyInfo(response)) }))
+    			.AddHandler(this.smartChipValidationService.ValidateLabel({ label }).response)
+    			.OnFail((response) => this.outputPort.CreateResponse({ response: Result.Fail(this.dtoLogger.ProxyInfo(response)) }))
     			.Handle()
-    			.AddHandler(this._smartChipValidationService.ValidatePrefix({ prefix }).response)
-    			.OnSecondary((response) => this._outputPort.CreateResponse({ response: Result.Secondary(this._dtoLogger.ProxyInfo(response)) }))
+    			.AddHandler(this.smartChipValidationService.ValidatePrefix({ prefix }).response)
+    			.OnFail((response) => this.outputPort.CreateResponse({ response: Result.Fail(this.dtoLogger.ProxyInfo(response)) }))
     			.Handle();
 
-    		if (composeFields.hasSecondary)
+    		if (composeFields.someFailed)
     		{
     			return;
     		}
 
     		const [labelResult, prefixResult] = await Promise.all([
-    			this._smartChipRepository.FindByLabel({ label }),
-    			this._smartChipRepository.FindByPrefix({ prefix }),
+    			this.smartChipRepository.FindByLabel({ label }),
+    			this.smartChipRepository.FindByPrefix({ prefix }),
     		]);
 
     		const composeFinds = Result.compose
     			.AddHandler(labelResult.response)
-    			.OnPrimary(() => this._outputPort.CreateResponse({
-    				response: Result.Secondary(this._dtoLogger.ProxyInfo(new ConcreteMessageDto.Dto({
+    			.OnOk(() => this.outputPort.CreateResponse({
+    				response: Result.Fail(this.dtoLogger.ProxyInfo(new ConcreteMessageDto.Dto({
     					code: CreateSmartChipUseCase.Code.LABEL_ALREADY_EXISTS,
     					message: `Cannot create SmartChip entity, because a SmartChip with label "${label}" already exists.`
     				})))
     			}))
     			.Handle()
     			.AddHandler(prefixResult.response)
-    			.OnPrimary(() => this._outputPort.CreateResponse({
-    				response: Result.Secondary(this._dtoLogger.ProxyInfo(new ConcreteMessageDto.Dto({
+    			.OnOk(() => this.outputPort.CreateResponse({
+    				response: Result.Fail(this.dtoLogger.ProxyInfo(new ConcreteMessageDto.Dto({
     					code: CreateSmartChipUseCase.Code.PREFIX_ALREADY_EXISTS,
     					message: `Cannot create SmartChip entity, because a SmartChip with prefix "${prefix}" already exists.`
     				})))
     			}))
     			.Handle();
 
-    		if (!composeFinds.hasSecondary)
+    		if (!composeFinds.someFailed)
     		{
     			return;
     		}
 
     		const smartChip = new ConcreteSmartChip.Entity({ label, prefix });
-    		const { response: idResponse } = await this._smartChipRepository.Create({ smartChip });
-    		if (!idResponse.isPrimary)
+    		const { response: idResponse } = await this.smartChipRepository.Create({ smartChip });
+    		if (!idResponse.ok)
     		{
-    			return this._outputPort.CreateResponse({ response: Result.Secondary(this._dtoLogger.ProxyInfo(new ConcreteGenericServiceErrorDto.Dto({ code: CreateSmartChipUseCase.Code.GENERIC_SERVICE_ERROR }))) });
+    			return this.outputPort.CreateResponse({ response: Result.Fail(this.dtoLogger.ProxyInfo(new ConcreteGenericServiceErrorDto.Dto({ code: CreateSmartChipUseCase.Code.GENERIC_SERVICE_ERROR }))) });
     		}
 
-    		const persistedSmartChip = new ConcretePersistedEntity.Entity({ id: idResponse.primaryValue, entity: smartChip });
+    		const persistedSmartChip = new ConcretePersistedEntity.Entity({ id: idResponse.value, entity: smartChip });
 
-    		return this._outputPort.CreateResponse({ response: Result.Primary(persistedSmartChip) });
+    		return this.outputPort.CreateResponse({ response: Result.Ok(persistedSmartChip) });
     	}
     }
 }

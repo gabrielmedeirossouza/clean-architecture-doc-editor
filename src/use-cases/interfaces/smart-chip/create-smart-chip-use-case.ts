@@ -36,4 +36,3 @@ export namespace CreateSmartChipUseCase {
         PREFIX_ALREADY_EXISTS,
     }
 }
-

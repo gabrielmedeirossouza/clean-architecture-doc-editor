@@ -15,12 +15,12 @@ export const Observable = class<T> implements Observable<T>
 	{
 		if (this._observers.includes(observer))
 		{
-			return Result.Secondary("Observer already subscribed.");
+			return Result.Fail("Observer already subscribed.");
 		}
 
 		this._observers.push(observer);
 
-		return Result.Primary(observer);
+		return Result.Ok(observer);
 	}
 
 	public Unsubscribe(observer: (data: T) => void): Result<void, string>
@@ -28,12 +28,12 @@ export const Observable = class<T> implements Observable<T>
 		const index = this._observers.indexOf(observer);
 		if (index === -1)
 		{
-			return Result.Secondary("Observer not found.");
+			return Result.Fail("Observer not found.");
 		}
 
 		this._observers.splice(index, 1);
 
-		return Result.Primary(undefined);
+		return Result.Ok(undefined);
 	}
 
 	public Dispose(): void

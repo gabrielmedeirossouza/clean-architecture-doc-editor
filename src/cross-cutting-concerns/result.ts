@@ -1,16 +1,16 @@
 import { Observable } from "./observable";
 
-type Primary<P> = {
-	isPrimary: true,
-	primaryValue: P
+type Ok<P> = {
+	ok: true,
+	value: P
 };
 
-type Secondary<S> = {
-	isPrimary: false,
-	secondaryValue: S
+type Fail<S> = {
+	ok: false,
+	value: S
 };
 
-export type Result<P, S> = Primary<P> | Secondary<S>;
+export type Result<O, F> = Ok<O> | Fail<F>;
 
 export const Result = class
 {
@@ -19,19 +19,19 @@ export const Result = class
 		return new Compose();
 	}
 
-	public static Primary<P>(value: P): Result<P, never>
+	public static Ok<O>(value: O): Result<O, never>
 	{
 		return {
-			isPrimary: true,
-			primaryValue: value
+			ok: true,
+			value: value
 		};
 	}
 
-	public static Secondary<S>(value: S): Result<never, S>
+	public static Fail<F>(value: F): Result<never, F>
 	{
 		return {
-			isPrimary: false,
-			secondaryValue: value
+			ok: false,
+			value: value
 		};
 	}
 };
@@ -40,16 +40,16 @@ class Compose
 {
 	private _observable = new Observable<Result<any, any>>();
 
-	protected _hasSecondary = false;
+	protected _someFailed = false;
 
 	constructor()
 	{
 		this._observable.Subscribe(this._OnResult.bind(this));
 	}
 
-	public get hasSecondary(): boolean
+	public get someFailed(): boolean
 	{
-		return this._hasSecondary;
+		return this._someFailed;
 	}
 
 	public AddHandler<P, S>(result: Result<P, S>): Handler<P, S>
@@ -59,45 +59,45 @@ class Compose
 
 	private _OnResult(result: Result<any, any>): void
 	{
-		if (!result.isPrimary)
+		if (!result.ok)
 		{
-			this._hasSecondary = true;
+			this._someFailed = true;
 		}
 	}
 }
 
-class Handler<P, S>
+class Handler<O, F>
 {
-	private _onCallback: ((callback: Result<P, S>) => void) | undefined;
+	private _onCallback: ((callback: Result<O, F>) => void) | undefined;
 
-	private _onPrimaryCallback: ((callback: P) => void) | undefined;
+	private _onOkCallback: ((callback: O) => void) | undefined;
 
-	private _onSecondaryCallback: ((callback: S) => void) | undefined;
+	private _onFailCallback: ((callback: F) => void) | undefined;
 
 	constructor(
         private readonly _compose: Compose,
-        private readonly _result: Result<P, S>,
+        private readonly _result: Result<O, F>,
         private readonly _observable: Observable<Result<any, any>>
 	)
 	{}
 
-	public On(callback: (result: Result<P, S>) => void): this
+	public On(callback: (result: Result<O, F>) => void): this
 	{
 		this._onCallback = callback;
 
 		return this;
 	}
 
-	public OnPrimary(callback: (value: P) => void): this
+	public OnOk(callback: (value: O) => void): this
 	{
-		this._onPrimaryCallback = callback;
+		this._onOkCallback = callback;
 
 		return this;
 	}
 
-	public OnSecondary(callback: (value: S) => void): this
+	public OnFail(callback: (value: F) => void): this
 	{
-		this._onSecondaryCallback = callback;
+		this._onFailCallback = callback;
 
 		return this;
 	}
@@ -106,13 +106,13 @@ class Handler<P, S>
 	{
 		this._onCallback?.(this._result);
 
-		if (this._result.isPrimary)
+		if (this._result.ok)
 		{
-			this._onPrimaryCallback?.(this._result.primaryValue);
+			this._onOkCallback?.(this._result.value);
 		}
 		else
 		{
-			this._onSecondaryCallback?.(this._result.secondaryValue);
+			this._onFailCallback?.(this._result.value);
 		}
 
 		this._observable.Notify(this._result);

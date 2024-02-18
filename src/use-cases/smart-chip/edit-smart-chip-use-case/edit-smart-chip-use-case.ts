@@ -36,24 +36,24 @@ export namespace ConcreteEditSmartChipUseCase {
     		if (label !== undefined)
     		{
     			compose.AddHandler(this._validationService.ValidateLabel({ label }).response)
-    				.OnSecondary((response) => this._outputPort.EditResponse({ response: Result.Secondary(this._dtoLogger.ProxyInfo(response)) }));
+    				.OnFail((response) => this._outputPort.EditResponse({ response: Result.Fail(this._dtoLogger.ProxyInfo(response)) }));
     		}
 
     		if (prefix !== undefined)
     		{
-    			compose.AddHandler(this._validationService.ValidatePrefix({ prefix }).response).OnSecondary((response) => this._outputPort.EditResponse({ response: Result.Secondary(this._dtoLogger.ProxyInfo(response)) }));
+    			compose.AddHandler(this._validationService.ValidatePrefix({ prefix }).response).OnFail((response) => this._outputPort.EditResponse({ response: Result.Fail(this._dtoLogger.ProxyInfo(response)) }));
     		}
 
-    		if (compose.hasSecondary)
+    		if (compose.someFailed)
     		{
     			return;
     		}
 
     		const { response: idResponse } = await this._smartChipRepository.Get({ id });
-    		if (!idResponse.isPrimary)
+    		if (!idResponse.ok)
     		{
     			return this._outputPort.EditResponse({
-    				response: Result.Secondary(new ConcreteCannotFindDto.Dto({
+    				response: Result.Fail(new ConcreteCannotFindDto.Dto({
     					code: EditSmartChipUseCase.Code.SMART_CHIP_NOT_FOUND,
     					searchCriteria: 'id',
     					searchValue: id,
@@ -63,15 +63,15 @@ export namespace ConcreteEditSmartChipUseCase {
     			});
     		}
 
-    		const persistedSmartChip = idResponse.primaryValue;
+    		const persistedSmartChip = idResponse.value;
     		persistedSmartChip.entity.label = label ?? persistedSmartChip.entity.label;
     		persistedSmartChip.entity.prefix = prefix ?? persistedSmartChip.entity.prefix;
 
     		const { response: editResult } = await this._smartChipRepository.Edit({ smartChip: persistedSmartChip });
-    		if (!editResult.isPrimary)
+    		if (!editResult.ok)
     		{
     			return this._outputPort.EditResponse({
-    				response: Result.Secondary(new ConcreteCannotFindDto.Dto({
+    				response: Result.Fail(new ConcreteCannotFindDto.Dto({
     					code: EditSmartChipUseCase.Code.SMART_CHIP_NOT_FOUND,
     					searchCriteria: 'id',
     					searchValue: id,
@@ -81,7 +81,7 @@ export namespace ConcreteEditSmartChipUseCase {
     			});
     		}
 
-    		return this._outputPort.EditResponse({ response: Result.Primary(persistedSmartChip) });
+    		return this._outputPort.EditResponse({ response: Result.Ok(persistedSmartChip) });
     	}
     }
 }
