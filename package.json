@@ -10,9 +10,11 @@
     "test": "vitest"
   },
   "dependencies": {
-    "vue": "^3.4.19"
+    "vue": "^3.4.19",
+    "vuetify": "^3.5.4"
   },
   "devDependencies": {
+    "@mdi/font": "^7.4.47",
     "@rollup/plugin-alias": "^4.0.3",
     "@types/jest": "^29.5.12",
     "@types/node": "^18.15.11",

@@ -1,27 +1,84 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import { ref } from 'vue';
+
+const createSmartChipDialog = ref(false);
 </script>
 
 <template>
-  <div>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+    <main>
+        <v-toolbar :elevation="8" title="Doc Editor">
+            <v-btn variant="outlined">
+            Smart Chip
+
+            <v-menu activator="parent">
+                <v-list>
+                <v-list-item @click="createSmartChipDialog = true">
+                    <v-list-item-title>Novo</v-list-item-title>
+                </v-list-item>
+                </v-list>
+            </v-menu>
+            </v-btn>
+        </v-toolbar>
+    </main>
+
+    <v-dialog
+      v-model="createSmartChipDialog"
+      persistent
+      width="600"
+    >
+      <v-card>
+        <v-card-title>
+          <span class="text-h5">Criar novo Smart Chip</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col
+                cols="12"
+                md="8"
+              >
+                <v-text-field
+                  label="Etiqueta"
+                  required
+                  validate-on="blur"
+                  :error="true"
+                ></v-text-field>
+              </v-col>
+              <v-col
+                cols="12"
+                md="4"
+              >
+                <v-text-field
+                  label="Prefixo"
+                  required
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            variant="text"
+            @click="createSmartChipDialog = false"
+          >
+            Cancelar
+          </v-btn>
+          <v-btn
+            color="primary"
+            variant="text"
+            @click="createSmartChipDialog = false"
+          >
+            Criar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+main {
+    width: 100%;
 }
 </style>
