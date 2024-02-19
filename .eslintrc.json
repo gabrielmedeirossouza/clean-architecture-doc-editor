@@ -85,7 +85,7 @@
         "indent": ["error", "tab"],
         "padded-blocks": ["error", "never"],
         "import/no-extraneous-dependencies": "off",
-        "brace-style": ["error", "allman"],
+        "brace-style": ["error", "1tbs"],
         "no-irregular-whitespace": "error",
         "no-trailing-spaces": "error",
         "eol-last": "error",
@@ -106,7 +106,6 @@
         "@typescript-eslint/no-use-before-define": "off",
         "@typescript-eslint/no-shadow": "off",
         "@typescript-eslint/no-redeclare": "off",
-        "curly": ["error", "all"],
         "unicorn/filename-case": [
             "error",
             {

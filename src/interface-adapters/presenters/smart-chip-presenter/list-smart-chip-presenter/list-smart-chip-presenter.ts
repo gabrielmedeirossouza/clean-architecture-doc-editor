@@ -1,5 +1,5 @@
 import { PersistedEntity, SmartChip } from "@/entities/interfaces";
-import { ListSmartChipUseCase } from "@/use-cases/interfaces/smart-chip";
+import { ListSmartChipUseCase } from "@/use-cases/protocols/smart-chip";
 import { ListSmartChipPresenter, SmartChipViewModel } from "@/interface-adapters/interfaces/presenters/smart-chip-presenter";
 
 export namespace ConcreteListSmartChipPresenter {

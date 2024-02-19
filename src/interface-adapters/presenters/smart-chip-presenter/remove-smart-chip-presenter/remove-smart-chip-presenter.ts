@@ -1,5 +1,5 @@
 import { Result } from "@/shared";
-import { RemoveSmartChipUseCase } from "@/use-cases/interfaces/smart-chip";
+import { RemoveSmartChipUseCase } from "@/use-cases/protocols/smart-chip";
 import { RemoveSmartChipPresenter } from "@/interface-adapters/interfaces/presenters/smart-chip-presenter";
 import { ConcretePresenterMessageDto } from "@/interface-adapters/presenters/dtos";
 import { ConcretePresenterGenericServiceErrorDto } from "@/interface-adapters/presenters/dtos/presenter-generic-service-error-dto";

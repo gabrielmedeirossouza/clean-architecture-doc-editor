@@ -1,6 +1,6 @@
 import { Result } from "@/shared/result";
 import { ConcreteStringTooLongErrorDto, ConcreteStringTooShortErrorDto } from "@/use-cases/dtos";
-import { SmartChipValidationService } from "@/use-cases/interfaces/smart-chip";
+import { SmartChipValidationService } from "@/use-cases/protocols/smart-chip";
 
 export namespace ConcreteSmartChipValidationService {
     export class Service implements SmartChipValidationService.InputPort

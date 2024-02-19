@@ -1,6 +1,6 @@
 import { Result } from "@/shared/result";
 import { PersistedEntity, SmartChip } from "@/entities/interfaces";
-import { SmartChipRepository } from "@/use-cases/interfaces/smart-chip";
+import { SmartChipRepository } from "@/use-cases/protocols/smart-chip";
 import { IUuidGenerator } from "@/interface-adapters/interfaces/id-generator";
 import { ConcreteRepositoryCannotFindDto } from "@/interface-adapters/repositories/dtos";
 

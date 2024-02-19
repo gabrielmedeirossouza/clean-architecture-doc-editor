@@ -1,107 +1,49 @@
-import { Result } from "@/shared";
-import { CreateSmartChipUseCase, SmartChipValidationService } from "@/use-cases/interfaces/smart-chip";
-import { CreateSmartChipPresenter } from "@/interface-adapters/interfaces/presenters/smart-chip-presenter";
-import { ConcretePresenterMessageDto, ConcretePresenterStringTooLongErrorDto, ConcretePresenterStringTooShortErrorDto } from "@/interface-adapters/presenters/dtos";
-import { ConcretePresenterGenericServiceErrorDto } from "@/interface-adapters/presenters/dtos/presenter-generic-service-error-dto";
+import { GenericServiceErrorDto, MessageDto, Result, StringTooLongErrorDto, StringTooShortErrorDto } from "@/shared";
+import { ICreateResponseResult, ICreateSmartChipUseCaseOutputPort } from "@/use-cases/protocols/smart-chip/create-smart-chip-use-case";
+import { ICreateSmartChipPresenterOutputPort } from "@/interface-adapters/protocols/presenters/smart-chip-presenter";
 
-export namespace ConcreteCreateSmartChipPresenter {
-    export class Presenter implements CreateSmartChipUseCase.OutputPort
-    {
-    	constructor(
-            private readonly _outputPort: CreateSmartChipPresenter.OutputPort
-    	)
-    	{ }
+export class CreateSmartChipPresenter implements ICreateSmartChipUseCaseOutputPort {
+	constructor(private readonly outputPort: ICreateSmartChipPresenterOutputPort) { }
 
-    	public CreateResponse({ response }: CreateSmartChipUseCase.CreateResponseModel): void
-    	{
-    		if (response.ok)
-    		{
-    			return this._outputPort.createResponse?.Notify(Result.Ok({
-    				id: response.value.id,
-    				label: response.value.entity.label,
-    				prefix: response.value.entity.prefix,
-    			}));
-    		}
+	public CreateResponse({ ok, value }: ICreateResponseResult): void {
+		if (ok)
+			return this.outputPort.createResponse?.Notify(Result.Ok({
+				id: value.id,
+				label: value.entity.label,
+				prefix: value.entity.prefix,
+			}));
 
-    		if (response.value.code === SmartChipValidationService.Code.LABEL_TOO_SHORT)
-    		{
-    			return this._outputPort.createResponse?.Notify(
-    				Result.Fail(new ConcretePresenterStringTooShortErrorDto.Dto({
-    					code: CreateSmartChipPresenter.Code.LABEL_TOO_SHORT,
-    					fieldName: "Etiqueta",
-    					message: `O Campo Etiqueta deve ter pelo menos ${response.value.minLength} caracteres.`,
-    					value: response.value.value,
-    					minLength: response.value.minLength
-    				}))
-    			);
-    		}
+		if (value.code === "LABEL_TOO_SHORT")
+			return this.outputPort.createResponse?.Notify(
+				Result.Fail(new StringTooShortErrorDto("LABEL_TOO_SHORT", "Etiqueta", value.value, value.minLength, `O Campo Etiqueta deve ter pelo menos ${value.minLength} caracteres.`))
+			);
 
-    		if (response.value.code === SmartChipValidationService.Code.LABEL_TOO_LONG)
-    		{
-    			return this._outputPort.createResponse?.Notify(
-    				Result.Fail(new ConcretePresenterStringTooLongErrorDto.Dto({
-    					code: CreateSmartChipPresenter.Code.LABEL_TOO_LONG,
-    					fieldName: "Etiqueta",
-    					message: `O Campo Etiqueta deve ter no máximo ${response.value.maxLength} caracteres.`,
-    					value: response.value.value,
-    					maxLength: response.value.maxLength
-    				}))
-    			);
-    		}
+		if (value.code === "LABEL_TOO_LONG")
+			return this.outputPort.createResponse?.Notify(
+				Result.Fail(new StringTooLongErrorDto("LABEL_TOO_LONG", "Etiqueta", value.value, value.maxLength, `O Campo Etiqueta deve ter no máximo ${value.maxLength} caracteres.`))
+			);
 
-    		if (response.value.code === SmartChipValidationService.Code.PREFIX_TOO_SHORT)
-    		{
-    			return this._outputPort.createResponse?.Notify(
-    				Result.Fail(new ConcretePresenterStringTooShortErrorDto.Dto({
-    					code: CreateSmartChipPresenter.Code.PREFIX_TOO_SHORT,
-    					fieldName: "Prefixo",
-    					message: `O Campo Prefixo deve ter pelo menos ${response.value.minLength} caracteres.`,
-    					value: response.value.value,
-    					minLength: response.value.minLength
-    				}))
-    			);
-    		}
+		if (value.code === "PREFIX_TOO_SHORT")
+			return this.outputPort.createResponse?.Notify(
+				Result.Fail(new StringTooShortErrorDto("PREFIX_TOO_SHORT", "Prefixo", value.value, value.minLength, `O Campo Prefixo deve ter pelo menos ${value.minLength} caracteres.`))
+			);
 
-    		if (response.value.code === SmartChipValidationService.Code.PREFIX_TOO_LONG)
-    		{
-    			return this._outputPort.createResponse?.Notify(
-    				Result.Fail(new ConcretePresenterStringTooLongErrorDto.Dto({
-    					code: CreateSmartChipPresenter.Code.PREFIX_TOO_LONG,
-    					fieldName: "Prefixo",
-    					message: `O Campo Prefixo deve ter no máximo ${response.value.maxLength} caracteres.`,
-    					value: response.value.value,
-    					maxLength: response.value.maxLength
-    				}))
-    			);
-    		}
+		if (value.code === "PREFIX_TOO_LONG")
+			return this.outputPort.createResponse?.Notify(
+				Result.Fail(new StringTooLongErrorDto("PREFIX_TOO_LONG", "Prefixo", value.value, value.maxLength, `O Campo Prefixo deve ter no máximo ${value.maxLength} caracteres.`))
+			);
 
-    		if (response.value.code === CreateSmartChipUseCase.Code.LABEL_ALREADY_EXISTS)
-    		{
-    			return this._outputPort.createResponse?.Notify(
-    				Result.Fail(new ConcretePresenterMessageDto.Dto({
-    					code: CreateSmartChipPresenter.Code.LABEL_ALREADY_EXISTS,
-    					message: `Um Smart Chip com essa Etiqueta já existe.`
-    				}))
-    			);
-    		}
+		if (value.code === "LABEL_ALREADY_EXISTS")
+			return this.outputPort.createResponse?.Notify(
+				Result.Fail(new MessageDto("LABEL_ALREADY_EXISTS", `Um Smart Chip com essa Etiqueta já existe.`))
+			);
 
-    		if (response.value.code === CreateSmartChipUseCase.Code.PREFIX_ALREADY_EXISTS)
-    		{
-    			return this._outputPort.createResponse?.Notify(
-    				Result.Fail(new ConcretePresenterMessageDto.Dto({
-    					code: CreateSmartChipPresenter.Code.PREFIX_ALREADY_EXISTS,
-    					message: `Um Smart Chip com esse Prefixo já existe.`
-    				}))
-    			);
-    		}
+		if (value.code === "PREFIX_ALREADY_EXISTS")
+			return this.outputPort.createResponse?.Notify(
+				Result.Fail(new MessageDto("PREFIX_ALREADY_EXISTS", `Um Smart Chip com esse Prefixo já existe.`))
+			);
 
-    		if (response.value.code === CreateSmartChipUseCase.Code.GENERIC_SERVICE_ERROR)
-    		{
-    			return this._outputPort.createResponse?.Notify(
-    				Result.Fail(new ConcretePresenterGenericServiceErrorDto.Dto({ code: CreateSmartChipPresenter.Code.GENERIC_SERVICE_ERROR }))
-    			);
-    		}
-    	}
-    }
-
+		if (value.code === "GENERIC_SERVICE_ERROR")
+			return this.outputPort.createResponse?.Notify(Result.Fail(new GenericServiceErrorDto()));
+	}
 }

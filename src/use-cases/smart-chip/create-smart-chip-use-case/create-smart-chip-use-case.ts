@@ -1,8 +1,4 @@
-import { Result } from "@/shared";
-import { ConcretePersistedEntity, ConcreteSmartChip } from "@/entities/smart-chip";
-import { ConcreteGenericServiceErrorDto, ConcreteMessageDto } from "@/use-cases/dtos";
-import { DtoLoggerProxy } from "@/use-cases/interfaces/proxies/dto-logger-proxy";
-import { CreateSmartChipUseCase, SmartChipRepository, SmartChipValidationService } from "@/use-cases/interfaces/smart-chip";
+import { ICreateSmartChipUseCaseInputPort } from "@/use-cases/protocols/smart-chip/create-smart-chip-use-case";
 
 export namespace ConcreteCreateSmartChipUseCase {
     export interface ConstructorParameters {
@@ -12,7 +8,7 @@ export namespace ConcreteCreateSmartChipUseCase {
         smartChipRepository: SmartChipRepository.InputPort;
     }
 
-    export class UseCase implements CreateSmartChipUseCase.InputPort
+    export class UseCase implements ICreateSmartChipUseCaseInputPort
     {
     	private readonly outputPort: CreateSmartChipUseCase.OutputPort;
     	private readonly smartChipValidationService: SmartChipValidationService.InputPort;
@@ -27,7 +23,7 @@ export namespace ConcreteCreateSmartChipUseCase {
     		this.smartChipRepository = smartChipRepository;
     	}
 
-    	public async Create({ label, prefix }: CreateSmartChipUseCase.CreateRequestModel): Promise<void>
+    	public async Create(label: string, prefix: string): Promise<void>
     	{
     		const composeFields = Result.compose
     			.AddHandler(this.smartChipValidationService.ValidateLabel({ label }).response)

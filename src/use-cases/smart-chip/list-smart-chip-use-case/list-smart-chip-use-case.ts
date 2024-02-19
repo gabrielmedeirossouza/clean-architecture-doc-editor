@@ -1,5 +1,5 @@
 import { DtoLoggerProxy } from "@/use-cases/interfaces/proxies/dto-logger-proxy";
-import { ListSmartChipUseCase, SmartChipRepository } from "@/use-cases/interfaces/smart-chip";
+import { ListSmartChipUseCase, SmartChipRepository } from "@/use-cases/protocols/smart-chip";
 
 export namespace ConcreteListSmartChipUseCase {
     export interface ConstructorParameters {

@@ -1,5 +1,5 @@
 import { Result } from "@/shared";
-import { EditSmartChipUseCase, SmartChipValidationService } from "@/use-cases/interfaces/smart-chip";
+import { EditSmartChipUseCase, SmartChipValidationService } from "@/use-cases/protocols/smart-chip";
 import { EditSmartChipPresenter } from "@/interface-adapters/interfaces/presenters/smart-chip-presenter";
 import { ConcretePresenterStringTooLongErrorDto, ConcretePresenterStringTooShortErrorDto } from "@/interface-adapters/presenters/dtos";
 

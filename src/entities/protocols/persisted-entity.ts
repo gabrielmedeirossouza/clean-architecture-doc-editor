@@ -1,4 +1,4 @@
 export interface IPersistedEntity<T> {
-    id: string;
-    entity: T;
+    readonly id: string;
+    readonly entity: T;
 }

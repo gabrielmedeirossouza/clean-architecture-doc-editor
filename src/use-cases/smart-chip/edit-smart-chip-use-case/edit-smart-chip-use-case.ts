@@ -1,7 +1,7 @@
 import { Result } from "@/shared";
 import { ConcreteCannotFindDto } from "@/use-cases/dtos";
 import { DtoLoggerProxy } from "@/use-cases/interfaces/proxies";
-import {  EditSmartChipUseCase, SmartChipRepository, SmartChipValidationService } from "@/use-cases/interfaces/smart-chip";
+import {  EditSmartChipUseCase, SmartChipRepository, SmartChipValidationService } from "@/use-cases/protocols/smart-chip";
 
 export namespace ConcreteEditSmartChipUseCase {
     export interface ConstructorParameters {
