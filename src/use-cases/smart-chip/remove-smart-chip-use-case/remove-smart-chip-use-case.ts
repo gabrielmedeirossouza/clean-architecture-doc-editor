@@ -1,49 +1,28 @@
-import { Result } from "@/shared";
-import { ConcreteCannotFindDto } from "@/use-cases/dtos";
-import { DtoLoggerProxy } from "@/use-cases/interfaces/proxies";
-import {  RemoveSmartChipUseCase, SmartChipRepository } from "@/use-cases/protocols/smart-chip";
+import { ILogger } from "@/cross-cutting-concerns/protocols/logger-protocol";
+import { CannotFindDto, Result, SuccessDto } from "@/shared";
+import { IRemoveSmartChipUseCaseInputPort, IRemoveSmartChipUseCaseOutputPort } from "@/use-cases/protocols/smart-chip/remove-smart-chip-user-case";
+import { ISmartChipRepository } from "@/use-cases/protocols/smart-chip/smart-chip-repository";
 
-export namespace ConcreteRemoveSmartChipUseCase {
-    export interface ConstructorParameters {
-        outputPort: RemoveSmartChipUseCase.OutputPort;
-        smartChipRepository: SmartChipRepository.InputPort;
-        dtoLogger: DtoLoggerProxy;
-    }
+export class RemoveSmartChipUseCase implements IRemoveSmartChipUseCaseInputPort {
+	constructor(
+        private readonly outputPort: IRemoveSmartChipUseCaseOutputPort,
+        private readonly smartChipRepository: ISmartChipRepository,
+        private readonly logger: ILogger
+	) { }
 
-    export class UseCase implements RemoveSmartChipUseCase.InputPort
-    {
-    	private readonly _outputPort: RemoveSmartChipUseCase.OutputPort;
+	public Remove(id: string): void {
+		const removeResult = this.smartChipRepository.Remove(id);
+		if (!removeResult.ok) {
+			const dto = new CannotFindDto("SMART_CHIP_NOT_FOUND", "id", id, "SmartChip", `Cannot remove SmartChip entity with id ${id}, because it was not found.`);
+			this.logger.Error(dto.message);
 
-    	private readonly _smartChipRepository: SmartChipRepository.InputPort;
+			return this.outputPort.RemoveResponse(Result.Fail(dto));
+		}
 
-    	private readonly _dtoLogger: DtoLoggerProxy;
+		const dto = new SuccessDto(id, `SmartChip entity with id ${id} was successfully removed.`);
+		this.logger.Info(dto.message);
 
-    	constructor({ outputPort, smartChipRepository, dtoLogger }: ConstructorParameters)
-    	{
-    		this._outputPort = outputPort;
-    		this._smartChipRepository = smartChipRepository;
-    		this._dtoLogger = dtoLogger;
-    	}
-
-    	public async Remove({ id }: RemoveSmartChipUseCase.RemoveRequestModel): Promise<void>
-    	{
-    		const { response: removeResult } = await this._smartChipRepository.Remove({ id });
-    		if (!removeResult.ok)
-    		{
-    			return this._outputPort.RemoveResponse({
-    				response: Result.Fail(this._dtoLogger.ProxyInfo(new ConcreteCannotFindDto.Dto({
-    					code: RemoveSmartChipUseCase.Code.SMART_CHIP_NOT_FOUND,
-    					searchCriteria: "id",
-    					searchValue: id,
-    					entityName: "SmartChip",
-    					message: `Cannot remove SmartChip entity with id ${id}, because it was not found.`
-    				})))
-    			});
-    		}
-
-    		this._outputPort.RemoveResponse({
-    			response: Result.Ok(id)
-    		});
-    	}
-    }
+		this.outputPort.RemoveResponse(Result.Ok(dto));
+	}
 }
+

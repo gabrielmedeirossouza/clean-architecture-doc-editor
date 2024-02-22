@@ -9,19 +9,15 @@ export namespace ConcreteGetSmartChipPresenter {
         outputPort: GetSmartChipPresenter.OutputPort;
     }
 
-    export class Presenter implements GetSmartChipUseCase.OutputPort
-    {
+    export class Presenter implements GetSmartChipUseCase.OutputPort {
     	private readonly _outputPort: GetSmartChipPresenter.OutputPort;
 
-    	constructor({ outputPort }: ConstructorParameters)
-    	{
+    	constructor({ outputPort }: ConstructorParameters) {
     		this._outputPort = outputPort;
     	}
 
-    	public GetByIdResponse({ response }: GetSmartChipUseCase.GetByIdResponseModel): void
-    	{
-    		if (response.ok)
-    		{
+    	public GetByIdResponse({ response }: GetSmartChipUseCase.GetByIdResponseModel): void {
+    		if (response.ok) {
     			return this._outputPort.getSmartChipByIdResponse?.Notify(Result.Ok({
     				id: response.value.id,
     				label: response.value.entity.label,
@@ -29,16 +25,14 @@ export namespace ConcreteGetSmartChipPresenter {
     			}));
     		}
 
-    		if (response.value.code === GetSmartChipUseCase.Code.SMART_CHIP_NOT_FOUND)
-    		{
+    		if (response.value.code === GetSmartChipUseCase.Code.SMART_CHIP_NOT_FOUND) {
     			return this._outputPort.getSmartChipByIdResponse?.Notify(Result.Fail(new ConcretePresenterMessageDto.Dto({
     				code: GetSmartChipPresenter.Code.SMART_CHIP_NOT_FOUND,
     				message: "Não foi possível obter o Smart Chip."
     			})));
     		}
 
-    		if (response.value.code === GetSmartChipUseCase.Code.GENERIC_SERVICE_ERROR)
-    		{
+    		if (response.value.code === GetSmartChipUseCase.Code.GENERIC_SERVICE_ERROR) {
     			return this._outputPort.getSmartChipByIdResponse?.Notify(Result.Fail(new ConcretePresenterGenericServiceErrorDto.Dto({
     				code: GetSmartChipPresenter.Code.GENERIC_SERVICE_ERROR,
     			})));

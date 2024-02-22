@@ -1,82 +1,51 @@
-import { ICreateSmartChipUseCaseInputPort } from "@/use-cases/protocols/smart-chip/create-smart-chip-use-case";
+import { ILogger } from "@/cross-cutting-concerns/protocols/logger-protocol";
+import { MessageDto, Result } from "@/shared";
+import { SuccessDto } from "@/shared/dtos/success-dto";
+import { PersistedEntity } from "@/entities/smart-chip/persisted-entity";
+import { SmartChip } from "@/entities/smart-chip/smart-chip";
+import { ICreateSmartChipUseCaseInputPort, ICreateSmartChipUseCaseOutputPort } from "@/use-cases/protocols/smart-chip/create-smart-chip-use-case";
+import { ISmartChipRepository } from "@/use-cases/protocols/smart-chip/smart-chip-repository";
+import { ISmartChipValidationService } from "@/use-cases/protocols/smart-chip/smart-chip-validation-service";
 
-export namespace ConcreteCreateSmartChipUseCase {
-    export interface ConstructorParameters {
-        dtoLogger: DtoLoggerProxy;
-        outputPort: CreateSmartChipUseCase.OutputPort;
-        smartChipValidationService: SmartChipValidationService.InputPort;
-        smartChipRepository: SmartChipRepository.InputPort;
-    }
+export class CreateSmartChipUseCase implements ICreateSmartChipUseCaseInputPort {
+	constructor(
+        private readonly outputPort: ICreateSmartChipUseCaseOutputPort,
+        private readonly smartChipValidationService: ISmartChipValidationService,
+        private readonly smartChipRepository: ISmartChipRepository,
+        private readonly logger: ILogger
+	) {}
 
-    export class UseCase implements ICreateSmartChipUseCaseInputPort
-    {
-    	private readonly outputPort: CreateSmartChipUseCase.OutputPort;
-    	private readonly smartChipValidationService: SmartChipValidationService.InputPort;
-    	private readonly dtoLogger: DtoLoggerProxy;
-    	private readonly smartChipRepository: SmartChipRepository.InputPort;
+	public Create(label: string, prefix: string): void {
+		const validatedLabelResult = this.smartChipValidationService.ValidateLabel(label);
+		const validatedPrefixResult = this.smartChipValidationService.ValidatePrefix(prefix);
 
-    	constructor({ outputPort, smartChipValidationService, dtoLogger, smartChipRepository }: ConstructorParameters)
-    	{
-    		this.outputPort = outputPort;
-    		this.smartChipValidationService = smartChipValidationService;
-    		this.dtoLogger = dtoLogger;
-    		this.smartChipRepository = smartChipRepository;
-    	}
+		if (!validatedLabelResult.ok) this.outputPort.CreateResponse(validatedLabelResult);
+		if (!validatedPrefixResult.ok) this.outputPort.CreateResponse(validatedPrefixResult);
 
-    	public async Create(label: string, prefix: string): Promise<void>
-    	{
-    		const composeFields = Result.compose
-    			.AddHandler(this.smartChipValidationService.ValidateLabel({ label }).response)
-    			.OnFail((response) => this.outputPort.CreateResponse({ response: Result.Fail(this.dtoLogger.ProxyInfo(response)) }))
-    			.Handle()
-    			.AddHandler(this.smartChipValidationService.ValidatePrefix({ prefix }).response)
-    			.OnFail((response) => this.outputPort.CreateResponse({ response: Result.Fail(this.dtoLogger.ProxyInfo(response)) }))
-    			.Handle();
+		const getByLabelResult = this.smartChipRepository.GetByLabel(label);
+		const getByPrefixResult = this.smartChipRepository.GetByPrefix(prefix);
 
-    		if (composeFields.someFailed)
-    		{
-    			return;
-    		}
+		if (getByLabelResult.ok) {
+			const dto = new MessageDto("LABEL_ALREADY_EXISTS", `Cannot create SmartChip entity, because a SmartChip with label "${label}" already exists.`);
+			this.logger.Warn(dto.message);
+			this.outputPort.CreateResponse(Result.Fail(dto));
+		}
 
-    		const [labelResult, prefixResult] = await Promise.all([
-    			this.smartChipRepository.FindByLabel({ label }),
-    			this.smartChipRepository.FindByPrefix({ prefix }),
-    		]);
+		if (getByPrefixResult.ok) {
+			const dto = new MessageDto("PREFIX_ALREADY_EXISTS", `Cannot create SmartChip entity, because a SmartChip with prefix "${prefix}" already exists.`);
+			this.logger.Warn(dto.message);
+			this.outputPort.CreateResponse(Result.Fail(dto));
+		}
 
-    		const composeFinds = Result.compose
-    			.AddHandler(labelResult.response)
-    			.OnOk(() => this.outputPort.CreateResponse({
-    				response: Result.Fail(this.dtoLogger.ProxyInfo(new ConcreteMessageDto.Dto({
-    					code: CreateSmartChipUseCase.Code.LABEL_ALREADY_EXISTS,
-    					message: `Cannot create SmartChip entity, because a SmartChip with label "${label}" already exists.`
-    				})))
-    			}))
-    			.Handle()
-    			.AddHandler(prefixResult.response)
-    			.OnOk(() => this.outputPort.CreateResponse({
-    				response: Result.Fail(this.dtoLogger.ProxyInfo(new ConcreteMessageDto.Dto({
-    					code: CreateSmartChipUseCase.Code.PREFIX_ALREADY_EXISTS,
-    					message: `Cannot create SmartChip entity, because a SmartChip with prefix "${prefix}" already exists.`
-    				})))
-    			}))
-    			.Handle();
+		const failed = !validatedLabelResult.ok || !validatedPrefixResult.ok || getByLabelResult.ok || getByPrefixResult.ok;
+		if (failed) return;
 
-    		if (!composeFinds.someFailed)
-    		{
-    			return;
-    		}
-
-    		const smartChip = new ConcreteSmartChip.Entity({ label, prefix });
-    		const { response: idResponse } = await this.smartChipRepository.Create({ smartChip });
-    		if (!idResponse.ok)
-    		{
-    			return this.outputPort.CreateResponse({ response: Result.Fail(this.dtoLogger.ProxyInfo(new ConcreteGenericServiceErrorDto.Dto({ code: CreateSmartChipUseCase.Code.GENERIC_SERVICE_ERROR }))) });
-    		}
-
-    		const persistedSmartChip = new ConcretePersistedEntity.Entity({ id: idResponse.value, entity: smartChip });
-
-    		return this.outputPort.CreateResponse({ response: Result.Ok(persistedSmartChip) });
-    	}
-    }
+		const smartChip = new SmartChip(label, prefix);
+		const id = this.smartChipRepository.Create(smartChip);
+		const persistedSmartChip = new PersistedEntity(id, smartChip);
+		const dto = new SuccessDto(persistedSmartChip, "SmartChip entity created successfully.");
+		this.logger.Info(dto.message);
+		this.outputPort.CreateResponse(Result.Ok(dto));
+	}
 }
 

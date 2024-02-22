@@ -2,7 +2,7 @@ import { IPersistedEntity } from "@/entities/protocols/persisted-entity";
 import { ISmartChip } from "@/entities/protocols/smart-chip";
 
 export interface IListSmartChipUseCaseInputPort {
-    List(): Promise<void>;
+    List(): void;
 }
 
 export interface IListSmartChipUseCaseOutputPort {

@@ -8,19 +8,15 @@ export namespace ConcreteEditSmartChipPresenter {
         outputPort: EditSmartChipPresenter.OutputPort;
     }
 
-    export class Presenter implements EditSmartChipUseCase.OutputPort
-    {
+    export class Presenter implements EditSmartChipUseCase.OutputPort {
     	private readonly _outputPort: EditSmartChipPresenter.OutputPort;
 
-    	constructor({ outputPort }: ConstructorParameters)
-    	{
+    	constructor({ outputPort }: ConstructorParameters) {
     		this._outputPort = outputPort;
     	}
 
-    	public EditResponse({ response }: EditSmartChipUseCase.EditResponseModel): void
-    	{
-    		if (response.ok)
-    		{
+    	public EditResponse({ response }: EditSmartChipUseCase.EditResponseModel): void {
+    		if (response.ok) {
     			return this._outputPort.editResponse?.Notify(
     				Result.Ok({
     					id: response.value.id,
@@ -30,8 +26,7 @@ export namespace ConcreteEditSmartChipPresenter {
     			);
     		}
 
-    		if (response.value.code === SmartChipValidationService.Code.LABEL_TOO_SHORT)
-    		{
+    		if (response.value.code === SmartChipValidationService.Code.LABEL_TOO_SHORT) {
     			return this._outputPort.editResponse?.Notify(
     				Result.Fail(new ConcretePresenterStringTooShortErrorDto.Dto({
     					code: EditSmartChipPresenter.Code.LABEL_TOO_SHORT,
@@ -43,8 +38,7 @@ export namespace ConcreteEditSmartChipPresenter {
     			);
     		}
 
-    		if (response.value.code === SmartChipValidationService.Code.LABEL_TOO_LONG)
-    		{
+    		if (response.value.code === SmartChipValidationService.Code.LABEL_TOO_LONG) {
     			return this._outputPort.editResponse?.Notify(
     				Result.Fail(new ConcretePresenterStringTooLongErrorDto.Dto({
     					code: EditSmartChipPresenter.Code.LABEL_TOO_LONG,
@@ -56,8 +50,7 @@ export namespace ConcreteEditSmartChipPresenter {
     			);
     		}
 
-    		if (response.value.code === SmartChipValidationService.Code.PREFIX_TOO_SHORT)
-    		{
+    		if (response.value.code === SmartChipValidationService.Code.PREFIX_TOO_SHORT) {
     			return this._outputPort.editResponse?.Notify(
     				Result.Fail(new ConcretePresenterStringTooShortErrorDto.Dto({
     					code: EditSmartChipPresenter.Code.PREFIX_TOO_SHORT,
@@ -69,8 +62,7 @@ export namespace ConcreteEditSmartChipPresenter {
     			);
     		}
 
-    		if (response.value.code === SmartChipValidationService.Code.PREFIX_TOO_LONG)
-    		{
+    		if (response.value.code === SmartChipValidationService.Code.PREFIX_TOO_LONG) {
     			return this._outputPort.editResponse?.Notify(
     				Result.Fail(new ConcretePresenterStringTooLongErrorDto.Dto({
     					code: EditSmartChipPresenter.Code.PREFIX_TOO_LONG,

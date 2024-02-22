@@ -1,82 +1,50 @@
+import { ILogger } from "@/cross-cutting-concerns/protocols/logger-protocol";
+import { StringTooShortErrorDto, StringTooLongErrorDto } from "@/shared";
 import { Result } from "@/shared/result";
-import { ConcreteStringTooLongErrorDto, ConcreteStringTooShortErrorDto } from "@/use-cases/dtos";
-import { SmartChipValidationService } from "@/use-cases/protocols/smart-chip";
+import { ISmartChipValidationService } from "@/use-cases/protocols/smart-chip/smart-chip-validation-service";
 
-export namespace ConcreteSmartChipValidationService {
-    export class Service implements SmartChipValidationService.InputPort
-    {
-    	private readonly _LABEL_MIN_LENGTH = 2;
+export class SmartChipValidationService implements ISmartChipValidationService {
+	constructor(private readonly logger: ILogger) {}
 
-    	private readonly _LABEL_MAX_LENGTH = 20;
+	public ValidateLabel(label: string): Result<string, StringTooShortErrorDto<"LABEL_TOO_SHORT"> | StringTooLongErrorDto<"LABEL_TOO_LONG">> {
+		const LABEL_MIN_LENGTH = 2;
+		const LABEL_MAX_LENGTH = 20;
 
-    	private readonly _PREFIX_MIN_LENGTH = 2;
+		if (label.length < LABEL_MIN_LENGTH) {
+			const dto = new StringTooShortErrorDto("LABEL_TOO_SHORT", "label", label, LABEL_MIN_LENGTH);
+			this.logger.Warn(dto.message);
 
-    	private readonly _PREFIX_MAX_LENGTH = 10;
+			return Result.Fail(dto);
+		}
 
-    	private readonly _POSITION_MIN_VALUE = 1;
+		if (label.length > LABEL_MAX_LENGTH) {
+			const dto = new StringTooLongErrorDto("LABEL_TOO_LONG", "label", label, LABEL_MAX_LENGTH);
+			this.logger.Warn(dto.message);
 
-    	private readonly _POSITION_MAX_VALUE = 1000;
+			return Result.Fail(dto);
+		}
 
-    	public ValidateLabel({ label }: SmartChipValidationService.ValidateLabelRequestModel): SmartChipValidationService.ValidateLabelResponseModel
-    	{
-    		if (label.length < this._LABEL_MIN_LENGTH)
-    		{
-    			return {
-    				response: Result.Fail(new ConcreteStringTooShortErrorDto.Dto({
-    					code: SmartChipValidationService.Code.LABEL_TOO_SHORT,
-    					fieldName: "label",
-    					value: label,
-    					minLength: this._LABEL_MIN_LENGTH
-    				}))
-    			};
-    		}
+		return Result.Ok(label);
+	}
 
-    		if (label.length > this._LABEL_MAX_LENGTH)
-    		{
-    			return {
-    				response: Result.Fail(new ConcreteStringTooLongErrorDto.Dto({
-    					code: SmartChipValidationService.Code.LABEL_TOO_LONG,
-    					fieldName: "label",
-    					value: label,
-    					maxLength: this._LABEL_MAX_LENGTH
-    				}))
-    			};
-    		}
+	public ValidatePrefix(prefix: string): Result<string, StringTooShortErrorDto<"PREFIX_TOO_SHORT"> | StringTooLongErrorDto<"PREFIX_TOO_LONG">> {
+		const PREFIX_MIN_LENGTH = 2;
+		const PREFIX_MAX_LENGTH = 10;
 
-    		return {
-    			response: Result.Ok(label)
-    		};
-    	}
+		if (prefix.length < PREFIX_MIN_LENGTH) {
+			const dto = new StringTooShortErrorDto("PREFIX_TOO_SHORT", "prefix", prefix, PREFIX_MIN_LENGTH);
+			this.logger.Warn(dto.message);
 
-    	public ValidatePrefix({ prefix }: SmartChipValidationService.ValidatePrefixRequestModel): SmartChipValidationService.ValidatePrefixResponseModel
-    	{
-    		if (prefix.length < this._PREFIX_MIN_LENGTH)
-    		{
-    			return {
-    				response: Result.Fail(new ConcreteStringTooShortErrorDto.Dto({
-    					code: SmartChipValidationService.Code.PREFIX_TOO_SHORT,
-    					fieldName: "prefix",
-    					value: prefix,
-    					minLength: this._PREFIX_MIN_LENGTH
-    				}))
-    			};
-    		}
+			return Result.Fail(dto);
+		}
 
-    		if (prefix.length > this._PREFIX_MAX_LENGTH)
-    		{
-    			return {
-    				response: Result.Fail(new ConcreteStringTooLongErrorDto.Dto({
-    					code: SmartChipValidationService.Code.PREFIX_TOO_LONG,
-    					fieldName: "prefix",
-    					value: prefix,
-    					maxLength: this._PREFIX_MAX_LENGTH
-    				}))
-    			};
-    		}
+		if (prefix.length > PREFIX_MAX_LENGTH) {
+			const dto = new StringTooLongErrorDto("PREFIX_TOO_LONG", "prefix", prefix, PREFIX_MAX_LENGTH);
+			this.logger.Warn(dto.message);
 
-    		return {
-    			response: Result.Ok(prefix)
-    		};
-    	}
-    }
+			return Result.Fail(dto);
+		}
+
+		return Result.Ok(prefix);
+	}
 }

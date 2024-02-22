@@ -1,23 +1,18 @@
 import { ILog } from "./protocols/log-protocol";
 import { ILogger } from "./protocols/logger-protocol";
 
-export class Logger implements ILogger
-{
-	constructor(private readonly log: ILog)
-	{}
+export class Logger implements ILogger {
+	constructor(private readonly log: ILog, private readonly resourceName: string) {}
 
-	public Info({ message }: { message: string; }): void
-	{
-		this.log.Info(message);
+	public Info(message: string): void {
+		this.log.Info(`${this.resourceName}: ${message}`);
 	}
 
-	public Warn({ message }: { message: string; }): void
-	{
-		this.log.Warn(message);
+	public Warn(message: string): void {
+		this.log.Warn(`${this.resourceName}: ${message}`);
 	}
 
-	public Error({ message }: { message: string; }): void
-	{
-		this.log.Error(message);
+	public Error(message: string): void {
+		this.log.Error(`${this.resourceName}: ${message}`);
 	}
 }

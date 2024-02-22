@@ -1,14 +1,15 @@
-export class NumberNegativeErrorDto<T>
-{
+import { Dto } from "./dto";
+
+export class NumberNegativeErrorDto<const T> implements Dto {
 	public readonly dtoName = "NumberNegativeErrorDto";
+	public readonly message: string;
 
 	constructor(
         public readonly code: T,
         public readonly fieldName: string,
         public readonly value: number,
-        public readonly message?: string
-	)
-	{
+        message?: string
+	) {
 		this.message = message ?? `Field "${fieldName}" with value "${value}" is negative.`;
 	}
 }

@@ -1,6 +1,8 @@
-export class NumberOutsideRangeErrorDto<T>
-{
+import { Dto } from "./dto";
+
+export class NumberOutsideRangeErrorDto<const T> implements Dto {
 	public readonly dtoName = "NumberOutsideRangeErrorDto";
+	public readonly message: string;
 
 	constructor(
         public readonly code: T,
@@ -8,9 +10,8 @@ export class NumberOutsideRangeErrorDto<T>
         public readonly value: number,
         public readonly minValue: number,
         public readonly maxValue: number,
-        public readonly message?: string
-	)
-	{
+        message?: string
+	) {
 		this.message = message ?? `Field "${fieldName}" with value "${value}" is outside the range of "${minValue}" and "${maxValue}".`;
 	}
 }

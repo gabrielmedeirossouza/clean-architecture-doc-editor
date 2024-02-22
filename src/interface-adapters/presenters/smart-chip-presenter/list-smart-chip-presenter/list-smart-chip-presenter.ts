@@ -8,22 +8,18 @@ export namespace ConcreteListSmartChipPresenter {
         outputPort: ListSmartChipPresenter.OutputPort;
     }
 
-    export class Presenter implements ListSmartChipUseCase.OutputPort
-    {
+    export class Presenter implements ListSmartChipUseCase.OutputPort {
     	private readonly _outputPort: ListSmartChipPresenter.OutputPort;
 
-    	constructor({ outputPort }: ConstructorParameters)
-    	{
+    	constructor({ outputPort }: ConstructorParameters) {
     		this._outputPort = outputPort;
     	}
 
-    	public ListResponse({ response }: ListSmartChipUseCase.ListResponseModel): void
-    	{
+    	public ListResponse({ response }: ListSmartChipUseCase.ListResponseModel): void {
     		return this._outputPort.listResponse?.Notify(this._MapSmartChipListToViewModelList(response));
     	}
 
-    	private _MapSmartChipListToViewModelList(smartChipList: PersistedEntity<SmartChip>[]): SmartChipViewModel[]
-    	{
+    	private _MapSmartChipListToViewModelList(smartChipList: PersistedEntity<SmartChip>[]): SmartChipViewModel[] {
     		return smartChipList.map(smartChip => ({
     			id: smartChip.id,
     			label: smartChip.entity.label,

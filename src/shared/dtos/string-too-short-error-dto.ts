@@ -1,15 +1,16 @@
-export class StringTooShortErrorDto<T>
-{
+import { Dto } from "./dto";
+
+export class StringTooShortErrorDto<const T> implements Dto {
 	public readonly dtoName = "StringTooShortErrorDto";
+	public readonly message: string;
 
 	constructor(
         public readonly code: T,
         public readonly fieldName: string,
         public readonly value: string,
         public readonly minLength: number,
-        public readonly message?: string
-	)
-	{
+        message?: string
+	) {
 		this.message = message ?? `Field "${fieldName}" with value "${value}" has a length of "${value.length}" which is shorter than the minimum length of "${minLength}".`;
 	}
 }

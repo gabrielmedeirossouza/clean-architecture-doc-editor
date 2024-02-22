@@ -1,34 +1,16 @@
-import { DtoLoggerProxy } from "@/use-cases/interfaces/proxies/dto-logger-proxy";
-import { ListSmartChipUseCase, SmartChipRepository } from "@/use-cases/protocols/smart-chip";
+import { IListSmartChipUseCaseInputPort, IListSmartChipUseCaseOutputPort } from "@/use-cases/protocols/smart-chip/list-smart-chip-use-case";
+import { ISmartChipRepository } from "@/use-cases/protocols/smart-chip/smart-chip-repository";
 
-export namespace ConcreteListSmartChipUseCase {
-    export interface ConstructorParameters {
-        outputPort: ListSmartChipUseCase.OutputPort;
-        smartChipRepository: SmartChipRepository.InputPort;
-        dtoLogger: DtoLoggerProxy;
-    }
+export class UseCase implements IListSmartChipUseCaseInputPort {
+	constructor(
+        private readonly outputPort: IListSmartChipUseCaseOutputPort,
+        private readonly smartChipRepository: ISmartChipRepository,
+	) { }
 
-    export class UseCase implements ListSmartChipUseCase.InputPort
-    {
-    	private readonly _outputPort: ListSmartChipUseCase.OutputPort;
+	public List(): void {
+		const smartChipList  = this.smartChipRepository.List();
 
-    	private readonly _smartChipRepository: SmartChipRepository.InputPort;
-
-    	private readonly _dtoLogger: DtoLoggerProxy;
-
-    	constructor({ outputPort, smartChipRepository, dtoLogger }: ConstructorParameters)
-    	{
-    		this._outputPort = outputPort;
-    		this._smartChipRepository = smartChipRepository;
-    		this._dtoLogger = dtoLogger;
-    	}
-
-    	public async List(): Promise<void>
-    	{
-    		// TODO: Implement result response
-    		const { response: smartChipList } = await this._smartChipRepository.List();
-
-    		return this._outputPort.ListResponse({ response: smartChipList });
-    	}
-    }
+		this.outputPort.ListResponse(smartChipList);
+	}
 }
+

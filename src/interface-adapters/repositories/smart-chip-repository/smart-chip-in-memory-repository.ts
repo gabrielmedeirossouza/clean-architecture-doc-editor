@@ -1,151 +1,71 @@
 import { Result } from "@/shared/result";
-import { PersistedEntity, SmartChip } from "@/entities/interfaces";
-import { SmartChipRepository } from "@/use-cases/protocols/smart-chip";
-import { IUuidGenerator } from "@/interface-adapters/interfaces/id-generator";
-import { ConcreteRepositoryCannotFindDto } from "@/interface-adapters/repositories/dtos";
+import { CannotFindDto } from "@/shared";
+import { IPersistedEntity } from "@/entities/protocols/persisted-entity";
+import { ISmartChip } from "@/entities/protocols/smart-chip";
+import { ISmartChipRepository } from "@/use-cases/protocols/smart-chip/smart-chip-repository";
+import { IUuidGenerator } from "@/interface-adapters/protocols/uuid-generator";
 
-export namespace ConcreteSmartChipInMemoryRepository {
-    export interface ConstructorParameters {
-        idGenerator: IUuidGenerator;
-    }
+export class SmartChipInMemoryRepository implements ISmartChipRepository {
+	private smartChips: IPersistedEntity<ISmartChip>[] = [];
 
-    export class Repository implements SmartChipRepository.InputPort
-    {
-    	private _smartChips: PersistedEntity<SmartChip>[] = [];
+	constructor(private readonly uuidGenerator: IUuidGenerator) { }
 
-    	private _idGenerator: IUuidGenerator;
+	public Create(smartChip: ISmartChip): string {
+		const id = this.uuidGenerator.GenerateUuidV4();
 
-    	constructor({ idGenerator }: ConstructorParameters)
-    	{
-    		this._idGenerator = idGenerator;
-    	}
+		this.smartChips.push({
+			id,
+			entity: smartChip
+		});
 
-    	public async Create({ smartChip }: SmartChipRepository.CreateRequestModel): Promise<SmartChipRepository.CreateResponseModel>
-    	{
-    		const id = this._idGenerator.GenerateUuidV4();
+		return id;
+	}
 
-    		this._smartChips.push({
-    			id,
-    			entity: smartChip
-    		});
+	public Edit(smartChip: IPersistedEntity<ISmartChip>): Result<string, CannotFindDto<"SMART_CHIP_NOT_FOUND">> {
+		const index = this.smartChips.findIndex((item) => item.id === smartChip.id);
+		if (index === -1)
+			return Result.Fail(new CannotFindDto("SMART_CHIP_NOT_FOUND", "id", smartChip.id, "SmartChip", `Cannot edit SmartChip entity with id ${smartChip.id}, because it was not found.`));
 
-    		return { response: Result.Ok(id) };
-    	}
+		this.smartChips[index] = smartChip;
 
-    	public async Edit({ smartChip }: SmartChipRepository.EditRequestModel): Promise<SmartChipRepository.EditResponseModel>
-    	{
-    		const index = this._smartChips.findIndex((item) => item.id === smartChip.id);
-    		if (index === -1)
-    		{
-    			return {
-    				response: Result.Fail(new ConcreteRepositoryCannotFindDto.Dto({
-    					code: SmartChipRepository.Code.SMART_CHIP_NOT_FOUND,
-    					searchCriteria: "id",
-    					searchValue: smartChip.id,
-    					entityName: "SmartChip",
-    					message: `Cannot edit SmartChip entity with id ${smartChip.id}, because it was not found.`,
-    				}))
-    			};
-    		}
+		return Result.Ok(smartChip.id);
+	}
 
-    		this._smartChips[index] = smartChip;
+	public Remove(id: string): Result<string, CannotFindDto<"SMART_CHIP_NOT_FOUND">> {
+		const index = this.smartChips.findIndex((item) => item.id === id);
+		if (index === -1)
+			return Result.Fail(new CannotFindDto("SMART_CHIP_NOT_FOUND", "id", id, "SmartChip", `Cannot remove SmartChip entity with id ${id}, because it was not found.`));
 
-    		return {
-    			response: Result.Ok(smartChip.id)
-    		};
-    	}
+		this.smartChips.splice(index, 1);
 
-    	public async Remove({ id }: SmartChipRepository.RemoveRequestModel): Promise<SmartChipRepository.RemoveResponseModel>
-    	{
-    		const index = this._smartChips.findIndex((item) => item.id === id);
-    		if (index === -1)
-    		{
-    			return {
-    				response: Result.Fail(new ConcreteRepositoryCannotFindDto.Dto({
-    					code: SmartChipRepository.Code.SMART_CHIP_NOT_FOUND,
-    					searchCriteria: "id",
-    					searchValue: id,
-    					entityName: "SmartChip",
-    					message: `Cannot remove SmartChip entity with id ${id}, because it was not found.`,
-    				}))
-    			};
-    		}
+		return Result.Ok(id);
+	}
 
-    		this._smartChips.splice(index, 1);
+	public Get(id: string): Result<IPersistedEntity<ISmartChip>, CannotFindDto<"SMART_CHIP_NOT_FOUND">> {
+		const smartChip = this.smartChips.find((item) => item.id === id);
+		if (!smartChip)
+			return Result.Fail(new CannotFindDto("SMART_CHIP_NOT_FOUND", "id", id, "SmartChip", `Cannot get SmartChip entity with id ${id}, because it was not found.`));
 
-    		return {
-    			response: Result.Ok(id)
-    		};
-    	}
+		return Result.Ok(smartChip);
+	}
 
-    	public async Get({ id }: SmartChipRepository.GetRequestModel): Promise<SmartChipRepository.GetResponseModel>
-    	{
-    		const smartChip = this._smartChips.find((item) => item.id === id);
-    		if (!smartChip)
-    		{
-    			return {
-    				response: Result.Fail(new ConcreteRepositoryCannotFindDto.Dto({
-    					code: SmartChipRepository.Code.SMART_CHIP_NOT_FOUND,
-    					searchCriteria: "id",
-    					searchValue: id,
-    					entityName: "SmartChip",
-    					message: `Cannot get SmartChip entity with id ${id}, because it was not found.`,
-    				}))
-    			};
-    		}
+	public List(): IPersistedEntity<ISmartChip>[] {
+		return this.smartChips;
+	}
 
-    		return {
-    			response: Result.Ok(smartChip)
-    		};
-    	}
+	public GetByLabel(label: string): Result<IPersistedEntity<ISmartChip>, CannotFindDto<"SMART_CHIP_NOT_FOUND">> {
+		const smartChip = this.smartChips.find((item) => item.entity.label === label);
+		if (!smartChip)
+			return Result.Fail(new CannotFindDto("SMART_CHIP_NOT_FOUND", "label", label, "SmartChip", `Cannot find SmartChip entity with label ${label}, because it was not found.`));
 
-    	public async List(): Promise<SmartChipRepository.ListResponseModel>
-    	{
-    		return {
-    			response: this._smartChips
-    		};
-    	}
+		return Result.Ok(smartChip);
+	}
 
-    	public async FindByLabel({ label }: SmartChipRepository.FindByLabelRequestModel): Promise<SmartChipRepository.FindByLabelResponseModel>
-    	{
-    		const smartChip = this._smartChips.find((item) => item.entity.label === label);
-    		if (!smartChip)
-    		{
-    			return {
-    				response: Result.Fail(new ConcreteRepositoryCannotFindDto.Dto({
-    					code: SmartChipRepository.Code.SMART_CHIP_NOT_FOUND,
-    					searchCriteria: "label",
-    					searchValue: label,
-    					entityName: "SmartChip",
-    					message: `Cannot find SmartChip entity with label ${label}, because it was not found.`,
-    				}))
-    			};
-    		}
+	public GetByPrefix(prefix: string): Result<IPersistedEntity<ISmartChip>, CannotFindDto<"SMART_CHIP_NOT_FOUND">> {
+		const smartChip = this.smartChips.find((item) => item.entity.prefix === prefix);
+		if (!smartChip)
+			return Result.Fail(new CannotFindDto("SMART_CHIP_NOT_FOUND", "prefix", prefix, "SmartChip", `Cannot find SmartChip entity with prefix ${prefix}, because it was not found.`));
 
-    		return {
-    			response: Result.Ok(smartChip)
-    		};
-    	}
-
-    	public async FindByPrefix({ prefix }: SmartChipRepository.FindByPrefixRequestModel): Promise<SmartChipRepository.FindByPrefixResponseModel>
-    	{
-    		const smartChip = this._smartChips.find((item) => item.entity.prefix === prefix);
-    		if (!smartChip)
-    		{
-    			return {
-    				response: Result.Fail(new ConcreteRepositoryCannotFindDto.Dto({
-    					code: SmartChipRepository.Code.SMART_CHIP_NOT_FOUND,
-    					searchCriteria: "prefix",
-    					searchValue: prefix,
-    					entityName: "SmartChip",
-    					message: `Cannot find SmartChip entity with prefix ${prefix}, because it was not found.`,
-    				}))
-    			};
-    		}
-
-    		return {
-    			response: Result.Ok(smartChip)
-    		};
-    	}
-    }
+		return Result.Ok(smartChip);
+	}
 }

@@ -1,15 +1,15 @@
-import { CannotFindDto, Result } from "@/shared";
+import { CannotFindDto, Result, SuccessDto } from "@/shared";
 import { IPersistedEntity } from "@/entities/protocols/persisted-entity";
 import { ISmartChip } from "@/entities/protocols/smart-chip";
 
 export type IGetByIdResponseResult = Result<
-    IPersistedEntity<ISmartChip>,
+    SuccessDto<IPersistedEntity<ISmartChip>>,
     CannotFindDto<"SMART_CHIP_NOT_FOUND"> |
     CannotFindDto<"GENERIC_SERVICE_ERROR">
 >;
 
 export interface IGetSmartChipUseCaseInputPort {
-    GetById(id: string): Promise<void>;
+    GetById(id: string): void;
 }
 
 export interface IGetSmartChipUseCaseOutputPort {
