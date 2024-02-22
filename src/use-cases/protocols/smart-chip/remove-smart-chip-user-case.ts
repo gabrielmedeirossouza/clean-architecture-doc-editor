@@ -1,7 +1,7 @@
-import { CannotFindDto, Result, SuccessDto } from "@/shared";
+import { CannotFindDto, Result } from "@/shared";
 
 export type IRemoveResponseResult = Result<
-    SuccessDto<string>,
+    string,
     CannotFindDto<"SMART_CHIP_NOT_FOUND"> |
     CannotFindDto<"GENERIC_SERVICE_ERROR">
 >;

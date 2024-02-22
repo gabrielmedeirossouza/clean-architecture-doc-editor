@@ -1,9 +1,9 @@
 import { MessageDto, Observable, Result, StringTooLongErrorDto, StringTooShortErrorDto } from "@/shared";
-import { SmartChipViewModel } from "./view-model";
+import { ISmartChipViewModel } from "./view-model";
 
-export interface ICreateSmartChipPresenterOutputPort {
-    createResponse?: Observable<Result<
-        SmartChipViewModel,
+export interface ICreateSmartChipPresenterOutput {
+    createOutput?: Observable<Result<
+        ISmartChipViewModel,
         MessageDto<"GENERIC_SERVICE_ERROR"> |
         MessageDto<"LABEL_ALREADY_EXISTS"> |
         MessageDto<"PREFIX_ALREADY_EXISTS"> |

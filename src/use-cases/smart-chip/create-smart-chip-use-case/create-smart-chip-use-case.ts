@@ -1,6 +1,5 @@
 import { ILogger } from "@/cross-cutting-concerns/protocols/logger-protocol";
 import { MessageDto, Result } from "@/shared";
-import { SuccessDto } from "@/shared/dtos/success-dto";
 import { PersistedEntity } from "@/entities/smart-chip/persisted-entity";
 import { SmartChip } from "@/entities/smart-chip/smart-chip";
 import { ICreateSmartChipUseCaseInputPort, ICreateSmartChipUseCaseOutputPort } from "@/use-cases/protocols/smart-chip/create-smart-chip-use-case";
@@ -43,9 +42,8 @@ export class CreateSmartChipUseCase implements ICreateSmartChipUseCaseInputPort 
 		const smartChip = new SmartChip(label, prefix);
 		const id = this.smartChipRepository.Create(smartChip);
 		const persistedSmartChip = new PersistedEntity(id, smartChip);
-		const dto = new SuccessDto(persistedSmartChip, "SmartChip entity created successfully.");
-		this.logger.Info(dto.message);
-		this.outputPort.CreateResponse(Result.Ok(dto));
+		this.logger.Info("SmartChip entity created successfully.");
+		this.outputPort.CreateResponse(Result.Ok(persistedSmartChip));
 	}
 }
 

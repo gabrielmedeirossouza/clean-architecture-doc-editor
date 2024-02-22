@@ -1,5 +1,5 @@
 import { ILogger } from "@/cross-cutting-concerns/protocols/logger-protocol";
-import { CannotFindDto, Result, SuccessDto } from "@/shared";
+import { CannotFindDto, Result } from "@/shared";
 import { IGetSmartChipUseCaseInputPort, IGetSmartChipUseCaseOutputPort } from "@/use-cases/protocols/smart-chip/get-smart-chip-use-case";
 import { ISmartChipRepository } from "@/use-cases/protocols/smart-chip/smart-chip-repository";
 
@@ -19,8 +19,7 @@ export class GetSmartChipUseCase implements IGetSmartChipUseCaseInputPort {
 			return this.outputPort.GetByIdResponse(Result.Fail(dto));
 		}
 
-		const dto = new SuccessDto(persistedSmartChipResult.value, `SmartChip entity with id ${id} was successfully retrieved.`);
-		this.logger.Info(dto.message);
-		this.outputPort.GetByIdResponse(Result.Ok(dto));
+		this.logger.Info(`SmartChip entity with id ${id} was successfully retrieved.`);
+		this.outputPort.GetByIdResponse(Result.Ok(persistedSmartChipResult.value));
 	}
 }

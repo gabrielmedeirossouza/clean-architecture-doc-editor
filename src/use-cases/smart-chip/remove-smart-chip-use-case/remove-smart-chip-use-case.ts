@@ -1,5 +1,5 @@
 import { ILogger } from "@/cross-cutting-concerns/protocols/logger-protocol";
-import { CannotFindDto, Result, SuccessDto } from "@/shared";
+import { CannotFindDto, Result } from "@/shared";
 import { IRemoveSmartChipUseCaseInputPort, IRemoveSmartChipUseCaseOutputPort } from "@/use-cases/protocols/smart-chip/remove-smart-chip-user-case";
 import { ISmartChipRepository } from "@/use-cases/protocols/smart-chip/smart-chip-repository";
 
@@ -19,10 +19,8 @@ export class RemoveSmartChipUseCase implements IRemoveSmartChipUseCaseInputPort 
 			return this.outputPort.RemoveResponse(Result.Fail(dto));
 		}
 
-		const dto = new SuccessDto(id, `SmartChip entity with id ${id} was successfully removed.`);
-		this.logger.Info(dto.message);
-
-		this.outputPort.RemoveResponse(Result.Ok(dto));
+		this.logger.Info(`SmartChip entity with id ${id} was successfully removed.`);
+		this.outputPort.RemoveResponse(Result.Ok(id));
 	}
 }
 

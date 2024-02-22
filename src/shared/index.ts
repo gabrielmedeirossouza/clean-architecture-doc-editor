@@ -1,6 +1,5 @@
 export * from './result';
 export * from './observable';
-export * from './dtos/success-dto';
 export * from './dtos/cannot-find-dto';
 export * from './dtos/generic-service-error-dto';
 export * from './dtos/message-dto';

@@ -1,9 +1,9 @@
-import { CannotFindDto, Result, SuccessDto } from "@/shared";
+import { CannotFindDto, Result } from "@/shared";
 import { IPersistedEntity } from "@/entities/protocols/persisted-entity";
 import { ISmartChip } from "@/entities/protocols/smart-chip";
 
 export type IGetByIdResponseResult = Result<
-    SuccessDto<IPersistedEntity<ISmartChip>>,
+    IPersistedEntity<ISmartChip>,
     CannotFindDto<"SMART_CHIP_NOT_FOUND"> |
     CannotFindDto<"GENERIC_SERVICE_ERROR">
 >;

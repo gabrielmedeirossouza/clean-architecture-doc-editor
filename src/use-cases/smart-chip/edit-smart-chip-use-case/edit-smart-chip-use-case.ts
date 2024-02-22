@@ -1,5 +1,5 @@
 import { ILogger } from "@/cross-cutting-concerns/protocols/logger-protocol";
-import { CannotFindDto, Result, SuccessDto } from "@/shared";
+import { CannotFindDto, Result } from "@/shared";
 import { IEditField, IEditSmartChipUseCaseInputPort, IEditSmartChipUseCaseOutputPort } from "@/use-cases/protocols/smart-chip/edit-smart-chip-use-case";
 import { ISmartChipRepository } from "@/use-cases/protocols/smart-chip/smart-chip-repository";
 import { ISmartChipValidationService } from "@/use-cases/protocols/smart-chip/smart-chip-validation-service";
@@ -44,8 +44,7 @@ export class EditSmartChipUseCase implements IEditSmartChipUseCaseInputPort {
 			return this.outputPort.EditResponse(Result.Fail(dto));
 		}
 
-		const dto = new SuccessDto(persistedSmartChip, `SmartChip entity with id ${id} was successfully edited.`);
-		this.logger.Info(dto.message);
-		this.outputPort.EditResponse(Result.Ok(dto));
+		this.logger.Info(`SmartChip entity with id ${id} was successfully edited.`);
+		this.outputPort.EditResponse(Result.Ok(persistedSmartChip));
 	}
 }

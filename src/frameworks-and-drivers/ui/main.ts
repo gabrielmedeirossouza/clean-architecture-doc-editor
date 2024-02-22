@@ -12,12 +12,12 @@ import { WebConsoleLog } from '@/frameworks-and-drivers/infra/web-console-log';
 import { SmartChipValidationService } from '@/use-cases/smart-chip/smart-chip-validation-service';
 import { CreateSmartChipUseCase } from '@/use-cases/smart-chip/create-smart-chip-use-case';
 import { SmartChipInMemoryRepository } from '@/interface-adapters/repositories/smart-chip-repository/smart-chip-in-memory-repository';
-import { CreateSmartChipPresenter } from '@/interface-adapters/presenters/smart-chip-presenter';
+import { CreateSmartChipPresenter } from '@/interface-adapters/presenters/smart-chip-presenter/create-smart-chip-presenter';
 import App from './App.vue';
 
 const webConsoleLog = new WebConsoleLog();
 const repository = new SmartChipInMemoryRepository(new WebUuidGenerator());
-const presenter = new CreateSmartChipPresenter({ createResponse:  new Observable() });
+const presenter = new CreateSmartChipPresenter({ createOutput:  new Observable() });
 const validationService = new SmartChipValidationService(new Logger(webConsoleLog, "SmartChipValidationService"));
 const useCase = new CreateSmartChipUseCase(presenter, validationService, repository, new Logger(webConsoleLog, "CreateSmartChipUseCase"));
 
