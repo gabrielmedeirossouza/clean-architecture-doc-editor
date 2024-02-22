@@ -21,8 +21,8 @@ const presenter = new CreateSmartChipPresenter({ createOutput:  new Observable()
 const validationService = new SmartChipValidationService(new Logger(webConsoleLog, "SmartChipValidationService"));
 const useCase = new CreateSmartChipUseCase(presenter, validationService, repository, new Logger(webConsoleLog, "CreateSmartChipUseCase"));
 
-await useCase.Create('label', 'prefix');
-await useCase.Create('label', 'prefix too long!!!!');
+useCase.Create('label', 'prefix');
+useCase.Create('label', 'prefix too long!!!!');
 
 const vuetify = createVuetify({
 	components,

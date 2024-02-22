@@ -1,4 +1,4 @@
-import { ILogger } from "@/cross-cutting-concerns/protocols/logger-protocol";
+import { ILogger } from "@/cross-cutting-concerns/protocols/logger";
 import { StringTooShortErrorDto, StringTooLongErrorDto } from "@/shared";
 import { Result } from "@/shared/result";
 import { ISmartChipValidationService } from "@/use-cases/protocols/smart-chip/smart-chip-validation-service";

@@ -1,4 +1,4 @@
-import { ILog } from "@/cross-cutting-concerns/protocols/log-protocol";
+import { ILog } from "@/cross-cutting-concerns/protocols/log";
 
 export class WebConsoleLog implements ILog {
 	public Info(message: string): void {

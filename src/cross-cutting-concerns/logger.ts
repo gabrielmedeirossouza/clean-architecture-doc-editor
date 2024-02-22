@@ -1,5 +1,5 @@
-import { ILog } from "./protocols/log-protocol";
-import { ILogger } from "./protocols/logger-protocol";
+import { ILog } from "./protocols/log";
+import { ILogger } from "./protocols/logger";
 
 export class Logger implements ILogger {
 	constructor(private readonly log: ILog, private readonly resourceName: string) {}

@@ -1,4 +1,4 @@
-import { ILogger } from "@/cross-cutting-concerns/protocols/logger-protocol";
+import { ILogger } from "@/cross-cutting-concerns/protocols/logger";
 import { MessageDto, Result } from "@/shared";
 import { PersistedEntity } from "@/entities/smart-chip/persisted-entity";
 import { SmartChip } from "@/entities/smart-chip/smart-chip";

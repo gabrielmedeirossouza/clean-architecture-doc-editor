@@ -1,4 +1,4 @@
-import { ILogger } from "@/cross-cutting-concerns/protocols/logger-protocol";
+import { ILogger } from "@/cross-cutting-concerns/protocols/logger";
 import { CannotFindDto, Result } from "@/shared";
 import { IGetSmartChipUseCaseInputPort, IGetSmartChipUseCaseOutputPort } from "@/use-cases/protocols/smart-chip/get-smart-chip-use-case";
 import { ISmartChipRepository } from "@/use-cases/protocols/smart-chip/smart-chip-repository";
