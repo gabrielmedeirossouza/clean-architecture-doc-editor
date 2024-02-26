@@ -1,5 +1,5 @@
 import { MessageDto, Observable, Result, StringTooLongErrorDto, StringTooShortErrorDto } from "@/shared";
-import { ISmartChipViewModel } from "./view-model";
+import { ISmartChipViewModel } from "@/interface-adapters/protocols/views/smart-chip-view/view-model";
 
 export interface IEditSmartChipPresenterOutput {
     editOutput?: Observable<Result<

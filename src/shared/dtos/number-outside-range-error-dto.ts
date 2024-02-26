@@ -1,6 +1,6 @@
 import { Dto } from "./dto";
 
-export class NumberOutsideRangeErrorDto<const T> implements Dto {
+export class NumberOutsideRangeErrorDto<const T = any> implements Dto {
 	public readonly dtoName = "NumberOutsideRangeErrorDto";
 	public readonly message: string;
 

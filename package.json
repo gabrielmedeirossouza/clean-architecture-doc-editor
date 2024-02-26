@@ -10,8 +10,7 @@
     "test": "vitest"
   },
   "dependencies": {
-    "vue": "^3.4.19",
-    "vuetify": "^3.5.4"
+    "vue": "^3.4.19"
   },
   "devDependencies": {
     "@mdi/font": "^7.4.47",

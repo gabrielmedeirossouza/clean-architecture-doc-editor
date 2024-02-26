@@ -1,6 +1,6 @@
 import { Dto } from "./dto";
 
-export class NumberNegativeErrorDto<const T> implements Dto {
+export class NumberNegativeErrorDto<const T = any> implements Dto {
 	public readonly dtoName = "NumberNegativeErrorDto";
 	public readonly message: string;
 

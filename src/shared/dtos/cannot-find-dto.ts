@@ -1,6 +1,6 @@
 import { Dto } from "./dto";
 
-export class CannotFindDto<const T> implements Dto {
+export class CannotFindDto<const T = any> implements Dto {
 	public readonly dtoName = "CannotFindDto";
 	public readonly message: string;
 
