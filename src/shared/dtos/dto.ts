@@ -1,4 +1,4 @@
 export interface Dto {
-    dtoName: string;
-    message: string;
+    readonly dtoName: string;
+    readonly message: string;
 }

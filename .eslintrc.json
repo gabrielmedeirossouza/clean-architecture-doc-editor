@@ -17,15 +17,18 @@
         "project": "./tsconfig.json",
         "tsconfigRootDir": "./"
     },
-    "plugins": ["import", "@typescript-eslint", "sort-class-members", "no-relative-import-paths"],
+    "plugins": [
+        "import",
+        "@typescript-eslint",
+        "sort-class-members",
+        "no-relative-import-paths"
+    ],
     "settings": {
         "import/resolver": {
             "typescript": {}
         }
     },
-    "ignorePatterns": [
-        "vite.config.js"
-    ],
+    "ignorePatterns": ["vite.config.js"],
     "rules": {
         "no-relative-import-paths/no-relative-import-paths": [
             "error",
@@ -34,7 +37,14 @@
         "import/order": [
             "error",
             {
-                "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
+                "groups": [
+                    "builtin",
+                    "external",
+                    "internal",
+                    "parent",
+                    "sibling",
+                    "index"
+                ],
                 "pathGroups": [
                     {
                         "pattern": "@/cross-cutting-concerns/**",
@@ -82,7 +92,7 @@
         "no-plusplus": "off",
         "no-multiple-empty-lines": ["error", { "max": 1 }],
         "newline-before-return": "error",
-        "indent": ["error", "tab"],
+        "indent": ["error", 4],
         "padded-blocks": ["error", "never"],
         "import/no-extraneous-dependencies": "off",
         "brace-style": ["error", "1tbs"],
@@ -97,6 +107,7 @@
         "@typescript-eslint/ban-types": "off",
         "space-in-parens": ["error", "never"],
         "comma-spacing": "error",
+        "quotes": ["error", "double"],
         "unicorn/prevent-abbreviations": "off",
         "unicorn/numeric-separators-style": "off",
         "unicorn/no-useless-undefined": "off",
