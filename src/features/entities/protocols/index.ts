@@ -1,2 +1,2 @@
-export * from "./paginated-entities";
+export * from "./paginated-entity";
 export * from "./persisted-entity";

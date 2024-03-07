@@ -1,4 +1,4 @@
-export interface IPaginatedEntities<T> {
+export interface IPaginatedEntity<T> {
     currentPage: number;
     totalPages: number;
     limit: number;

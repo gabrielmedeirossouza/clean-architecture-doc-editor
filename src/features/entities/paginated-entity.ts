@@ -1,6 +1,6 @@
-import { IPaginatedEntities } from "./protocols";
+import { IPaginatedEntity } from "./protocols";
 
-export class PaginatedEntities<T> implements IPaginatedEntities<T> {
+export class PaginatedEntity<T> implements IPaginatedEntity<T> {
     constructor(
         public currentPage: number,
         public totalPages: number,
