@@ -1,7 +1,7 @@
 import { CannotFindDto, Result } from "@/shared";
 import { ISmartChipEntity, ISmartChipRepository } from "@/features/smart-chip/protocols";
 import { IUuidGenerator } from "@/features/uuid/protocols";
-import { IPersistedEntity } from "@/entities/protocols/persisted-entity";
+import { IPersistedEntity } from "@/features/entities/protocols";
 
 export class SmartChipInMemoryRepository implements ISmartChipRepository {
     private smartChips: IPersistedEntity<ISmartChipEntity>[] = [];

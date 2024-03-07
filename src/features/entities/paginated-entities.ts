@@ -1,4 +1,4 @@
-import { IPaginatedEntities } from "@/entities/protocols";
+import { IPaginatedEntities } from "./protocols";
 
 export class PaginatedEntities<T> implements IPaginatedEntities<T> {
     constructor(

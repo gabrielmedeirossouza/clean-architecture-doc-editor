@@ -1,5 +1,5 @@
+import { IPersistedEntity } from "@/features/entities/protocols";
 import { IListSmartChipUseCaseOutputPort, IListSmartChipView, ISmartChipEntity, ISmartChipViewModel } from "@/features/smart-chip/protocols";
-import { IPersistedEntity } from "@/entities/protocols/persisted-entity";
 
 export class ListSmartChipPresenter implements IListSmartChipUseCaseOutputPort {
     constructor(private readonly view: IListSmartChipView) { }

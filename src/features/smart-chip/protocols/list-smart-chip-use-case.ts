@@ -1,4 +1,4 @@
-import { IPersistedEntity } from "@/entities/protocols/persisted-entity";
+import { IPersistedEntity } from "@/features/entities/protocols";
 import { ISmartChipEntity } from "./smart-chip-entity";
 
 export interface IListSmartChipUseCaseInputPort {

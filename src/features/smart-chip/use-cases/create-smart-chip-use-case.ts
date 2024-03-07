@@ -2,7 +2,7 @@ import { ILogger } from "@/cross-cutting-concerns/protocols";
 import { ICreateSmartChipUseCaseInputPort, ICreateSmartChipUseCaseOutputPort, ISmartChipRepository, ISmartChipValidationService } from "@/features/smart-chip/protocols";
 import { MessageDto, Result } from "@/shared";
 import { SmartChipEntity } from "@/features/smart-chip/entities";
-import { PersistedEntity } from "@/entities/persisted-entity";
+import { PersistedEntity } from "@/features/entities/persisted-entity";
 
 export class CreateSmartChipUseCase implements ICreateSmartChipUseCaseInputPort {
     constructor(
