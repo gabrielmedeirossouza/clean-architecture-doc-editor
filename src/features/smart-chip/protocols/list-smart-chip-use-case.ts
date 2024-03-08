@@ -1,10 +1,10 @@
-import { IPersistedEntity } from "@/features/entities/protocols";
+import { IPaginatedEntity, IPersistedEntity } from "@/features/entities/protocols";
 import { ISmartChipEntity } from "./smart-chip-entity";
 
 export interface IListSmartChipUseCaseInputPort {
-    List(): void;
+    List(page: number, limit: number): void;
 }
 
 export interface IListSmartChipUseCaseOutputPort {
-    ListResponse(result: IPersistedEntity<ISmartChipEntity>[]): void;
+    ListResponse(result: IPaginatedEntity<IPersistedEntity<ISmartChipEntity>>): void;
 }

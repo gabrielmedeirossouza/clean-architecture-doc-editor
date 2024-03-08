@@ -1,6 +1,6 @@
 import { Dto } from "./dto";
 
-export class NumberTooLargeDto<const T = any> implements Dto {
+export class NumberTooLargeDto<const T> implements Dto {
     public readonly dtoName = "NumberTooLargeDto";
     public readonly message: string;
 

@@ -1,5 +1,5 @@
 import { CannotFindDto, Result } from "@/shared";
-import { IPersistedEntity } from "@/features/entities/protocols";
+import { IPaginatedEntity, IPersistedEntity } from "@/features/entities/protocols";
 import { ISmartChipEntity } from "./smart-chip-entity";
 
 export interface ISmartChipRepository {
@@ -9,5 +9,5 @@ export interface ISmartChipRepository {
     Get(id: string): Result<IPersistedEntity<ISmartChipEntity>, CannotFindDto<"SMART_CHIP_NOT_FOUND">>;
     GetByLabel(label: string): Result<IPersistedEntity<ISmartChipEntity>, CannotFindDto<"SMART_CHIP_NOT_FOUND">>;
     GetByPrefix(prefix: string): Result<IPersistedEntity<ISmartChipEntity>, CannotFindDto<"SMART_CHIP_NOT_FOUND">>;
-    List(): IPersistedEntity<ISmartChipEntity>[];
+    List(page: number, limit: number): IPaginatedEntity<IPersistedEntity<ISmartChipEntity>>;
 }

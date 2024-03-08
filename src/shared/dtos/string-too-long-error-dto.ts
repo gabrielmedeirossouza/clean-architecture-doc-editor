@@ -1,6 +1,6 @@
 import { Dto } from "./dto";
 
-export class StringTooLongErrorDto<const T = any> implements Dto {
+export class StringTooLongErrorDto<const T> implements Dto {
     public readonly dtoName = "StringTooLongErrorDto";
     public readonly message: string;
 

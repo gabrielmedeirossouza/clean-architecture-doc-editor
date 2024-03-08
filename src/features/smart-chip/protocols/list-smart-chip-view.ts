@@ -1,6 +1,6 @@
+import { IPaginatedEntity } from "@/features/entities/protocols";
 import { ISmartChipViewModel } from "./smart-chip-view-model";
 
 export interface IListSmartChipView {
-    RenderSuccess(viewModelList: ISmartChipViewModel[]): void
+    RenderSuccess(viewModelList: IPaginatedEntity<ISmartChipViewModel>): void
 }
-

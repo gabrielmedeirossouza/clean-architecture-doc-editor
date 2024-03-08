@@ -6,8 +6,8 @@ export class ListSmartChipUseCase implements IListSmartChipUseCaseInputPort {
         private readonly smartChipRepository: ISmartChipRepository,
     ) { }
 
-    public List(): void {
-        const smartChipList = this.smartChipRepository.List();
+    public List(page: number, limit: number): void {
+        const smartChipList = this.smartChipRepository.List(page, limit);
 
         this.outputPort.ListResponse(smartChipList);
     }

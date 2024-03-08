@@ -1,7 +1,8 @@
 import { CannotFindDto, Result } from "@/shared";
 import { ISmartChipEntity, ISmartChipRepository } from "@/features/smart-chip/protocols";
 import { IUuidGenerator } from "@/features/uuid/protocols";
-import { IPersistedEntity } from "@/features/entities/protocols";
+import { IPaginatedEntity, IPersistedEntity } from "@/features/entities/protocols";
+import { PaginatedEntity } from "@/features/entities/paginated-entity";
 
 export class SmartChipInMemoryRepository implements ISmartChipRepository {
     private smartChips: IPersistedEntity<ISmartChipEntity>[] = [];
@@ -47,8 +48,13 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository {
         return Result.Ok(smartChip);
     }
 
-    public List(): IPersistedEntity<ISmartChipEntity>[] {
-        return this.smartChips;
+    public List(page: number, limit: number): IPaginatedEntity<IPersistedEntity<ISmartChipEntity>> {
+        const totalItems = this.smartChips.length;
+        const totalPages = Math.ceil(totalItems / limit);
+
+        const items = this.smartChips.slice((page - 1) * limit, page * limit);
+
+        return new PaginatedEntity(page, totalPages, limit, totalItems, items);
     }
 
     public GetByLabel(label: string): Result<IPersistedEntity<ISmartChipEntity>, CannotFindDto<"SMART_CHIP_NOT_FOUND">> {

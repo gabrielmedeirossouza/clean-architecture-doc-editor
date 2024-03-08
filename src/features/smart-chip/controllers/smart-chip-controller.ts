@@ -21,8 +21,8 @@ export class SmartChipController implements ISmartChipController {
         this.getSmartChipUseCase.GetById(id);
     }
 
-    public List(): void {
-        this.listSmartChipUseCase.List();
+    public List(page: number, limit: number): void {
+        this.listSmartChipUseCase.List(page, limit);
     }
 
     public Remove(id: string): void {
