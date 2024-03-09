@@ -6,6 +6,7 @@ export class ListSmartChipUseCase implements IListSmartChipUseCaseInputPort {
         private readonly smartChipRepository: ISmartChipRepository,
     ) { }
 
+    // TODO: use PaginatedEntity to handle errors
     public List(page: number, limit: number): void {
         const smartChipList = this.smartChipRepository.List(page, limit);
 

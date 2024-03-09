@@ -6,5 +6,5 @@ export interface IListSmartChipUseCaseInputPort {
 }
 
 export interface IListSmartChipUseCaseOutputPort {
-    ListResponse(result: PaginatedEntity<PersistedEntity<SmartChipEntity>>): void;
+    ListResponse(result: PaginatedEntity<PersistedEntity<SmartChipEntity>>): void; // TODO: add result to handle errors
 }
