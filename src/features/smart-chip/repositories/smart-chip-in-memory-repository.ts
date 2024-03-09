@@ -1,15 +1,15 @@
 import { CannotFindDto, Result } from "@/shared";
-import { ISmartChipEntity, ISmartChipRepository } from "@/features/smart-chip/protocols";
+import { ISmartChipRepository } from "@/features/smart-chip/protocols";
 import { IUuidGenerator } from "@/features/uuid/protocols";
-import { IPaginatedEntity, IPersistedEntity } from "@/features/entities/protocols";
-import { PaginatedEntity } from "@/features/entities/paginated-entity";
+import { PaginatedEntity, PersistedEntity } from "@/features/entities";
+import { SmartChipEntity } from "@/features/smart-chip/entities";
 
 export class SmartChipInMemoryRepository implements ISmartChipRepository {
-    private smartChips: IPersistedEntity<ISmartChipEntity>[] = [];
+    private smartChips: PersistedEntity<SmartChipEntity>[] = [];
 
     constructor(private readonly uuidGenerator: IUuidGenerator) { }
 
-    public Create(smartChip: ISmartChipEntity): string {
+    public Create(smartChip: SmartChipEntity): string {
         const id = this.uuidGenerator.GenerateUuidV4();
 
         this.smartChips.push({
@@ -20,7 +20,7 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository {
         return id;
     }
 
-    public Edit(smartChip: IPersistedEntity<ISmartChipEntity>): Result<string, CannotFindDto<"SMART_CHIP_NOT_FOUND">> {
+    public Edit(smartChip: PersistedEntity<SmartChipEntity>): Result<string, CannotFindDto<"SMART_CHIP_NOT_FOUND">> {
         const index = this.smartChips.findIndex((item) => item.id === smartChip.id);
         if (index === -1)
             return Result.Fail(new CannotFindDto("SMART_CHIP_NOT_FOUND", "id", smartChip.id, "SmartChip", `Cannot edit SmartChip entity with id ${smartChip.id}, because it was not found.`));
@@ -40,7 +40,7 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository {
         return Result.Ok(id);
     }
 
-    public Get(id: string): Result<IPersistedEntity<ISmartChipEntity>, CannotFindDto<"SMART_CHIP_NOT_FOUND">> {
+    public Get(id: string): Result<PersistedEntity<SmartChipEntity>, CannotFindDto<"SMART_CHIP_NOT_FOUND">> {
         const smartChip = this.smartChips.find((item) => item.id === id);
         if (!smartChip)
             return Result.Fail(new CannotFindDto("SMART_CHIP_NOT_FOUND", "id", id, "SmartChip", `Cannot get SmartChip entity with id ${id}, because it was not found.`));
@@ -48,7 +48,7 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository {
         return Result.Ok(smartChip);
     }
 
-    public List(page: number, limit: number): IPaginatedEntity<IPersistedEntity<ISmartChipEntity>> {
+    public List(page: number, limit: number): PaginatedEntity<PersistedEntity<SmartChipEntity>> {
         const totalItems = this.smartChips.length;
         const totalPages = Math.ceil(totalItems / limit);
 
@@ -57,7 +57,7 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository {
         return new PaginatedEntity(page, totalPages, limit, totalItems, items);
     }
 
-    public GetByLabel(label: string): Result<IPersistedEntity<ISmartChipEntity>, CannotFindDto<"SMART_CHIP_NOT_FOUND">> {
+    public GetByLabel(label: string): Result<PersistedEntity<SmartChipEntity>, CannotFindDto<"SMART_CHIP_NOT_FOUND">> {
         const smartChip = this.smartChips.find((item) => item.entity.label === label);
         if (!smartChip)
             return Result.Fail(new CannotFindDto("SMART_CHIP_NOT_FOUND", "label", label, "SmartChip", `Cannot find SmartChip entity with label ${label}, because it was not found.`));
@@ -65,7 +65,7 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository {
         return Result.Ok(smartChip);
     }
 
-    public GetByPrefix(prefix: string): Result<IPersistedEntity<ISmartChipEntity>, CannotFindDto<"SMART_CHIP_NOT_FOUND">> {
+    public GetByPrefix(prefix: string): Result<PersistedEntity<SmartChipEntity>, CannotFindDto<"SMART_CHIP_NOT_FOUND">> {
         const smartChip = this.smartChips.find((item) => item.entity.prefix === prefix);
         if (!smartChip)
             return Result.Fail(new CannotFindDto("SMART_CHIP_NOT_FOUND", "prefix", prefix, "SmartChip", `Cannot find SmartChip entity with prefix ${prefix}, because it was not found.`));

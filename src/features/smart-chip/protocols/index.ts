@@ -10,6 +10,5 @@ export * from "./remove-smart-chip-user-case";
 export * from "./remove-smart-chip-view";
 export * from "./smart-chip-view-model";
 export * from "./smart-chip-controller";
-export * from "./smart-chip-entity";
 export * from "./smart-chip-repository";
 export * from "./smart-chip-validation-service";

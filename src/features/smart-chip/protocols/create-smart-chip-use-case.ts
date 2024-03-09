@@ -1,9 +1,9 @@
 import { MessageDto, Result, StringTooLongErrorDto, StringTooShortErrorDto } from "@/shared";
-import { IPersistedEntity } from "@/features/entities/protocols";
-import { ISmartChipEntity } from "./smart-chip-entity";
+import { PersistedEntity } from "@/features/entities";
+import { SmartChipEntity } from "@/features/smart-chip/entities";
 
 export type ICreateResponseResult = Result<
-    IPersistedEntity<ISmartChipEntity>,
+    PersistedEntity<SmartChipEntity>,
     MessageDto<"GENERIC_SERVICE_ERROR"> |
     MessageDto<"LABEL_ALREADY_EXISTS"> |
     MessageDto<"PREFIX_ALREADY_EXISTS"> |

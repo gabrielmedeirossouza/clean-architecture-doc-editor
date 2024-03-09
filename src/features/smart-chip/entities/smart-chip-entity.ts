@@ -1,8 +1,6 @@
-import { ISmartChipEntity } from "@/features/smart-chip/protocols";
-
-export class SmartChipEntity implements ISmartChipEntity {
+export class SmartChipEntity {
     constructor(
-        public readonly label: string,
-        public readonly prefix: string
+        public label: string,
+        public prefix: string
     ) { }
 }

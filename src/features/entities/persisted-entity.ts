@@ -1,5 +1,3 @@
-import { IPersistedEntity } from "./protocols";
-
-export class PersistedEntity<T> implements IPersistedEntity<T> {
+export class PersistedEntity<T> {
     constructor(public readonly id: string, public readonly entity: T) { }
 }

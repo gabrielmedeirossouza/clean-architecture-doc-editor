@@ -1,7 +1,5 @@
 import { Result, MessageDto, NumberOutsideRangeErrorDto } from "@/shared";
-import { IPaginatedEntity } from "./protocols";
-
-export class PaginatedEntity<T> implements IPaginatedEntity<T> {
+export class PaginatedEntity<T> {
     constructor(
         private _currentPage: number,
         private _totalPages: number,
