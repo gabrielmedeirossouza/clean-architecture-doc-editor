@@ -31,8 +31,8 @@ export class EditSmartChipUseCase implements IEditSmartChipUseCaseInputPort {
         }
 
         const persistedSmartChip = idResult.value;
-        persistedSmartChip.entity.label = label ?? persistedSmartChip.entity.label;
-        persistedSmartChip.entity.prefix = prefix ?? persistedSmartChip.entity.prefix;
+        persistedSmartChip.data.label = label ?? persistedSmartChip.data.label;
+        persistedSmartChip.data.prefix = prefix ?? persistedSmartChip.data.prefix;
 
         const editResult = this.smartChipRepository.Edit(persistedSmartChip);
         if (!editResult.ok) {

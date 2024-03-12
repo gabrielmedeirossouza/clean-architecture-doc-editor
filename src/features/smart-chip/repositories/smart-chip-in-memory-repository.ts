@@ -14,7 +14,7 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository {
 
         this.smartChips.push({
             id,
-            entity: smartChip
+            data: smartChip
         });
 
         return id;
@@ -49,7 +49,7 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository {
     }
 
     public GetByLabel(label: string): Result<PersistedDto<SmartChipEntity>, CannotFindDto<"SMART_CHIP_NOT_FOUND">> {
-        const smartChip = this.smartChips.find((item) => item.entity.label === label);
+        const smartChip = this.smartChips.find((item) => item.data.label === label);
         if (!smartChip)
             return Result.Fail(new CannotFindDto("SMART_CHIP_NOT_FOUND", "label", label, "SmartChip", `Cannot find SmartChip entity with label ${label}, because it was not found.`));
 
@@ -57,7 +57,7 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository {
     }
 
     public GetByPrefix(prefix: string): Result<PersistedDto<SmartChipEntity>, CannotFindDto<"SMART_CHIP_NOT_FOUND">> {
-        const smartChip = this.smartChips.find((item) => item.entity.prefix === prefix);
+        const smartChip = this.smartChips.find((item) => item.data.prefix === prefix);
         if (!smartChip)
             return Result.Fail(new CannotFindDto("SMART_CHIP_NOT_FOUND", "prefix", prefix, "SmartChip", `Cannot find SmartChip entity with prefix ${prefix}, because it was not found.`));
 

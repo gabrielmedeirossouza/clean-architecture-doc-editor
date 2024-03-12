@@ -7,8 +7,8 @@ export class CreateSmartChipPresenter implements ICreateSmartChipUseCaseOutputPo
         if (ok)
             return this.view.RenderSuccess({
                 id: value.id,
-                label: value.entity.label,
-                prefix: value.entity.prefix,
+                label: value.data.label,
+                prefix: value.data.prefix,
             });
 
         if (value.code === "LABEL_TOO_SHORT")

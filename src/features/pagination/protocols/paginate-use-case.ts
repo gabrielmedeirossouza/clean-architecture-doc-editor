@@ -1,4 +1,3 @@
-import { PersistedDto } from "@/features/@dtos";
 import { PaginatedEntity } from "@/features/pagination/entities";
 import { MessageDto, NumberOutsideRangeErrorDto, Result } from "@/shared";
 
@@ -11,11 +10,9 @@ export interface IPaginateUseCaseInputPort {
 }
 
 export type IPageResponseResult<T> = Result<
-    PaginatedEntity<PersistedDto<T>>,
+    PaginatedEntity<T>,
     MessageDto<"ALREADY_FIRST_PAGE"> |
     MessageDto<"ALREADY_LAST_PAGE"> |
-    MessageDto<"NO_NEXT_PAGE"> |
-    MessageDto<"NO_PREVIOUS_PAGE"> |
     NumberOutsideRangeErrorDto<"PAGE_OUTSIDE_RANGE">
 >;
 
