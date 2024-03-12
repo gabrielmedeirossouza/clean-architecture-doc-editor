@@ -1,5 +1,5 @@
 import { CannotFindDto, MessageDto, Result, StringTooLongErrorDto, StringTooShortErrorDto } from "@/shared";
-import { PersistedEntity } from "@/features/entities";
+import { PersistedDto } from "@/features/@dtos";
 import { SmartChipEntity } from "@/features/smart-chip/entities";
 
 export type IEditField = {
@@ -8,7 +8,7 @@ export type IEditField = {
 };
 
 export type IEditResponseResult = Result<
-    PersistedEntity<SmartChipEntity>,
+    PersistedDto<SmartChipEntity>,
     CannotFindDto<"SMART_CHIP_NOT_FOUND"> |
     MessageDto<"LABEL_ALREADY_EXISTS"> |
     MessageDto<"PREFIX_ALREADY_EXISTS"> |

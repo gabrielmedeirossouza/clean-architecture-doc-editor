@@ -2,7 +2,7 @@ import { ILogger } from "@/cross-cutting-concerns/protocols";
 import { ICreateSmartChipUseCaseInputPort, ICreateSmartChipUseCaseOutputPort, ISmartChipRepository, ISmartChipValidationService } from "@/features/smart-chip/protocols";
 import { MessageDto, Result } from "@/shared";
 import { SmartChipEntity } from "@/features/smart-chip/entities";
-import { PersistedEntity } from "@/features/entities/persisted-entity";
+import { PersistedDto } from "@/features/@dtos";
 
 export class CreateSmartChipUseCase implements ICreateSmartChipUseCaseInputPort {
     constructor(
@@ -39,7 +39,7 @@ export class CreateSmartChipUseCase implements ICreateSmartChipUseCaseInputPort 
 
         const smartChip = new SmartChipEntity(label, prefix);
         const id = this.smartChipRepository.Create(smartChip);
-        const persistedSmartChip = new PersistedEntity(id, smartChip);
+        const persistedSmartChip = new PersistedDto(id, smartChip);
         this.logger.Info("SmartChip entity created successfully.");
         this.outputPort.CreateResponse(Result.Ok(persistedSmartChip));
     }

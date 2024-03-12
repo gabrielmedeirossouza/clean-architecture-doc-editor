@@ -1,11 +1,11 @@
 import { CannotFindDto, Result } from "@/shared";
 import { ISmartChipRepository } from "@/features/smart-chip/protocols";
 import { IUuidGenerator } from "@/features/uuid/protocols";
-import { PaginatedEntity, PersistedEntity } from "@/features/entities";
+import { PersistedDto } from "@/features/@dtos";
 import { SmartChipEntity } from "@/features/smart-chip/entities";
 
 export class SmartChipInMemoryRepository implements ISmartChipRepository {
-    private smartChips: PersistedEntity<SmartChipEntity>[] = [];
+    public smartChips: PersistedDto<SmartChipEntity>[] = [];
 
     constructor(private readonly uuidGenerator: IUuidGenerator) { }
 
@@ -20,7 +20,7 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository {
         return id;
     }
 
-    public Edit(smartChip: PersistedEntity<SmartChipEntity>): Result<string, CannotFindDto<"SMART_CHIP_NOT_FOUND">> {
+    public Edit(smartChip: PersistedDto<SmartChipEntity>): Result<string, CannotFindDto<"SMART_CHIP_NOT_FOUND">> {
         const index = this.smartChips.findIndex((item) => item.id === smartChip.id);
         if (index === -1)
             return Result.Fail(new CannotFindDto("SMART_CHIP_NOT_FOUND", "id", smartChip.id, "SmartChip", `Cannot edit SmartChip entity with id ${smartChip.id}, because it was not found.`));
@@ -40,7 +40,7 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository {
         return Result.Ok(id);
     }
 
-    public Get(id: string): Result<PersistedEntity<SmartChipEntity>, CannotFindDto<"SMART_CHIP_NOT_FOUND">> {
+    public Get(id: string): Result<PersistedDto<SmartChipEntity>, CannotFindDto<"SMART_CHIP_NOT_FOUND">> {
         const smartChip = this.smartChips.find((item) => item.id === id);
         if (!smartChip)
             return Result.Fail(new CannotFindDto("SMART_CHIP_NOT_FOUND", "id", id, "SmartChip", `Cannot get SmartChip entity with id ${id}, because it was not found.`));
@@ -48,16 +48,7 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository {
         return Result.Ok(smartChip);
     }
 
-    public List(page: number, limit: number): PaginatedEntity<PersistedEntity<SmartChipEntity>> {
-        const totalItems = this.smartChips.length;
-        const totalPages = Math.ceil(totalItems / limit);
-
-        const items = this.smartChips.slice((page - 1) * limit, page * limit);
-
-        return new PaginatedEntity(page, totalPages, limit, totalItems, items);
-    }
-
-    public GetByLabel(label: string): Result<PersistedEntity<SmartChipEntity>, CannotFindDto<"SMART_CHIP_NOT_FOUND">> {
+    public GetByLabel(label: string): Result<PersistedDto<SmartChipEntity>, CannotFindDto<"SMART_CHIP_NOT_FOUND">> {
         const smartChip = this.smartChips.find((item) => item.entity.label === label);
         if (!smartChip)
             return Result.Fail(new CannotFindDto("SMART_CHIP_NOT_FOUND", "label", label, "SmartChip", `Cannot find SmartChip entity with label ${label}, because it was not found.`));
@@ -65,7 +56,7 @@ export class SmartChipInMemoryRepository implements ISmartChipRepository {
         return Result.Ok(smartChip);
     }
 
-    public GetByPrefix(prefix: string): Result<PersistedEntity<SmartChipEntity>, CannotFindDto<"SMART_CHIP_NOT_FOUND">> {
+    public GetByPrefix(prefix: string): Result<PersistedDto<SmartChipEntity>, CannotFindDto<"SMART_CHIP_NOT_FOUND">> {
         const smartChip = this.smartChips.find((item) => item.entity.prefix === prefix);
         if (!smartChip)
             return Result.Fail(new CannotFindDto("SMART_CHIP_NOT_FOUND", "prefix", prefix, "SmartChip", `Cannot find SmartChip entity with prefix ${prefix}, because it was not found.`));

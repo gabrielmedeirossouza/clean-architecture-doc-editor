@@ -4,8 +4,6 @@ export * from "./edit-smart-chip-use-case";
 export * from "./edit-smart-chip-view";
 export * from "./get-smart-chip-use-case";
 export * from "./get-smart-chip-view";
-export * from "./list-smart-chip-use-case";
-export * from "./list-smart-chip-view";
 export * from "./remove-smart-chip-user-case";
 export * from "./remove-smart-chip-view";
 export * from "./smart-chip-view-model";

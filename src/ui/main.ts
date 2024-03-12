@@ -1,10 +1,13 @@
 import { Logger } from "@/cross-cutting-concerns/logger";
 import { WebConsoleLog } from "@/features/log/infra";
+import { IPaginateView } from "@/features/pagination/protocols";
+import { PaginatedInMemoryRepository } from "@/features/pagination/repositories";
+import { PaginateUseCase } from "@/features/pagination/use-cases";
 import { CreateSmartChipPresenter, ListSmartChipPresenter } from "@/features/smart-chip/presenters";
-import { ICreateSmartChipView, IListSmartChipView, ISmartChipViewModel } from "@/features/smart-chip/protocols";
+import { ICreateSmartChipView, ISmartChipViewModel } from "@/features/smart-chip/protocols";
 import { IPaginatedSmartChipViewModel } from "@/features/smart-chip/protocols/paginated-smart-chip-view-model";
 import { SmartChipInMemoryRepository } from "@/features/smart-chip/repositories";
-import { CreateSmartChipUseCase, ListSmartChipUseCase, SmartChipValidationService } from "@/features/smart-chip/use-cases";
+import { CreateSmartChipUseCase, SmartChipValidationService } from "@/features/smart-chip/use-cases";
 import { WebUuidGenerator } from "@/features/uuid/infra";
 
 class CreateSmartChipHtmlView implements ICreateSmartChipView {
@@ -21,33 +24,35 @@ class CreateSmartChipHtmlView implements ICreateSmartChipView {
     }
 }
 
-class ListSmartChipHtmlView implements IListSmartChipView {
+class ListSmartChipHtmlView implements IPaginateView<ISmartChipViewModel> {
     public RenderSuccess(paginated: IPaginatedSmartChipViewModel): void {
-        console.log(paginated);
+        console.log("RenderSuccess", paginated);
+    }
 
-        if (paginated.totalPages > paginated.currentPage) {
-            console.log("Next page ----");
-            listSmartChipUseCase.List(paginated.currentPage + 1, 2);
-        }
+    public RenderFieldError(field: "page", message: string): void {
+        console.log("RenderFieldError", field, message);
+    }
+
+    public RenderMessage(message: string): void {
+        console.log("RenderError", message);
     }
 }
 
 const log = new WebConsoleLog();
 const smartChipRepository = new SmartChipInMemoryRepository(new WebUuidGenerator());
+const smartChipListRepository = new PaginatedInMemoryRepository(smartChipRepository.smartChips);
 const smartChipValidationService = new SmartChipValidationService(new Logger(log, "SmartChipValidationService"));
 
 const listSmartChipView = new ListSmartChipHtmlView();
 const listSmartChipPresenter = new ListSmartChipPresenter(listSmartChipView);
-const listSmartChipUseCase = new ListSmartChipUseCase(listSmartChipPresenter, smartChipRepository);
+const listSmartChipUseCase = new PaginateUseCase(smartChipListRepository, listSmartChipPresenter, new Logger(log, "PaginateUseCase (SmartChip)"));
 
 const createSmartChipView = new CreateSmartChipHtmlView();
 const createSmartChipPresenter = new CreateSmartChipPresenter(createSmartChipView);
 const createSmartChipUseCase = new CreateSmartChipUseCase(createSmartChipPresenter, smartChipValidationService, smartChipRepository, new Logger(log, "CreateSmartChipUseCase"));
 
-listSmartChipUseCase.List(1, 2);
-
 createSmartChipUseCase.Create("Referência", "ref");
 createSmartChipUseCase.Create("Referência2", "ref2");
 createSmartChipUseCase.Create("Referência3", "ref3");
 
-listSmartChipUseCase.List(1, 2);
+listSmartChipUseCase.FirstPage();
